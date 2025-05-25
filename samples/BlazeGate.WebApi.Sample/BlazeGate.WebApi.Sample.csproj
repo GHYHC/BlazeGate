@@ -17,10 +17,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\BlazeGate.Model.Sample\BlazeGate.Model.Sample.csproj" />
     <ProjectReference Include="..\..\src\BlazeGate.AspNetCore\BlazeGate.AspNetCore.csproj" />
     <ProjectReference Include="..\..\src\BlazeGate.JwtBearer\BlazeGate.JwtBearer.csproj" />
     <ProjectReference Include="..\..\src\BlazeGate.Services.Implement.Remote\BlazeGate.Services.Implement.Remote.csproj" />
+    <ProjectReference Include="..\BlazeGate.Model.Sample\BlazeGate.Model.Sample.csproj" />
   </ItemGroup>
 
 </Project>

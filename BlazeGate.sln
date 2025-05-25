@@ -33,7 +33,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazeGate.Services.Implemen
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazeGate.Services.Interface", "src\BlazeGate.Services.Interface\BlazeGate.Services.Interface.csproj", "{639AE98E-18F7-8300-EF20-3C5CE3E9CB46}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazeGate.Model.Sample", "BlazeGate.Model.Sample\BlazeGate.Model.Sample.csproj", "{251F3878-8B7A-4D9B-BE1A-9A4DD4A8649A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazeGate.Model.Sample", "samples\BlazeGate.Model.Sample\BlazeGate.Model.Sample.csproj", "{75F3EC8D-43E9-E6FC-46A3-BFCC163522B1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -93,10 +93,10 @@ Global
 		{639AE98E-18F7-8300-EF20-3C5CE3E9CB46}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{639AE98E-18F7-8300-EF20-3C5CE3E9CB46}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{639AE98E-18F7-8300-EF20-3C5CE3E9CB46}.Release|Any CPU.Build.0 = Release|Any CPU
-		{251F3878-8B7A-4D9B-BE1A-9A4DD4A8649A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{251F3878-8B7A-4D9B-BE1A-9A4DD4A8649A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{251F3878-8B7A-4D9B-BE1A-9A4DD4A8649A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{251F3878-8B7A-4D9B-BE1A-9A4DD4A8649A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75F3EC8D-43E9-E6FC-46A3-BFCC163522B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75F3EC8D-43E9-E6FC-46A3-BFCC163522B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75F3EC8D-43E9-E6FC-46A3-BFCC163522B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75F3EC8D-43E9-E6FC-46A3-BFCC163522B1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -115,7 +115,7 @@ Global
 		{877AEE47-3000-1DB7-E985-ED602B5BBE96} = {08C5F85D-CDE3-48D1-AE9D-F93553CDBA87}
 		{C6311ECB-4818-DFE1-6255-252CA8E87FB6} = {08C5F85D-CDE3-48D1-AE9D-F93553CDBA87}
 		{639AE98E-18F7-8300-EF20-3C5CE3E9CB46} = {08C5F85D-CDE3-48D1-AE9D-F93553CDBA87}
-		{251F3878-8B7A-4D9B-BE1A-9A4DD4A8649A} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{75F3EC8D-43E9-E6FC-46A3-BFCC163522B1} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {52883362-3754-487E-828F-CD3C51A46AB1}

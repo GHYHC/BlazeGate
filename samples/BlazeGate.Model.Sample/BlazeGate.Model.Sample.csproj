@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\BlazeGate.Model\BlazeGate.Model.csproj" />
+    <ProjectReference Include="..\..\src\BlazeGate.Model\BlazeGate.Model.csproj" />
   </ItemGroup>
 
 </Project>

@@ -18,8 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\BlazeGate.Model.Sample\BlazeGate.Model.Sample.csproj" />
     <ProjectReference Include="..\..\src\BlazeGate.RBAC.Components\BlazeGate.RBAC.Components.csproj" />
+    <ProjectReference Include="..\BlazeGate.Model.Sample\BlazeGate.Model.Sample.csproj" />
   </ItemGroup>
 
 </Project>
