@@ -5,10 +5,11 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
-		<Version>1.0.15</Version>
+		<Version>1.0.16</Version>
 		<Authors>yhc</Authors>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageProjectUrl>https://github.com/GHYHC/BlazeGate</PackageProjectUrl>
 	</PropertyGroup>
 
 	<ItemGroup>
