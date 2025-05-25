@@ -1,0 +1,6 @@
+@BlazeGate.WebApi.Sample_HostAddress = http://localhost:5037
+
+GET {{BlazeGate.WebApi.Sample_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

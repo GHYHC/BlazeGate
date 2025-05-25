@@ -1,0 +1,57 @@
+﻿@page "/Role/Index"
+@inject MessageService Message
+@using AntDesign
+@using AntDesign.ProLayout
+@using AntDesign.TableModels
+@using BlazeGate.Model.WebApi.Response
+@using BlazeGate.RBAC.Components.Models
+
+<GridContent>
+    <Card Style="margin-bottom: 8px">
+        <Form Model="SearchModel" Layout="@FormLayout.Inline" OnFinish="()=>{Table.ReloadData();}">
+            <FormItem Label="角色名称">
+                <Input @bind-Value="context.RoleName" Style="width:183px" AllowClear />
+            </FormItem>
+            <FormItem>
+                <Button Type="@ButtonType.Primary" HtmlType="submit">
+                    查询
+                </Button>
+                <Button Type="@ButtonType.Primary" OnClick="async ()=>{await RoleEdit.ShowAsync(ServiceName,null);}">
+                    添加
+                </Button>
+            </FormItem>
+        </Form>
+    </Card>
+    <Card>
+        <Table @ref="Table" TItem="RolePageInfo" Loading="Loading" Total="Total" DataSource="DataList" OnChange="OnChange" ScrollX="100%" RemoteDataSource Bordered Resizable>
+            <ActionColumn Width="140" Title="操作" Fixed="ColumnFixPlacement.Left">
+                <Space Size="SpaceSize.Small" Direction="SpaceDirection.Horizontal">
+                    <SpaceItem>
+                        <a @onclick="async ()=>{await RoleEdit.ShowAsync(ServiceName,context);}">编辑</a>
+                    </SpaceItem>
+                    <SpaceItem>
+                        <Popconfirm Title="您确定要删除此数据吗？" OnConfirm="async ()=>{await OnRemove(context.Role.Id); Table.ReloadData(Table.GetQueryModel());}">
+                            <a>删除</a>
+                        </Popconfirm>
+                    </SpaceItem>
+                </Space>
+            </ActionColumn>
+            <PropertyColumn Title="角色名称" Property="c=>c.Role.RoleName" Ellipsis />
+            <PropertyColumn Title="角色页面" Property="c=>c.Pages" Ellipsis>
+                <Tree TItem="PageNode"
+                      DataSource="RolePageNodes.TryGetValue(context.Role.Id, out var pageNodes) ? pageNodes : new List<PageNode>()"
+                      TitleExpression='x => x.DataItem.Title'
+                      ChildrenExpression="x => x.DataItem.Children"
+                      IconExpression="x => x.DataItem.Icon"
+                      KeyExpression="x => x.DataItem.Id.ToString()">
+                    <TitleTemplate Context="item">
+                        @item.DataItem.Title @(item.DataItem.Type == 0 ? "(菜单)" : "(按钮)")
+                    </TitleTemplate>
+                </Tree>
+            </PropertyColumn>
+            <PropertyColumn Title="备注" Property="c=>c.Role.Remark" Ellipsis />
+        </Table>
+    </Card>
+
+    <RoleEdit @ref="RoleEdit" OnComplete="()=>{Table.ReloadData(Table.GetQueryModel());}"></RoleEdit>
+</GridContent>

@@ -1,0 +1,11 @@
+﻿@using Microsoft.AspNetCore.Components.Authorization
+<Router AppAssembly="typeof(Program).Assembly" AdditionalAssemblies="new List<System.Reflection.Assembly>{typeof(BlazeGate.RBAC.Components.Pages.Page.PageIndex).Assembly}">
+    <Found Context="routeData">
+        <CascadingValue Value="routeData">
+            <RouteView RouteData="routeData" DefaultLayout="typeof(BlazeGate.BlazorWasmApp.Sample.Layouts.BasicLayout)" />
+        </CascadingValue>
+        <FocusOnNavigate RouteData="routeData" Selector="h1" />
+    </Found>
+</Router>
+
+<AntContainer />

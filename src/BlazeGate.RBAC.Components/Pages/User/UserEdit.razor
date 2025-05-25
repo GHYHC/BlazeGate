@@ -1,0 +1,29 @@
+﻿@using AntDesign
+@using AntDesign.ProLayout
+@using BlazeGate.RBAC.Components.Components
+
+<Modal Title="@Title" Width="700" Visible="@Visible" ConfirmLoading=Loading OnOk="()=>{Form.Submit();}" OnCancel="()=>{Visible=false;}" MaskClosable=false>
+    <Form @ref="Form" Model="UserSave" Size="FormSize.Default" LabelColSpan="4" OnFinish="OnFinish" Loading=Loading ValidateMode="@FormValidateMode.Complex" ValidateOnChange>
+        <FormItem Label="用户名称">
+            <Input @bind-Value="context.UserName" AllowClear />
+        </FormItem>
+        <FormItem Label="账号">
+            <Input @bind-Value="context.Account" AllowClear />
+        </FormItem>
+        <FormItem Label="密码">
+            <InputPassword @bind-Value="context.Password" AllowClear ShowPassword="false" />
+        </FormItem>
+        <FormItem Label="电话">
+            <Input @bind-Value="context.Phone" AllowClear />
+        </FormItem>
+        <FormItem Label="用户数据">
+            <KeyValue @bind-Value="context.UserData"></KeyValue>
+        </FormItem>
+        <FormItem Label="备注">
+            <TextArea @bind-Value="context.Remark" AllowClear />
+        </FormItem>
+        <FormItem Label="状态">
+            <Switch @bind-Checked="context.Enabled" CheckedChildren="启用" UnCheckedChildren="禁用" />
+        </FormItem>
+    </Form>
+</Modal>

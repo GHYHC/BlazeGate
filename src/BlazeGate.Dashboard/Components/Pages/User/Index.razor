@@ -1,0 +1,10 @@
+﻿@using BlazeGate.RBAC.Components.Pages.User
+@using Microsoft.AspNetCore.Authorization
+@page "/user"
+@attribute [ReuseTabsPage(Title = "用户")]
+@attribute [Authorize]
+
+<UserIndex></UserIndex>
+@code {
+
+}

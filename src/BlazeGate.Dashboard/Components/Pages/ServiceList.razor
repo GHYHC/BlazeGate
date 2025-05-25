@@ -1,0 +1,40 @@
+﻿<GridContent>
+    <Card Style="margin-bottom: 8px">
+        <Form Model="Model" Layout="@FormLayout.Inline" OnFinish="async ()=>{await LoadData();}">
+            <FormItem Label="服务名称">
+                <Input @bind-Value="context.ServiceName" Style="width:183px" AllowClear />
+             </FormItem>
+             <FormItem>
+                 <Button Type="@ButtonType.Primary" HtmlType="submit">
+                     查询
+                 </Button>
+             </FormItem>
+             <FormItem>
+                 @FunctionTemplate
+            </FormItem>
+        </Form>
+    </Card>
+    <Collapse @ref="Collapse" OnChange="b=>{ActiveKey=b.ToList();}" Accordion>
+        @foreach (var service in Services)
+        {
+            <Panel Header="@service.ServiceName" Key="@service.Id.ToString()">
+                <HeaderTemplate>
+                    @if (HeaderTemplate == null)
+                    {
+                        @service.ServiceName
+                    }
+                    else
+                    {
+                        @HeaderTemplate(service)
+                    }
+                </HeaderTemplate>
+                <ChildContent>
+                    @if (ActiveKey.Contains(service.Id.ToString()))
+                    {
+                        @ChildContent(service)
+                    }
+                </ChildContent>
+            </Panel>
+        }
+    </Collapse>
+</GridContent>

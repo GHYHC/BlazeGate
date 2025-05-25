@@ -1,0 +1,7 @@
+﻿<Modal Title="@Title" Width="700" Visible="@Visible" ConfirmLoading=Loading OnOk="()=>{Form.Submit();}" OnCancel="()=>{Visible=false;}" MaskClosable=false>
+    <Form @ref="Form" Model="DestinationInfo" Size="FormSize.Default" LabelColSpan="4" OnFinish="OnFinish" Loading=Loading ValidateMode="@FormValidateMode.Complex" ValidateOnChange>
+        <FormItem Label="地址">
+            <Input @bind-Value="context.Address" AllowClear />
+        </FormItem>
+    </Form>
+</Modal>

@@ -1,0 +1,9 @@
+﻿@inject NavigationManager NavigationManager
+<Result Status="ResultStatus.Warning" Title="没有权限访问，正在跳转登录..." />
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        NavigationManager.NavigateTo($"/Account/Login?returnUrl={Uri.EscapeDataString(NavigationManager.Uri)}");
+    }
+}

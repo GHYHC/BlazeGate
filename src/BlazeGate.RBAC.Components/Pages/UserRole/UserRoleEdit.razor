@@ -1,0 +1,39 @@
+﻿@using AntDesign
+@using AntDesign.ProLayout
+
+<Modal Title="@Title" Width="700" Visible="@Visible" ConfirmLoading=Loading OnOk="()=>{Form.Submit();}" OnCancel="()=>{Visible=false;}" MaskClosable=false DestroyOnClose>
+    <Form @ref="Form" Model="UserRoleSave" Size="@FormSize.Default" ValidateMode="@FormValidateMode.Complex" OnFinish="OnFinish" LabelColSpan="4" Loading=Loading>
+        <FormItem Label="用户名称">
+            <Select Disabled="!UserRoleSave.IsAdd"
+                    DataSource="UserInfoList"
+                    @bind-Value="UserRoleSave.UserId"
+                    EnableSearch
+                    ValueName="@nameof(BlazeGate.Model.WebApi.Response.UserInfo.Id)"
+                    LabelName='@nameof(BlazeGate.Model.WebApi.Response.UserInfo.UserName)'
+                    TItemValue="long?"
+                    TItem="BlazeGate.Model.WebApi.Response.UserInfo"
+                    SearchDebounceMilliseconds="350"
+                    Loading="SearchLoading"
+                    OnSearch="async (value) => await OnSearch(value)">
+                <LabelTemplate Context="item">
+                    @($"{item.UserName} ({item.Account})")
+                </LabelTemplate>
+                <ItemTemplate Context="item">
+                    @($"{item.UserName} ({item.Account})")
+                </ItemTemplate>
+            </Select>
+        </FormItem>
+        <FormItem Label="用户角色">
+            <Select Mode="SelectMode.Multiple"
+                    TItem="BlazeGate.Model.EFCore.Role"
+                    TItemValue="long"
+                    DataSource="Roles"
+                    @bind-Values="UserRoleSave.RoleIds"
+                    LabelName="@nameof(BlazeGate.Model.EFCore.Role.RoleName)"
+                    ValueName="@nameof(BlazeGate.Model.EFCore.Role.Id)">
+            </Select>
+        </FormItem>
+    </Form>
+</Modal>
+
+

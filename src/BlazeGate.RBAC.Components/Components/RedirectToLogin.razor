@@ -1,0 +1,10 @@
+﻿@inject NavigationManager NavigationManager
+<Result Status="ResultStatus.Warning"
+        Title="正在跳转登录..." />
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        NavigationManager.NavigateTo("/login");
+    }
+}

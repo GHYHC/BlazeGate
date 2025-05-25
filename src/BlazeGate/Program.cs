@@ -1,0 +1,146 @@
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using BlazeGate.Common.Autofac;
+using BlazeGate.JwtBearer;
+using BlazeGate.Model.EFCore;
+using BlazeGate.Model.WebApi;
+using BlazeGate.Services.Interface;
+using BlazeGate;
+using BlazeGate.Authorization;
+using BlazeGate.AuthWhiteList;
+using BlazeGate.BackgroundService;
+using BlazeGate.Policy;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
+using Yarp.ReverseProxy.Health;
+using Autofac.Core;
+using BlazeGate.Authentication;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+
+builder.Services.AddControllers();
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+
+//添加数据库
+builder.Services.AddDbContext<BlazeGateContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("BlazeGate.Model")));
+
+//添加Yarp并从数据库加载配置
+builder.Services.AddReverseProxy().LoadFromDatabase();
+
+// 添加分布式缓存服务（数据库）
+builder.Services.AddDistributedSqlServerCache(options =>
+{
+    options.ConnectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+    options.SchemaName = "dbo";
+    options.TableName = "DistributedCache";
+});
+
+//添加Token服务
+builder.AddAuthenticationTokenService();
+
+//添加认证(JwtBearer)
+builder.AddAuthentication(false);
+
+//添加授权
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("RBAC", policy =>
+    {
+        policy.Requirements.Add(new RBACRequirement());
+    });
+});
+builder.Services.AddSingleton<IAuthorizationHandler, RBACHandler>();
+builder.Services.AddScoped<IRBACService, RBACService>();
+// IAuthorizationMiddlewareResultHandler 用来替换框架默认的授权返回结果
+builder.Services.AddSingleton<IAuthorizationMiddlewareResultHandler, AuthorizationMiddlewareResultHandler>();
+
+//添加被动检查策略FirstUnsuccessfulResponse
+builder.Services.AddSingleton<IPassiveHealthCheckPolicy, FirstUnsuccessfulResponseHealthPolicy>();
+
+//添加响应缓存
+builder.Services.AddResponseCaching(options =>
+{
+    options.UseCaseSensitivePaths = false; //确定是否将响应缓存在区分大小写的路径上。
+    options.SizeLimit = options.SizeLimit * 10; // 响应缓存中间件的大小限制（以字节为单位） 1G
+});
+
+//添加响应压缩
+builder.Services.AddResponseCompression(options =>
+{
+    options.EnableForHttps = true;
+});
+
+//添加内存缓存服务
+builder.Services.AddMemoryCache();
+
+//添加Automapper
+builder.Services.AddAutoMapper(typeof(Program).Assembly, typeof(ApiResult<>).Assembly);
+
+//配置跨域
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("any", builder =>
+    {
+        //允许任何来源的主机访问
+        builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().WithExposedHeaders("*");
+    });
+});
+
+//添加Autofac
+builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
+{
+    //批量自动注入,把需要注入层的程序集传参数
+    containerBuilder.BatchAutowired(typeof(Program).Assembly, typeof(BlazeGate.Services.Implement.UserRoleService).Assembly);
+});
+
+//添加健康检查
+builder.Services.AddHealthChecks();
+
+//添加雪花算法ID检查服务
+builder.Services.AddHostedService<SnowFlakeIdCheck>();
+
+//添加httpClient
+builder.Services.AddHttpClient();
+
+var app = builder.Build();
+
+//自动迁移数据库
+using (var scope = app.Services.CreateScope())
+{
+    var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+    dbInitializer.Initialize().Wait();
+}
+
+//使用响应压缩
+app.UseResponseCompression();
+
+//使用响应缓存
+app.UseResponseCaching();
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+//添加健康检查
+app.UseHealthChecks("/api/health");
+
+app.UseCors("any");
+
+//添加认证白名单
+app.UseAuthWhiteList();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.MapReverseProxy();
+
+app.Run();

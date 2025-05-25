@@ -1,0 +1,85 @@
+﻿@page "/Page/Index"
+@inject MessageService Message
+@using AntDesign
+@using AntDesign.ProLayout
+@using AntDesign.TableModels
+@using BlazeGate.RBAC.Components.Models
+
+<Spin Spinning=Loading>
+    <Card>
+        <CardGrid Style="width:50%">
+            <Tree @ref="Tree" DefaultExpandAll Draggable BlockNode ShowIcon
+                  DataSource="TreeList"
+                  TitleExpression='x =>x.DataItem.Title'
+                  ChildrenExpression="x => x.DataItem.Children"
+                  IconExpression="x => x.DataItem.Icon"
+                  KeyExpression="x => x.DataItem.Id.ToString()"
+                  TItem="PageNode"
+                  SelectedKeysChanged="SelectedKeysChanged"
+                  OnDrop="OnDrop">
+                <TitleTemplate Context="item">
+                    @item.DataItem.Title @(item.DataItem.Type == 0 ? "(菜单)" : "(按钮)")
+                </TitleTemplate>
+            </Tree>
+        </CardGrid>
+        <CardGrid Style="width:50%">
+            <Form @ref="Form" Model="Model" Size="FormSize.Default" LabelColSpan="3" OnFinish="OnFinish" ValidateMode="@FormValidateMode.Rules">
+                <FormItem Label="标题" Rules="new FormValidationRule[]{new FormValidationRule(){Required=true},new FormValidationRule(){Max=64}}">
+                    <Input @bind-Value="context.Title" AllowClear />
+                </FormItem>
+                <FormItem Label="父页面">
+                    <TreeSelect AllowClear
+                                TreeDefaultExpandAll
+                                TItem="PageNode"
+                                TItemValue="string"
+                                DataSource="TreeList"
+                                @bind-Value="Model.ParentPageIdStr"
+                                Placeholder="请选择"
+                                ChildrenExpression="node=>node.DataItem.Children"
+                                TitleExpression="node=>node.DataItem.Title"
+                                KeyExpression="node=>node.DataItem.Id.ToString()">
+                        <TitleTemplate Context="item">
+                            @item.DataItem.Title @(item.DataItem.Type == 0 ? "(菜单)" : "(按钮)")
+                        </TitleTemplate>
+                        <LabelTemplate Context="item">
+                            @item.Title @(item.Type == 0 ? "(菜单)" : "(按钮)")
+                        </LabelTemplate>
+                    </TreeSelect>
+                </FormItem>
+                <FormItem Label="序号">
+                    <AntDesign.InputNumber Style="width:100%" @bind-Value="context.IndexNumber" Min="0"></AntDesign.InputNumber>
+                </FormItem>
+                <FormItem Label="类型">
+                    <RadioGroup @bind-Value="context.Type">
+                        <Radio Value="0">菜单</Radio>
+                        <Radio Value="1">按钮</Radio>
+                    </RadioGroup>
+                </FormItem>
+                <FormItem Label="图标" Rules="new FormValidationRule[]{new FormValidationRule(){Max=64}}">
+                    <Input @bind-Value="context.Icon" AllowClear />
+                </FormItem>
+                <FormItem Label="路径" Rules="new FormValidationRule[]{new FormValidationRule(){Max=128}}">
+                    <Input @bind-Value="context.Path" AllowClear />
+                </FormItem>
+                <FormItem Label="子路径" Rules="new FormValidationRule[]{new FormValidationRule(){Max=2048}}">
+                    <TextArea Rows="4" @bind-Value="context.SubPath" AllowClear />
+                </FormItem>
+                <FormItem WrapperColOffset="3">
+                    <Space Size=SpaceSize.Small Direction="SpaceDirection.Horizontal">
+                        <SpaceItem>
+                            <Button Type="@ButtonType.Primary" OnClick="()=>{Model.Id=0;Form.Submit();}">添加</Button>
+                        </SpaceItem>
+                        <SpaceItem>
+                            <Button Type="@ButtonType.Primary" OnClick="()=>{Form.Submit();}">修改</Button>
+                        </SpaceItem>
+                        <SpaceItem>
+                            <Popconfirm Title="您确定要删除此数据吗？" OnConfirm="async ()=>{await OnRemove(context.Id);}">
+                                <Button Type="@ButtonType.Primary" Danger>删除</Button>
+                            </Popconfirm>
+                        </SpaceItem>
+                    </Space>
+                </FormItem>
+            </Form>
+        </CardGrid>
+    </Card>
+</Spin>

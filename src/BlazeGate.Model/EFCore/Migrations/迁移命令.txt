@@ -1,0 +1,11 @@
+//创建迁移
+Add-Migration <迁移名称> -OutputDir EFCore\Migrations -Project BlazeGate.Model -StartupProject BlazeGate
+
+//应用迁移
+Update-Database
+
+//回滚迁移
+Update-Database -Migration <之前迁移的名称>
+
+//删除迁移
+Remove-Migration

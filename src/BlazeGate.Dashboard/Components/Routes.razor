@@ -1,0 +1,24 @@
+﻿@using BlazeGate
+@using BlazeGate.Dashboard.Components.Layout
+@using BlazeGate.Dashboard.Components.Share
+@using Microsoft.AspNetCore.Components.Authorization
+@inject NavigationManager NavigationManager
+<Router AppAssembly="@typeof(Program).Assembly">
+    <Found Context="routeData">
+        <CascadingValue Value="routeData">
+            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+                <NotAuthorized>
+                    <RedirectToLogin></RedirectToLogin>
+                </NotAuthorized>
+            </AuthorizeRouteView>
+        </CascadingValue>
+    </Found>
+    <NotFound>
+        <Result Status="ResultStatus.Http404" Title="404" SubTitle="抱歉，您访问的页面不存在。">
+            <Extra>
+                <Button Type="ButtonType.Primary" @onclick='()=>{NavigationManager.NavigateTo("/");}'>返回首页</Button>
+            </Extra>
+        </Result>
+    </NotFound>
+</Router>
+<AntContainer />

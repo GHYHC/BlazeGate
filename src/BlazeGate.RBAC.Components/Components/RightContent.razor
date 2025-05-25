@@ -1,0 +1,63 @@
+﻿@using BlazeGate.Model.JwtBearer
+@using BlazeGate.RBAC.Components.Extensions.Authentication
+@using Microsoft.AspNetCore.Components.Authorization;
+@inherits AntDomComponentBase
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<Space Class="@ClassMapper.Class" Size="@("24")">
+    <SpaceItem>
+        <AuthorizeView>
+            <Authorized>
+                <AvatarDropdown Name="@context?.User?.GetUser()?.UserName" MenuItems="AvatarMenuItems" OnItemSelected="HandleSelectUser" />
+            </Authorized>
+            <NotAuthorized>
+                <AvatarDropdown Name="未登录" MenuItems="@(new AvatarMenuItem[]{})" />
+            </NotAuthorized>
+        </AuthorizeView>
+    </SpaceItem>
+</Space>
+
+@code {
+    public AvatarMenuItem[] AvatarMenuItems { get; set; } = new AvatarMenuItem[]
+    {
+        new() { Key = "logout", IconType = "logout", Option = "退出登录"}
+    };
+
+    [Inject]
+    protected NavigationManager NavigationManager { get; set; }
+
+    [Inject]
+    private IAccountService AccountService { get; set; }
+
+    [Inject]
+    private IAuthTokenStorageServices AuthTokenStorage { get; set; }
+
+    protected override Task OnInitializedAsync()
+    {
+        return base.OnInitializedAsync();
+    }
+
+    public async Task HandleSelectUser(MenuItem item)
+    {
+        switch (item.Key)
+        {
+            case "logout":
+                await Logout();
+                break;
+        }
+    }
+
+    public async Task Logout()
+    {
+        try
+        {
+            var token = await AuthTokenStorage.GetAuthToken();
+            await AccountService.Logout(token);
+        }
+        catch (Exception ex)
+        {
+        }
+        await AuthTokenStorage.SetAuthToken(null);
+        NavigationManager.NavigateTo("/login");
+    }
+}

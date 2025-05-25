@@ -1,0 +1,173 @@
+﻿<Tabs OnChange="OnChangeTabs">
+    <TabBarExtraContent>
+    </TabBarExtraContent>
+    <ChildContent>
+        <TabPane Tab="KV" Key="kv">
+            @foreach (var item in keyValuePairs)
+            {
+                <GridRow Gutter="8" Style="margin-bottom:8px;">
+                    <GridCol Span="6"><Input Size="InputSize.Small" TValue="string" @bind-Value="item.Key" OnBlur="OnChangeKV"></Input></GridCol>
+                    <GridCol Span="14"><Input Size="InputSize.Small" TValue="string" @bind-Value="item.Value" OnBlur="OnChangeKV"></Input></GridCol>
+                    <GridCol Span="4">
+                        <Button Type="@ButtonType.Text" Icon="@IconType.Outline.Plus" OnClick="Add" />
+                        @if (keyValuePairs.Count > 1)
+                        {
+                            <Button Danger Type="@ButtonType.Text" Icon="@IconType.Outline.Delete" OnClick="async ()=>{await Remove(item);}" />
+                        }
+                    </GridCol>
+                </GridRow>
+            }
+            @if (!string.IsNullOrWhiteSpace(ErrorMsgKv))
+            {
+                <span>
+                    <Text Type="TextElementType.Danger">@ErrorMsgKv</Text>
+                </span>
+            }
+        </TabPane>
+        <TabPane Tab="JSON" Key="json">
+            <TextArea Rows="6" @bind-Value="JsonString" OnBlur="OnChangeJson">
+
+            </TextArea>
+            @if (!string.IsNullOrWhiteSpace(ErrorMsgJson))
+            {
+                <span>
+                    <Text Type="TextElementType.Danger">@ErrorMsgJson</Text>
+                </span>
+            }
+        </TabPane>
+    </ChildContent>
+</Tabs>
+
+@code {
+    [Parameter]
+    public string Value { get; set; }
+    [Parameter]
+    public EventCallback<string> ValueChanged { get; set; }
+
+    private string JsonString { get; set; } = "{\"\":\"\"}";
+    private List<KeyValueModel> keyValuePairs { get; set; } = new List<KeyValueModel> { new KeyValueModel { Key = "", Value = "" } };
+    private string ErrorMsgKv { get; set; }
+    private string ErrorMsgJson { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (!string.IsNullOrWhiteSpace(Value))
+        {
+            JsonString = Value;
+        }
+    }
+
+    private async Task OnChangeTabs(string key)
+    {
+        if ("kv".Equals(key))
+        {
+            ErrorMsgKv = await DataConvert(key);
+        }
+        else
+        {
+            ErrorMsgJson = await DataConvert(key);
+        }
+    }
+
+    private async Task OnChangeJson()
+    {
+        ErrorMsgJson = await DataConvert("kv");
+
+        if (string.IsNullOrWhiteSpace(ErrorMsgJson))
+        {
+            if (ValueChanged.HasDelegate)
+            {
+                await ValueChanged.InvokeAsync(JsonString);
+            }
+        }
+    }
+
+    private async Task OnChangeKV()
+    {
+        ErrorMsgKv = await DataConvert("json");
+
+        if (string.IsNullOrWhiteSpace(ErrorMsgKv))
+        {
+            if (ValueChanged.HasDelegate)
+            {
+                await ValueChanged.InvokeAsync(JsonString);
+            }
+        }
+    }
+
+    private async Task<string> DataConvert(string type)
+    {
+        try
+        {
+            if ("json".Equals(type))
+            {
+                ErrorMsgJson = string.Empty;
+                Dictionary<string, string> pairs = new Dictionary<string, string>();
+                foreach (var item in keyValuePairs)
+                {
+                    //判断重复
+                    if (pairs.ContainsKey(item.Key))
+                    {
+                        return $"Key：{item.Key} 重复";
+                    }
+                    else
+                    {
+
+                        pairs.Add(item.Key, item.Value);
+                    }
+                }
+
+                //转换为有缩进的json
+                JsonString = System.Text.Json.JsonSerializer.Serialize(pairs, new System.Text.Json.JsonSerializerOptions { WriteIndented = true });
+            }
+            else
+            {
+                //检查JsonString的Key值是否重复
+                Dictionary<string, string> dt = new Dictionary<string, string>();
+                var json = System.Text.Json.JsonDocument.Parse(JsonString);
+                foreach (var item in json.RootElement.EnumerateObject())
+                {
+                    //判断重复
+                    if (dt.ContainsKey(item.Name))
+                    {
+                        return $"Key：{item.Name} 重复";
+                    }
+                    else
+                    {
+                        dt.Add(item.Name, item.Value.ToString());
+                    }
+                }
+
+                var pairs = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, string>>(JsonString) ?? new Dictionary<string, string>();
+
+                List<KeyValueModel> keyValues = new List<KeyValueModel>();
+                foreach (var item in pairs)
+                {
+                    keyValues.Add(new KeyValueModel { Key = item.Key, Value = item.Value });
+                }
+                keyValuePairs = keyValues;
+            }
+            return "";
+        }
+        catch (Exception ex)
+        {
+            return $"数据异常";
+        }
+    }
+
+    private async Task Add()
+    {
+        keyValuePairs.Add(new KeyValueModel { Key = "", Value = "" });
+    }
+
+    private async Task Remove(KeyValueModel item)
+    {
+        keyValuePairs.Remove(item);
+    }
+
+    public class KeyValueModel
+    {
+        public string Key { get; set; } = string.Empty;
+        public string Value { get; set; } = string.Empty;
+    }
+}

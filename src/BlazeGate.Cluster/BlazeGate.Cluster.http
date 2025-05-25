@@ -1,0 +1,6 @@
+@BlazeGate.Cluster_HostAddress = http://localhost:5081
+
+GET {{BlazeGate.Cluster_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

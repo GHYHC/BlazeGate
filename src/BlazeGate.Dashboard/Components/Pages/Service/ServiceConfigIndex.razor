@@ -1,0 +1,199 @@
+﻿@using BlazeGate.Dashboard.Components.Share
+@using BlazeGate.Model.EFCore
+@using BlazeGate.Model.Policies
+@using System.Text.Json
+@using BlazeGate.Model.WebApi.Response
+@using BlazeGate.Services.Interface
+
+<Form Loading="loading" Model="ServiceDetails" LabelColSpan=4 OnFinish="Save">
+    <GridRow>
+        <GridCol Span="12">
+            <FormItem Label="名称">
+                <Input @bind-Value="context.Service.ServiceName" AllowClear />
+            </FormItem>
+        </GridCol>
+        <GridCol Span="12">
+            <FormItem Label="Token">
+                <Input @bind-Value="context.Service.Token" AllowClear />
+            </FormItem>
+        </GridCol>
+        <GridCol Span="12">
+            <FormItem Label="负载均衡策略">
+                <SimpleSelect @bind-Value="context.ServiceConfig.LoadBalancingPolicy">
+                    <SelectOptions>
+                        <SimpleSelectOption Value="FirstAlphabetical" Label="FirstAlphabetical （按字母顺序选择第一个可用目标，这对于双目标故障转移系统非常有用）"></SimpleSelectOption>
+                        <SimpleSelectOption Value="Random" Label="Random （随机选择目标）"></SimpleSelectOption>
+                        <SimpleSelectOption Value="RoundRobin" Label="RoundRobin （通过按顺序循环来选择目标）"></SimpleSelectOption>
+                        <SimpleSelectOption Value="LeastRequests" Label="LeastRequests （选择分配请求最少的目标，这需要检查所有目标）"></SimpleSelectOption>
+                        <SimpleSelectOption Value="PowerOfTwoChoices" Label="PowerOfTwoChoices （选择两个随机目标，然后选择具有最小分配请求的一个目标）"></SimpleSelectOption>
+                    </SelectOptions>
+                </SimpleSelect>
+            </FormItem>
+        </GridCol>
+        <GridCol Span="12">
+            <FormItem Label="授权策略">
+                <SimpleSelect @bind-Value="context.ServiceConfig.AuthorizationPolicy">
+                    <SelectOptions>
+                        <SimpleSelectOption Value="" Label="无"></SimpleSelectOption>
+                        <SimpleSelectOption Value="@AuthorizationPolicies.defaultPolicies" Label='@($"{AuthorizationPolicies.defaultPolicies} （默认，需要身份验证）")'></SimpleSelectOption>
+                        <SimpleSelectOption Value="@AuthorizationPolicies.anonymous" Label='@($"{AuthorizationPolicies.anonymous} （匿名，不需要身份验证和授权）")'></SimpleSelectOption>
+                        <SimpleSelectOption Value="@AuthorizationPolicies.RBAC" Label='@($"{AuthorizationPolicies.RBAC} （基于角色的访问控制）")'></SimpleSelectOption>
+                    </SelectOptions>
+                </SimpleSelect>
+            </FormItem>
+        </GridCol>
+        <GridCol Span="12">
+            <FormItem Label="限流策略">
+                <SimpleSelect @bind-Value="context.ServiceConfig.RateLimiterPolicy">
+                    <SelectOptions>
+                        <SimpleSelectOption Value="" Label="无"></SimpleSelectOption>
+                    </SelectOptions>
+                </SimpleSelect>
+            </FormItem>
+        </GridCol>
+        <GridCol Span="12">
+            <FormItem Label="请求超时">
+                <AntDesign.InputNumber @bind-Value="context.ServiceConfig.RequestActivityTimeout" Min="1" DefaultValue="100"></AntDesign.InputNumber> 秒
+            </FormItem>
+        </GridCol>
+    </GridRow>
+    <FormItem Label="主动健康检查" ToolTip="定时向目标指定的地址发送检查请求，并根据响应结果自动监测服务器是否正常运行" LabelColSpan="2">
+        <Switch @bind-Checked="context.ServiceConfig.ActiveHealthCheckEnabled" />
+    </FormItem>
+    @if (context.ServiceConfig.ActiveHealthCheckEnabled)
+    {
+        <GridRow>
+            <GridCol Span="12">
+                <FormItem Label="检查策略">
+                    <SimpleSelect @bind-Value="context.ServiceConfig.ActiveHealthCheckPolicy">
+                        <SelectOptions>
+                            <SimpleSelectOption Value="ConsecutiveFailures" Label="ConsecutiveFailures （当连续检测失败次数达到设定的故障阈值时，系统会标记该目标为异常）"></SimpleSelectOption>
+                        </SelectOptions>
+                    </SimpleSelect>
+                </FormItem>
+            </GridCol>
+            <GridCol Span="12">
+                <FormItem Label="检查路径">
+                    <Input @bind-Value="context.ServiceConfig.ActiveHealthCheckPath"
+                           AllowClear />
+                </FormItem>
+            </GridCol>
+            <GridCol Span="6">
+                <FormItem Label="故障阈值" LabelColSpan="8">
+                    <AntDesign.InputNumber @bind-Value="context.ServiceConfig.ActiveHealthCheckThreshold" DefaultValue="2"></AntDesign.InputNumber>
+                </FormItem>
+            </GridCol>
+            <GridCol Span="6">
+                <FormItem Label="间隔时间" LabelColSpan="8">
+                    <AntDesign.InputNumber @bind-Value="context.ServiceConfig.ActiveHealthCheckInterval" Min="1" DefaultValue="5"></AntDesign.InputNumber> 秒
+                </FormItem>
+            </GridCol>
+            <GridCol Span="6">
+                <FormItem Label="超时时间" LabelColSpan="8">
+                    <AntDesign.InputNumber @bind-Value="context.ServiceConfig.ActiveHealthCheckTimeout" Min="1" DefaultValue="5"></AntDesign.InputNumber> 秒
+                </FormItem>
+            </GridCol>
+            <GridCol Span="6">
+                <FormItem Label="移除异常目标" Tooltip="从目标标记为异常状态开始计时，到达设置时间就移除该目标。填0分钟代表不移除" LabelColSpan="8">
+                    <AntDesign.InputNumber @bind-Value="context.ServiceConfig.ActiveRemoveUnhealthyAfter" Min="0" DefaultValue="30"></AntDesign.InputNumber> 分钟
+                </FormItem>
+            </GridCol>
+        </GridRow>
+    }
+    <FormItem Label="被动健康检查" ToolTip="通过被动监听目标响应的成功或失败情况，来判断服务器是否正常运行" LabelColSpan="2">
+        <Switch @bind-Checked="context.ServiceConfig.PassiveHealthCheckEnabled" />
+    </FormItem>
+    @if (context.ServiceConfig.PassiveHealthCheckEnabled)
+    {
+        <GridRow>
+            <GridCol Span="12">
+                <FormItem Label="检查策略">
+                    <SimpleSelect @bind-Value="context.ServiceConfig.PassiveHealthCheckPolicy">
+                        <SelectOptions>
+                            <SimpleSelectOption Value="@PassiveHealthCheckPolicies.TransportFailureRate" Label='@($"{PassiveHealthCheckPolicies.TransportFailureRate} （一分钟内失败次数到达设置的失败率时，系统会标记该目标为异常）")'></SimpleSelectOption>
+                            <SimpleSelectOption Value="@PassiveHealthCheckPolicies.FirstUnsuccessfulResponse" Label='@($"{PassiveHealthCheckPolicies.FirstUnsuccessfulResponse} （只要有一次的失败就将目标标记为异常）")'></SimpleSelectOption>
+                        </SelectOptions>
+                    </SimpleSelect>
+                </FormItem>
+            </GridCol>
+            <GridCol Span="6">
+                <FormItem Label="重新激活时间" LabelColSpan="8" ToolTip="经过设定的时间后，将异常目标状态重置为 Unknown，并开始重新接收流量">
+                    <AntDesign.InputNumber @bind-Value="context.ServiceConfig.PassiveHealthCheckReactivationPeriod" Min="1" DefaultValue="60"></AntDesign.InputNumber> 秒
+                </FormItem>
+            </GridCol>
+            @if (context.ServiceConfig.PassiveHealthCheckPolicy == PassiveHealthCheckPolicies.TransportFailureRate)
+            {
+                <GridCol Span="6">
+                    <FormItem Label="失败率" LabelColSpan="8" ToolTip="失败率 = 一分钟内失败次数 / 请求总数(10)">
+                        <AntDesign.InputNumber @bind-Value="context.ServiceConfig.PassiveHealthCheckFailureRate" Min="0" Max="1" DefaultValue="0.5F"></AntDesign.InputNumber>
+                    </FormItem>
+                </GridCol>
+            }
+            @* <GridCol Span="6">
+                <FormItem Label="移除异常目标" Tooltip="从目标标记为异常状态开始计时，到达设置时间就移除该目标。填0分钟代表不移除" LabelColSpan="8">
+                    <AntDesign.InputNumber @bind-Value="context.ServiceConfig.PassiveRemoveUnhealthyAfter" Min="0" DefaultValue="30"></AntDesign.InputNumber> 分钟
+                </FormItem>
+            </GridCol> *@
+        </GridRow>
+    }
+    <FormItem Label="关联性会话" ToolTip="关联性会话是一种“固定搭配”机制，它可以把用户的一系列关联操作（比如登录后连续点餐、支付）全部分配给同一台服务器处理" LabelColSpan="2">
+        <Switch @bind-Checked="context.ServiceConfig.SessionAffinityEnabled" />
+    </FormItem>
+    @if (context.ServiceConfig.SessionAffinityEnabled)
+    {
+        <GridRow>
+            <GridCol Span="12">
+                <FormItem Label="会话策略">
+                    <SimpleSelect @bind-Value="context.ServiceConfig.SessionAffinityPolicy">
+                        <SelectOptions>
+                            <SimpleSelectOption Value="HashCookie" Label="HashCookie （将密钥放入cookie中,并使用Hash64加密）"></SimpleSelectOption>
+                            <SimpleSelectOption Value="ArrCookie" Label="ArrCookie （将密钥放入cookie中,并使用SHA-256加密）"></SimpleSelectOption>
+                            <SimpleSelectOption Value="Cookie" Label="Cookie （将密钥放入cookie中）"></SimpleSelectOption>
+                            <SimpleSelectOption Value="CustomHeader" Label="CustomHeader （将密钥放入请求头中）"></SimpleSelectOption>
+                        </SelectOptions>
+                    </SimpleSelect>
+                </FormItem>
+            </GridCol>
+            <GridCol Span="12">
+                <FormItem Label="故障策略">
+                    <SimpleSelect @bind-Value="context.ServiceConfig.SessionAffinityFailurePolicy">
+                        <SelectOptions>
+                            <SimpleSelectOption Value="Redistribute" Label="Redistribute （从现有健康目标中建立新的关联）"></SimpleSelectOption>
+                            <SimpleSelectOption Value="Return503Error" Label="Return503Error （返回503状态，请求处理将终止）"></SimpleSelectOption>
+                        </SelectOptions>
+                    </SimpleSelect>
+                </FormItem>
+            </GridCol>
+            <GridCol Span="12">
+                <FormItem Label="会话名称">
+                    <Input @bind-Value="context.ServiceConfig.SessionAffinityKeyName" AllowClear />
+                </FormItem>
+            </GridCol>
+            @if (context.ServiceConfig.SessionAffinityPolicy?.Contains("Cookie") ?? false)
+            {
+                <GridCol Span="6">
+                    <FormItem Label="Cookie HttpOnly" LabelColSpan="8">
+                        <Switch @bind-Checked="context.ServiceConfig.SessionAffinityCookieHttpOnly" />
+                    </FormItem>
+                </GridCol>
+                <GridCol Span="6">
+                    <FormItem Label="Cookie MaxAge" LabelColSpan="8">
+                        <AntDesign.InputNumber @bind-Value="context.ServiceConfig.SessionAffinityCookieMaxAge" Min="1"></AntDesign.InputNumber> 秒
+                    </FormItem>
+                </GridCol>
+            }
+        </GridRow>
+    }
+
+    <FormItem WrapperColOffset="2">
+        <Space>
+            <SpaceItem>
+                <Button Type="@ButtonType.Primary" HtmlType="submit">保存</Button>
+            </SpaceItem>
+            <SpaceItem>
+                <Button Type="@ButtonType.Primary" OnClick="CopyDestinationConfig">复制目标配置</Button>
+            </SpaceItem>
+        </Space>
+    </FormItem>
+</Form>
+<CopyToClipboard @ref="CopyToClipboard"></CopyToClipboard> 

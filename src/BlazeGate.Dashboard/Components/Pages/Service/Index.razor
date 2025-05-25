@@ -1,0 +1,136 @@
+﻿@using System.Linq.Expressions
+@using BlazeGate.Model.EFCore
+@using BlazeGate.Services.Interface
+@using LinqKit
+@using Microsoft.AspNetCore.Authorization
+@using BlazeGate.RBAC.Components.Pages.Page
+@using BlazeGate.RBAC.Components.Pages.Role
+@using BlazeGate.RBAC.Components.Pages.UserRole
+@page "/"
+@attribute [ReuseTabsPage(Title = "服务")]
+@attribute [Authorize]
+
+<ServiceList @ref="ServiceList">
+    <FunctionTemplate>
+        <Button Type="@ButtonType.Primary" OnClick="async () => { await AddService(); }">
+            添加
+        </Button>
+    </FunctionTemplate>
+    <HeaderTemplate>
+        <GridRow Justify="RowJustify.SpaceBetween">
+            <GridCol Span="8">
+                <Text Type="context.Enabled? TextElementType.Success: TextElementType.Secondary" Strong>@context.ServiceName</Text>
+            </GridCol>
+            <GridCol Style="text-align:center" Span="8">
+                <Space Size="SpaceSize.Large">
+                    <SpaceItem>
+                        <Space Size="SpaceSize.Middle">
+                            <SpaceItem>
+                                <Text Type="TextElementType.Secondary">主动</Text>
+                            </SpaceItem>
+                            <SpaceItem>
+                                <Tooltip Title="主动健康检测【正常】数量">
+                                    <Text Type="TextElementType.Success" Strong>
+                                        @(HealthStateCounts.FirstOrDefault(b => b.ServiceName == context.ServiceName)?.ActiveHealthyCount ?? 0)
+                                    </Text>
+                                </Tooltip>
+                            </SpaceItem>
+                            <SpaceItem>
+                                <Tooltip Title="主动健康检测【异常】数量">
+                                    <Text Type="TextElementType.Danger" Strong>
+                                        @(HealthStateCounts.FirstOrDefault(b => b.ServiceName == context.ServiceName)?.ActiveUnhealthyCount ?? 0)
+                                    </Text>
+                                </Tooltip>
+                            </SpaceItem>
+                            <SpaceItem>
+                                <Tooltip Title="主动健康检测【未知】数量">
+                                    <Text Type="TextElementType.Warning" Strong>
+                                        @(HealthStateCounts.FirstOrDefault(b => b.ServiceName == context.ServiceName)?.ActiveUnknownCount ?? 0)
+                                    </Text>
+                                </Tooltip>
+                            </SpaceItem>
+                        </Space>
+                    </SpaceItem>
+                    <SpaceItem>
+                        <Space Size="SpaceSize.Middle">
+                            <SpaceItem>
+                                <Text Type="TextElementType.Secondary">被动</Text>
+                            </SpaceItem>
+                            <SpaceItem>
+                                <Tooltip Title="被动健康检测【正常】数量">
+                                    <Text Type="TextElementType.Success" Strong>
+                                        @(HealthStateCounts.FirstOrDefault(b => b.ServiceName == context.ServiceName)?.PassiveHealthyCount ?? 0)
+                                    </Text>
+                                </Tooltip>
+                            </SpaceItem>
+                            <SpaceItem>
+                                <Tooltip Title="被动健康检测【异常】数量">
+                                    <Text Type="TextElementType.Danger" Strong>
+                                        @(HealthStateCounts.FirstOrDefault(b => b.ServiceName == context.ServiceName)?.PassiveUnhealthyCount ?? 0)
+                                    </Text>
+                                </Tooltip>
+                            </SpaceItem>
+                            <SpaceItem>
+                                <Tooltip Title="被动健康检测【未知】数量">
+                                    <Text Type="TextElementType.Warning" Strong>
+                                        @(HealthStateCounts.FirstOrDefault(b => b.ServiceName == context.ServiceName)?.PassiveUnknownCount ?? 0)
+                                    </Text>
+                                </Tooltip>
+                            </SpaceItem>
+                        </Space>
+                    </SpaceItem>
+                </Space>
+            </GridCol>
+            <GridCol Style="text-align:right" Span="8">
+                <Space>
+                    <SpaceItem>
+                        <span @onclick:stopPropagation="true">
+                            <Text Disabled="context.Enabled == true" Type="TextElementType.Success">
+                                <span @onclick="async b =>{ await EnabledChanged(context.Id, true); }">启用</span>
+                            </Text>
+                        </span>
+                    </SpaceItem>
+                    <SpaceItem>
+                        <span @onclick:stopPropagation="true">
+                            <Text Disabled="context.Enabled == false" Type="TextElementType.Secondary">
+                                <span @onclick="async b =>{ await EnabledChanged(context.Id, false); }">禁用</span>
+                            </Text>
+                        </span>
+                    </SpaceItem>
+                    <SpaceItem>
+                        <span @onclick:stopPropagation="true">
+                            <Popconfirm Title="确定删除这个服务?" OnConfirm="async () => { await DeleteService(context.Id); }">
+                                <Text Type="TextElementType.Danger">删除</Text>
+                            </Popconfirm>
+                        </span>
+                    </SpaceItem>
+                </Space>
+            </GridCol>
+        </GridRow>
+    </HeaderTemplate>
+    <ChildContent>
+        <Tabs>
+            <TabPane Tab="服务配置">
+                <ServiceConfigIndex ServiceName="@context.ServiceName" OnFinish="async (id) => { await ServiceList.Refresh(id); }" />
+            </TabPane>
+            <TabPane Tab="目标节点">
+                <DestinationIndex ServiceName="@context.ServiceName" ServiceToken="@context.Token"></DestinationIndex>
+            </TabPane>
+            <TabPane Tab="授权RSA秘钥">
+                <AuthRsaKeyIndex ServiceName="@context.ServiceName"></AuthRsaKeyIndex>
+            </TabPane>
+            <TabPane Tab="授权白名单">
+                <AuthWhiteListIndex ServiceName="@context.ServiceName"></AuthWhiteListIndex>
+            </TabPane>
+            <TabPane Tab="页面管理">
+                <PageIndex ServiceName="@context.ServiceName"></PageIndex>
+            </TabPane>
+            <TabPane Tab="角色管理">
+                <RoleIndex ServiceName="@context.ServiceName"></RoleIndex>
+            </TabPane>
+            <TabPane Tab="用户角色">
+                <UserRoleIndex ServiceName="@context.ServiceName"></UserRoleIndex>
+            </TabPane>
+        </Tabs>
+    </ChildContent>
+</ServiceList>

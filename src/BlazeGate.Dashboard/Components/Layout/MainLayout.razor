@@ -1,0 +1,39 @@
+﻿@using AntDesign.ProLayout
+@using BlazeGate.Dashboard.Components.Share
+@inherits LayoutComponentBase
+
+<AntDesign.ProLayout.BasicLayout Logo="@("assets/logo.svg")" MenuData="_menuData">
+    <RightContentRender>
+        <RightContent></RightContent>
+    </RightContentRender>
+    <ChildContent>
+        @Body
+    </ChildContent>
+    <FooterRender>
+        <FooterView Copyright="2025 BlazeGate" Links="Links"></FooterView>
+    </FooterRender>
+</AntDesign.ProLayout.BasicLayout>
+@* <SettingDrawer /> *@
+
+@code
+{
+    private readonly MenuDataItem[] _menuData =
+    {
+        new MenuDataItem
+        {
+            Path = "/",
+            Name = "服务管理",
+            Key = "service",
+            Icon = "smile",
+        },
+        new MenuDataItem
+        {
+            Path = "/user",
+            Name = "用户管理",
+            Key = "user",
+            Icon = "smile",
+        }
+    };
+
+    public LinkItem[] Links { get; set; } = new LinkItem[] { };
+}

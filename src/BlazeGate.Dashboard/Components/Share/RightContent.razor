@@ -1,0 +1,36 @@
+﻿@using Microsoft.AspNetCore.Components.Authorization;
+@using System.Security.Claims;
+@inherits AntDomComponentBase
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<Space Class="@ClassMapper.Class" Size="@("24")">
+    <SpaceItem>
+        <AuthorizeView>
+            <Authorized>
+                <AvatarDropdown Name="@context?.User?.Identity?.Name" MenuItems="AvatarMenuItems" OnItemSelected="HandleSelectUser" />
+            </Authorized>
+            <NotAuthorized>
+                <AvatarDropdown Name="未登录" MenuItems="@(new AvatarMenuItem[]{})" />
+            </NotAuthorized>
+        </AuthorizeView>
+    </SpaceItem>
+</Space>
+
+@code {
+    public AvatarMenuItem[] AvatarMenuItems { get; set; } = new AvatarMenuItem[]
+    {
+        new() { Key = "logout", IconType = "logout", Option = "退出登录"}
+    };
+
+    [Inject] protected NavigationManager NavigationManager { get; set; }
+
+    public void HandleSelectUser(MenuItem item)
+    {
+        switch (item.Key)
+        {
+            case "logout":
+                NavigationManager.NavigateTo("/api/account/logout", true);
+                break;
+        }
+    }
+}

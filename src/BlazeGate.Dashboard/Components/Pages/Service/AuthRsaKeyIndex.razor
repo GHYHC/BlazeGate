@@ -1,0 +1,137 @@
+﻿@using BlazeGate.Model.EFCore
+@using System.Security.Cryptography
+@using BlazeGate.Services.Interface
+@using Newtonsoft.Json
+
+<Form Model="Model" Loading="Loading" OnFinish="Save">
+    <FormItem Label="公钥" Rules="new FormValidationRule[] { new FormValidationRule { Required = true } }">
+        <TextArea @bind-Value="context.PublicKey" Rows="9"></TextArea>
+    </FormItem>
+    <FormItem Label="私钥" Rules="new FormValidationRule[] { new FormValidationRule { Required = true } }">
+        <TextArea @bind-Value="context.PrivateKey" Rows="9"></TextArea>
+    </FormItem>
+    <FormItem WrapperColOffset="1">
+        <Space>
+            <SpaceItem>
+                <Button Type="@ButtonType.Primary" HtmlType="submit">保存</Button>
+            </SpaceItem>
+            <SpaceItem>
+                <Button Type="@ButtonType.Primary" OnClick="CreateKey">生成新秘钥</Button>
+            </SpaceItem>
+        </Space>
+    </FormItem>
+</Form>
+
+@code {
+    [Parameter]
+    public string ServiceName { get; set; }
+
+    [Inject]
+    private IServiceProvider ServiceProvider { get; set; }
+
+    [Inject]
+    private IMessageService Message { get; set; }
+
+    private IAuthRsaKeyService AuthRsaKeyService { get; set; }
+
+    public bool Loading { get; set; } = false;
+
+    public AuthRsaKey Model { get; set; } = new AuthRsaKey();
+
+    protected override async Task OnInitializedAsync()
+    {
+        AuthRsaKeyService = ServiceProvider.CreateScope().ServiceProvider.GetRequiredService<IAuthRsaKeyService>();
+        await GetAuthRsaKeyByServiceName();
+    }
+
+    public async Task Save()
+    {
+
+        if (Loading) return;
+        Loading = true;
+        try
+        {
+            var result = await AuthRsaKeyService.SaveAuthRsaKey(ServiceName, Model);
+            if (result.Success)
+            {
+                Message.Success("保存成功！");
+            }
+            else
+            {
+                Message.Error(result.Msg);
+            }
+        }
+        catch (Exception ex)
+        {
+            Message.Error("保存异常: " + ex.Message);
+        }
+        finally
+        {
+            Loading = false;
+        }
+    }
+
+    public async Task GetAuthRsaKeyByServiceName()
+    {
+        if (Loading) return;
+        Loading = true;
+        try
+        {
+            var result = await AuthRsaKeyService.GetAuthRsaKeyByServiceName(ServiceName);
+            if (result.Success)
+            {
+                Model = result.Data;
+                if (Model == null)
+                {
+                    Model = new AuthRsaKey
+                    {
+                        ServiceName = ServiceName,
+                    };
+                }
+            }
+            else
+            {
+                Message.Error(result.Msg);
+            }
+        }
+        catch (Exception ex)
+        {
+            Message.Error("加载异常: " + ex.Message);
+        }
+        finally
+        {
+            Loading = false;
+        }
+    }
+
+    /// <summary>
+    /// 生成RSA秘钥
+    /// </summary>
+    /// <returns></returns>
+    public async Task CreateKey()
+    {
+        if (Loading) return;
+        Loading = true;
+        try
+        {
+            var result = await AuthRsaKeyService.CreateKey();
+            if (result.Success)
+            {
+                Model.PublicKey = result.Data.PublicKey;
+                Model.PrivateKey = result.Data.PrivateKey;
+            }
+            else
+            {
+                Message.Error(result.Msg);
+            }
+        }
+        catch (Exception ex)
+        {
+            Message.Error("生成秘钥异常: " + ex.Message);
+        }
+        finally
+        {
+            Loading = false;
+        }
+    }
+}

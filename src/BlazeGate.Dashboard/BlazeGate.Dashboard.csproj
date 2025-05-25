@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AntDesign" Version="1.4.0" />
+    <PackageReference Include="AntDesign.ProLayout" Version="1.4.0" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="9.0.0" />
+    <PackageReference Include="LinqKit.Microsoft.EntityFrameworkCore" Version="8.1.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BlazeGate.Common\BlazeGate.Common.csproj" />
+    <ProjectReference Include="..\BlazeGate.RBAC.Components\BlazeGate.RBAC.Components.csproj" />
+    <ProjectReference Include="..\BlazeGate.Services.Implement\BlazeGate.Services.Implement.csproj" />
+  </ItemGroup>
+
+</Project>

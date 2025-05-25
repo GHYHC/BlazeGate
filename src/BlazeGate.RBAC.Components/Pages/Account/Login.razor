@@ -1,0 +1,22 @@
+﻿@using BlazeGate.RBAC.Components.Layouts
+@layout UserLayout
+@page "/login"
+@attribute [ReuseTabsPage(Ignore = true)]
+
+<div class="main__b__0">
+    <div class="login">
+        <Form Loading="Loading" Model="@Model" OnFinish="HandleSubmit">
+            <FormItem Rules="new FormValidationRule[]{new FormValidationRule{Required=true}}" Label="账号" LabelStyle="display: none;">
+                <AntDesign.Input Placeholder="账号" Size="InputSize.Large" @bind-Value="@context.Account">
+                    <Prefix><Icon Type="user" /></Prefix>
+                </AntDesign.Input>
+            </FormItem>
+            <FormItem Rules="new FormValidationRule[]{new FormValidationRule{Required=true}}" Label="密码" LabelStyle="display: none;">
+                <AntDesign.Input Placeholder="密码" Size="InputSize.Large" @bind-Value="@context.Password" Type="InputType.Password">
+                    <Prefix><Icon Type="lock" /></Prefix>
+                </AntDesign.Input>
+            </FormItem>
+            <Button Type="ButtonType.Primary" HtmlType="submit" Class="submit" Size="ButtonSize.Large" Block>登录</Button>
+        </Form>
+    </div>
+</div>

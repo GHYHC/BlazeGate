@@ -1,0 +1,60 @@
+﻿@using BlazeGate.Dashboard.Models
+@using System.Diagnostics.CodeAnalysis
+@inject IJSRuntime JS
+@implements IAsyncDisposable
+
+@code {
+    private IJSObjectReference? jsModule;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            jsModule = await JS.InvokeAsync<IJSObjectReference>(
+            "import", "./Components/Share/Ajax.razor.js");
+        }
+    }
+
+    public async Task<T> Send<T>(AjaxOption ajaxOption)
+    {
+        if (jsModule == null)
+        {
+            return default(T);
+        }
+        else
+        {
+            return await jsModule.InvokeAsync<T>("Ajax.send", ajaxOption);
+        }
+    }
+
+    async ValueTask IAsyncDisposable.DisposeAsync()
+     {
+        if (jsModule is not null)
+        {
+            await jsModule.DisposeAsync();
+        }
+    }
+
+    /// <summary>
+    /// Ajax配置类
+    /// </summary>
+    public class AjaxOption
+    {
+        /// <summary>
+        /// 获取/设置 要上传的参数类
+        /// </summary>
+        [NotNull]
+        public object? Data { get; set; }
+
+        /// <summary>
+        /// 获取/设置 传输方式，默认为POST
+        /// </summary>
+        public string Method { get; set; } = "POST";
+
+        /// <summary>
+        /// 获取/设置 请求的URL
+        /// </summary>
+        [NotNull]
+        public string? Url { get; set; }
+    }
+}

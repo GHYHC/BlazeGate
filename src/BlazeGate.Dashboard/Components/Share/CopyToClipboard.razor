@@ -1,0 +1,39 @@
+﻿@using System.IO
+@using System.Text
+@using System.Globalization
+@using System.Reflection
+@inject IJSRuntime JS
+@implements IAsyncDisposable
+@code {
+    private IJSObjectReference? jsModule;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            jsModule = await JS.InvokeAsync<IJSObjectReference>(
+            "import", "./Components/Share/CopyToClipboard.razor.js");
+        }
+    }
+
+    public async Task<bool> Copy(string text)
+    {
+        try
+        {
+            await jsModule.InvokeVoidAsync("DownloadFile.copyToClipboard", text);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            return false;
+        }
+    }
+
+    async ValueTask IAsyncDisposable.DisposeAsync()
+    {
+        if (jsModule is not null)
+        {
+            await jsModule.DisposeAsync();
+        }
+    }
+}

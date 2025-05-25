@@ -1,0 +1,45 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<Version>1.0.15</Version>
+		<Authors>yhc</Authors>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<!-- The nuget package icon -->
+		<None Include="..\..\README.md" Pack="true" PackagePath="" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Remove="Pages\Role\RoleEdit_1.razor.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Remove="Pages\Role\RoleEdit_1.razor" />
+		<Content Remove="Pages\Role\RoleIndex_1.razor" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="AltairCA.Blazor.WebAssembly.Cookie" Version="1.0.1" />
+		<PackageReference Include="AntDesign" Version="1.4.0" />
+		<PackageReference Include="AntDesign.ProLayout" Version="1.4.0" />
+		<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="9.0.0" />
+		<PackageReference Include="Blazored.LocalStorage" Version="4.5.0" />
+		<PackageReference Include="Blazored.SessionStorage" Version="2.4.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="8.0.14" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.14" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\BlazeGate.Model\BlazeGate.Model.csproj" />
+		<ProjectReference Include="..\BlazeGate.Services.Implement.Remote\BlazeGate.Services.Implement.Remote.csproj" />
+		<ProjectReference Include="..\BlazeGate.Services.Interface\BlazeGate.Services.Interface.csproj" />
+	</ItemGroup>
+
+</Project>
