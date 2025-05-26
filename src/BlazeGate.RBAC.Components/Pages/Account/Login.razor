@@ -6,12 +6,12 @@
 <div class="main__b__0">
     <div class="login">
         <Form Loading="Loading" Model="@Model" OnFinish="HandleSubmit">
-            <FormItem Rules="new FormValidationRule[]{new FormValidationRule{Required=true}}" Label="账号" LabelStyle="display: none;">
+            <FormItem Rules='new FormValidationRule[] { new FormValidationRule { Required = true, Message = "账号不能为空" } }' Label="账号" LabelStyle="display: none;">
                 <AntDesign.Input Placeholder="账号" Size="InputSize.Large" @bind-Value="@context.Account">
                     <Prefix><Icon Type="user" /></Prefix>
                 </AntDesign.Input>
             </FormItem>
-            <FormItem Rules="new FormValidationRule[]{new FormValidationRule{Required=true}}" Label="密码" LabelStyle="display: none;">
+            <FormItem Rules='new FormValidationRule[] { new FormValidationRule { Required = true, Message = "密码不能为空" } }' Label="密码" LabelStyle="display: none;">
                 <AntDesign.Input Placeholder="密码" Size="InputSize.Large" @bind-Value="@context.Password" Type="InputType.Password">
                     <Prefix><Icon Type="lock" /></Prefix>
                 </AntDesign.Input>
