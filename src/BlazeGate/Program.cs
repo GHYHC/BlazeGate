@@ -1,20 +1,21 @@
 using Autofac;
+using Autofac.Core;
 using Autofac.Extensions.DependencyInjection;
+using BlazeGate;
+using BlazeGate.Authentication;
+using BlazeGate.Authorization;
+using BlazeGate.AuthWhiteList;
+using BlazeGate.BackgroundService;
 using BlazeGate.Common.Autofac;
 using BlazeGate.JwtBearer;
 using BlazeGate.Model.EFCore;
 using BlazeGate.Model.WebApi;
-using BlazeGate.Services.Interface;
-using BlazeGate;
-using BlazeGate.Authorization;
-using BlazeGate.AuthWhiteList;
-using BlazeGate.BackgroundService;
 using BlazeGate.Policy;
+using BlazeGate.Services.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Yarp.ReverseProxy.Health;
-using Autofac.Core;
-using BlazeGate.Authentication;
+using Yarp.ReverseProxy.Transforms;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,7 +29,34 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddDbContext<BlazeGateContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("BlazeGate.Model")));
 
 //添加Yarp并从数据库加载配置
-builder.Services.AddReverseProxy().LoadFromDatabase();
+builder.Services.AddReverseProxy().LoadFromDatabase()
+    .AddTransforms(
+    builderContext =>
+    {
+        //builderContext.AddXForwarded();
+
+        // 添加自定义转换处理X-Forwarded-For
+        //builderContext.AddRequestTransform(async context =>
+        //{
+        //    string remoteIp = context.HttpContext.Connection.RemoteIpAddress?.ToString();
+        //    if (!string.IsNullOrEmpty(remoteIp))
+        //    {
+        //        // 如果没有X-Forwarded-For头，则添加
+        //        if (!context.ProxyRequest.Headers.Contains("X-Forwarded-For"))
+        //        {
+        //            context.ProxyRequest.Headers.Add("X-Forwarded-For", remoteIp);
+        //        }
+        //        // 如果已有X-Forwarded-For头，则追加当前IP
+        //        else
+        //        {
+        //            var forwardedFor = context.ProxyRequest.Headers.GetValues("X-Forwarded-For").FirstOrDefault() ?? "";
+        //            context.ProxyRequest.Headers.Remove("X-Forwarded-For");
+        //            context.ProxyRequest.Headers.Add("X-Forwarded-For", $"{forwardedFor}, {remoteIp}");
+        //        }
+        //    }
+        //});
+    })
+    ;
 
 // 添加分布式缓存服务（数据库）
 builder.Services.AddDistributedSqlServerCache(options =>
@@ -132,6 +160,11 @@ if (app.Environment.IsDevelopment())
 app.UseHealthChecks("/api/health");
 
 app.UseCors("any");
+
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.All
+});
 
 //添加认证白名单
 app.UseAuthWhiteList();
