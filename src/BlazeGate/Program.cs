@@ -29,34 +29,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddDbContext<BlazeGateContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("BlazeGate.Model")));
 
 //添加Yarp并从数据库加载配置
-builder.Services.AddReverseProxy().LoadFromDatabase()
-    .AddTransforms(
-    builderContext =>
-    {
-        //builderContext.AddXForwarded();
-
-        // 添加自定义转换处理X-Forwarded-For
-        //builderContext.AddRequestTransform(async context =>
-        //{
-        //    string remoteIp = context.HttpContext.Connection.RemoteIpAddress?.ToString();
-        //    if (!string.IsNullOrEmpty(remoteIp))
-        //    {
-        //        // 如果没有X-Forwarded-For头，则添加
-        //        if (!context.ProxyRequest.Headers.Contains("X-Forwarded-For"))
-        //        {
-        //            context.ProxyRequest.Headers.Add("X-Forwarded-For", remoteIp);
-        //        }
-        //        // 如果已有X-Forwarded-For头，则追加当前IP
-        //        else
-        //        {
-        //            var forwardedFor = context.ProxyRequest.Headers.GetValues("X-Forwarded-For").FirstOrDefault() ?? "";
-        //            context.ProxyRequest.Headers.Remove("X-Forwarded-For");
-        //            context.ProxyRequest.Headers.Add("X-Forwarded-For", $"{forwardedFor}, {remoteIp}");
-        //        }
-        //    }
-        //});
-    })
-    ;
+builder.Services.AddReverseProxy().LoadFromDatabase();
 
 // 添加分布式缓存服务（数据库）
 builder.Services.AddDistributedSqlServerCache(options =>
@@ -143,6 +116,12 @@ using (var scope = app.Services.CreateScope())
     dbInitializer.Initialize().Wait();
 }
 
+//将转发的头信息应用于当前请求中匹配的字段（有反向代理获取真实IP）
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.All
+});
+
 //使用响应压缩
 app.UseResponseCompression();
 
@@ -160,11 +139,6 @@ if (app.Environment.IsDevelopment())
 app.UseHealthChecks("/api/health");
 
 app.UseCors("any");
-
-app.UseForwardedHeaders(new ForwardedHeadersOptions
-{
-    ForwardedHeaders = Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.All
-});
 
 //添加认证白名单
 app.UseAuthWhiteList();

@@ -39,6 +39,11 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
+//app.UseForwardedHeaders(new ForwardedHeadersOptions
+//{
+//    ForwardedHeaders = Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.All
+//});
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
