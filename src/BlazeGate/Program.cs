@@ -1,5 +1,4 @@
 using Autofac;
-using Autofac.Core;
 using Autofac.Extensions.DependencyInjection;
 using BlazeGate;
 using BlazeGate.Authentication;
@@ -15,7 +14,6 @@ using BlazeGate.Services.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Yarp.ReverseProxy.Health;
-using Yarp.ReverseProxy.Transforms;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -107,6 +105,20 @@ builder.Services.AddHostedService<SnowFlakeIdCheck>();
 //添加httpClient
 builder.Services.AddHttpClient();
 
+//配置转发头信息选项
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders = Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.All;
+
+    foreach (var ip in builder.Configuration.GetSection("ForwardedHeaders:KnownProxies").Get<string[]>() ?? [])
+        if (System.Net.IPAddress.TryParse(ip, out var parsedIp))
+            options.KnownProxies.Add(parsedIp);
+
+    foreach (var network in builder.Configuration.GetSection("ForwardedHeaders:KnownNetworks").Get<string[]>() ?? [])
+        if (Microsoft.AspNetCore.HttpOverrides.IPNetwork.TryParse(network, out var parsedNetwork))
+            options.KnownNetworks.Add(parsedNetwork);
+});
+
 var app = builder.Build();
 
 //自动迁移数据库
@@ -116,11 +128,8 @@ using (var scope = app.Services.CreateScope())
     dbInitializer.Initialize().Wait();
 }
 
-//将转发的头信息应用于当前请求中匹配的字段（有反向代理获取真实IP）
-app.UseForwardedHeaders(new ForwardedHeadersOptions
-{
-    ForwardedHeaders = Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.All
-});
+//使用转发头信息中间件（有反向代理获取真实IP）
+app.UseForwardedHeaders();
 
 //使用响应压缩
 app.UseResponseCompression();
