@@ -23,9 +23,9 @@ namespace BlazeGate.Services.Implement.Remote
             return await HttpPostJsonAsync<LoginParam, ApiResult<AuthTokenDto>>($"/api/Account/Login", param);
         }
 
-        public async Task<ApiResult<string>> Logout(AuthTokenDto? authToken)
+        public async Task<ApiResult<string>> Logout(string serviceName, AuthTokenDto? authToken)
         {
-            return await HttpPostJsonAsync<AuthTokenDto, ApiResult<string>>($"/api/Account/Logout", authToken);
+            return await HttpPostJsonAsync<AuthTokenDto, ApiResult<string>>($"/api/Account/Logout?serviceName={serviceName}", authToken);
         }
 
         public async Task<ApiResult<AuthTokenDto>> RefreshToken(string serviceName, AuthTokenDto? authToken)

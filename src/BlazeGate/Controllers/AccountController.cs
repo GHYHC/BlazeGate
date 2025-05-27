@@ -108,15 +108,6 @@ namespace BlazeGate.Controllers
                 //如果没有传递authToken，则从Cookie中获取
                 authToken = authToken ?? Request.Cookies.GetAuthToken();
 
-                //移除令牌
-                var userId = await authTokenService.RemoveAuthTokenAsync(authToken);
-
-                var user = await BlazeGateContext.Users.AsNoTracking().Where(b => b.Id == long.Parse(userId) && b.Enabled == true).FirstOrDefaultAsync();
-                if (user == null)
-                {
-                    return ApiResult<AuthTokenDto>.FailResult("无效用户");
-                }
-
                 //查询服务的私钥
                 var privateKey = await BlazeGateContext.AuthRsaKeys.AsNoTracking().Where(b => b.ServiceName.ToLower() == serviceName.ToLower()).Select(b => b.PrivateKey).FirstOrDefaultAsync();
                 if (string.IsNullOrWhiteSpace(privateKey))
@@ -133,6 +124,15 @@ namespace BlazeGate.Controllers
                 catch (Exception ex)
                 {
                     return ApiResult<AuthTokenDto>.FailResult("服务授权秘钥格式不正确");
+                }
+
+                //移除令牌
+                var userId = await authTokenService.RemoveAuthTokenAsync(authToken, signingCredentials);
+
+                var user = await BlazeGateContext.Users.AsNoTracking().Where(b => b.Id == long.Parse(userId) && b.Enabled == true).FirstOrDefaultAsync();
+                if (user == null)
+                {
+                    return ApiResult<AuthTokenDto>.FailResult("无效用户");
                 }
 
                 //查询用户角色的Id
@@ -156,14 +156,32 @@ namespace BlazeGate.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public async Task<ApiResult<string>> Logout(AuthTokenDto? authToken)
+        public async Task<ApiResult<string>> Logout(string serviceName, AuthTokenDto? authToken)
         {
             try
             {
                 //如果没有传递authToken，则从Cookie中获取
                 authToken = authToken ?? Request.Cookies.GetAuthToken();
 
-                var userId = await authTokenService.RemoveAuthTokenAsync(authToken);
+                //查询服务的私钥
+                var privateKey = await BlazeGateContext.AuthRsaKeys.AsNoTracking().Where(b => b.ServiceName.ToLower() == serviceName.ToLower()).Select(b => b.PrivateKey).FirstOrDefaultAsync();
+                if (string.IsNullOrWhiteSpace(privateKey))
+                {
+                    return ApiResult<string>.FailResult("服务授权秘钥未配置");
+                }
+
+                SigningCredentials signingCredentials = null;
+                try
+                {
+                    RsaSecurityKey rsaSecurityKey = new(RsaParametersHelper.PemToRsaParameters(privateKey));
+                    signingCredentials = new SigningCredentials(rsaSecurityKey, SecurityAlgorithms.RsaSha256Signature);
+                }
+                catch (Exception ex)
+                {
+                    return ApiResult<string>.FailResult("服务授权秘钥格式不正确");
+                }
+
+                var userId = await authTokenService.RemoveAuthTokenAsync(authToken, signingCredentials);
 
                 return ApiResult<string>.SuccessResult(userId);
             }

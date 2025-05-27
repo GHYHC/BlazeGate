@@ -1,6 +1,7 @@
 ﻿@using BlazeGate.Model.JwtBearer
 @using BlazeGate.RBAC.Components.Extensions.Authentication
 @using Microsoft.AspNetCore.Components.Authorization;
+@using Microsoft.Extensions.Configuration
 @inherits AntDomComponentBase
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
@@ -11,7 +12,7 @@
                 <AvatarDropdown Name="@context?.User?.GetUser()?.UserName" MenuItems="AvatarMenuItems" OnItemSelected="HandleSelectUser" />
             </Authorized>
             <NotAuthorized>
-                <AvatarDropdown Name="未登录" MenuItems="@(new AvatarMenuItem[]{})" />
+                <AvatarDropdown Name="未登录" MenuItems="@(new AvatarMenuItem[] { })" />
             </NotAuthorized>
         </AuthorizeView>
     </SpaceItem>
@@ -32,9 +33,14 @@
     [Inject]
     private IAuthTokenStorageServices AuthTokenStorage { get; set; }
 
-    protected override Task OnInitializedAsync()
+    [Inject]
+    private IConfiguration Configuration { get; set; }
+
+    public string ServiceName { get; set; }
+
+    protected override async Task OnInitializedAsync()
     {
-        return base.OnInitializedAsync();
+        ServiceName = Configuration["BlazeGate:ServiceName"];
     }
 
     public async Task HandleSelectUser(MenuItem item)
@@ -52,7 +58,7 @@
         try
         {
             var token = await AuthTokenStorage.GetAuthToken();
-            await AccountService.Logout(token);
+            await AccountService.Logout(ServiceName, token);
         }
         catch (Exception ex)
         {

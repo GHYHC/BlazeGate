@@ -70,7 +70,7 @@ namespace BlazeGate.JwtBearer
         /// <param name="token"></param>
         /// <returns></returns>
         /// <exception cref="BadHttpRequestException"></exception>
-        public async Task<string> RemoveAuthTokenAsync(AuthTokenDto token)
+        public async Task<string> RemoveAuthTokenAsync(AuthTokenDto token, SigningCredentials signingCredentials)
         {
             //验证AccessToken有效
             var handler = _jwtBearerOptions.TokenHandlers.OfType<JwtSecurityTokenHandler>().FirstOrDefault()
@@ -81,6 +81,8 @@ namespace BlazeGate.JwtBearer
                 var validationParameters = _jwtBearerOptions.TokenValidationParameters.Clone();
                 // 不校验生命周期
                 validationParameters.ValidateLifetime = false;
+                validationParameters.IssuerSigningKey = signingCredentials.Key;
+                validationParameters.ValidateIssuerSigningKey = true;
 
                 principal = handler.ValidateToken(token.AccessToken, validationParameters, out _);
             }
@@ -120,7 +122,7 @@ namespace BlazeGate.JwtBearer
         /// <exception cref="BadHttpRequestException"></exception>
         public async Task<AuthTokenDto> RefreshAuthTokenAsync(AuthTokenDto token, string audience, SigningCredentials signingCredentials, Func<string, Task<UserDto>> GetUser)
         {
-            string userId = await RemoveAuthTokenAsync(token);
+            string userId = await RemoveAuthTokenAsync(token, signingCredentials);
 
             var user = await GetUser(userId);
             if (user == null)
@@ -217,6 +219,6 @@ namespace BlazeGate.JwtBearer
         /// </summary>
         /// <param name="token"></param>
         /// <returns></returns>
-        Task<string> RemoveAuthTokenAsync(AuthTokenDto token);
+        Task<string> RemoveAuthTokenAsync(AuthTokenDto token, SigningCredentials signingCredentials);
     }
 }

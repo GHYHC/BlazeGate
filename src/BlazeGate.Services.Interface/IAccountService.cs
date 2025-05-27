@@ -30,7 +30,7 @@ namespace BlazeGate.Services.Interface
         /// </summary>
         /// <param name="authToken"></param>
         /// <returns></returns>
-        public Task<ApiResult<string>> Logout(AuthTokenDto? authToken);
+        public Task<ApiResult<string>> Logout(string serviceName, AuthTokenDto? authToken);
 
         /// <summary>
         /// 获取用户信息
