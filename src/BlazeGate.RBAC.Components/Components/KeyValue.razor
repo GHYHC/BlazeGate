@@ -12,7 +12,7 @@
                         <Button Type="@ButtonType.Text" Icon="@IconType.Outline.Plus" OnClick="Add" />
                         @if (keyValuePairs.Count > 1)
                         {
-                            <Button Danger Type="@ButtonType.Text" Icon="@IconType.Outline.Delete" OnClick="async ()=>{await Remove(item);}" />
+                            <Button Danger Type="@ButtonType.Text" Icon="@IconType.Outline.Delete" OnClick="async () => { await Remove(item); }" />
                         }
                     </GridCol>
                 </GridRow>
@@ -158,11 +158,21 @@
     private async Task Add()
     {
         keyValuePairs.Add(new KeyValueModel { Key = "", Value = "" });
+        await DataConvert("json");
+        if (ValueChanged.HasDelegate)
+        {
+            await ValueChanged.InvokeAsync(JsonString);
+        }
     }
 
     private async Task Remove(KeyValueModel item)
     {
         keyValuePairs.Remove(item);
+        await DataConvert("json");
+        if (ValueChanged.HasDelegate)
+        {
+            await ValueChanged.InvokeAsync(JsonString);
+        }
     }
 
     public class KeyValueModel
