@@ -1,5 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using BlazeGate.Services.Interface;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace BlazeGate.WebApi.Sample.Controllers
 {
@@ -7,6 +8,13 @@ namespace BlazeGate.WebApi.Sample.Controllers
     [ApiController]
     public class TestController : ControllerBase
     {
+        private readonly ISnowFlakeService snowFlakeService;
+
+        public TestController(ISnowFlakeService snowFlakeService)
+        {
+            this.snowFlakeService = snowFlakeService;
+        }
+
         [HttpGet]
         public string GetHeader()
         {
@@ -20,6 +28,13 @@ namespace BlazeGate.WebApi.Sample.Controllers
             }
 
             return header;
+        }
+
+        [HttpGet]
+        public async Task GetId()
+        {
+            var ids = await snowFlakeService.NextIds(10);
+            var id = await snowFlakeService.NextId();
         }
     }
 }

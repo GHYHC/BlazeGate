@@ -28,7 +28,7 @@ namespace BlazeGate.Services.Implement.Remote
 
         public async Task<List<long>> NextIds(int count)
         {
-            string result = await HttpPostJsonAsync<int, string>("/api/SnowFlake/NextIds", count);
+            string result = await HttpPostJsonAsync<string, string>($"/api/SnowFlake/NextIds?count={count}", "");
             return result.Split(',').Select(long.Parse).ToList();
         }
 
