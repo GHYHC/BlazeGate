@@ -76,7 +76,17 @@ namespace BlazeGate.Services.Implement.Remote
                 throw new Exception($"{(int)httpResponse.StatusCode} {httpResponse.ReasonPhrase}");
             }
 
-            return await httpResponse.Content.ReadFromJsonAsync<TResult>();
+            //如果TResult是String则用httpResponse.Content.ReadAsStringAsync()读取内容
+            if (typeof(TResult) == typeof(string))
+            {
+                var str = await httpResponse.Content.ReadAsStringAsync();
+                // 需要强制转换为 TResult 返回
+                return (TResult)(object)str;
+            }
+            else
+            {
+                return await httpResponse.Content.ReadFromJsonAsync<TResult>();
+            }
         }
 
         /// <summary>
