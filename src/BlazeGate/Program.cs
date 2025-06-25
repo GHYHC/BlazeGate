@@ -13,6 +13,8 @@ using BlazeGate.Policy;
 using BlazeGate.Services.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using Yarp.ReverseProxy.Health;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -50,8 +52,14 @@ builder.Services.AddAuthorization(options =>
     {
         policy.Requirements.Add(new RBACRequirement());
     });
+
+    options.AddPolicy("Anonymous", policy =>
+    {
+        policy.Requirements.Add(new AnonymousRequirement());
+    });
 });
 builder.Services.AddSingleton<IAuthorizationHandler, RBACHandler>();
+builder.Services.AddSingleton<IAuthorizationHandler, AnonymousHandler>();
 builder.Services.AddScoped<IRBACService, RBACService>();
 // IAuthorizationMiddlewareResultHandler 用来替换框架默认的授权返回结果
 builder.Services.AddSingleton<IAuthorizationMiddlewareResultHandler, AuthorizationMiddlewareResultHandler>();
@@ -118,6 +126,27 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
         if (Microsoft.AspNetCore.HttpOverrides.IPNetwork.TryParse(network, out var parsedNetwork))
             options.KnownNetworks.Add(parsedNetwork);
 });
+
+//
+builder.Services.AddOpenTelemetry()
+    .ConfigureResource(b =>
+    {
+        b
+        .AddService("BlazeGate")
+        .AddTelemetrySdk();
+    })
+    .WithTracing(t =>
+    {
+        t
+        .AddAspNetCoreInstrumentation(options =>
+        {
+            options.Filter =
+                httpContent => httpContent.Request.Path.StartsWithSegments("/swagger") == false;
+        })
+        .AddHttpClientInstrumentation()
+        .AddSource("Yarp.ReverseProxy")
+        .AddOtlpExporter(options => options.Endpoint = new Uri("http://localhost:8200"));
+    });
 
 var app = builder.Build();
 

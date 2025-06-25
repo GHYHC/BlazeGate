@@ -38,15 +38,10 @@ namespace BlazeGate.AuthWhiteList
             if (isWhiteList)
             {
                 var endpoint = context.GetEndpoint();
-                if (endpoint != null)
+                var authorize = endpoint?.Metadata.GetMetadata<AuthorizeAttribute>();
+                if (authorize != null)
                 {
-                    var metadata = endpoint.Metadata.Where(m => m.GetType() != typeof(AuthorizeAttribute)).ToList();
-                    var newEndpoint = new Endpoint(
-                        endpoint.RequestDelegate,
-                        new EndpointMetadataCollection(metadata),
-                        endpoint.DisplayName
-                    );
-                    context.SetEndpoint(newEndpoint);
+                    authorize.Policy = "Anonymous";
                 }
             }
 
