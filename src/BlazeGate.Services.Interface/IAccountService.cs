@@ -37,5 +37,12 @@ namespace BlazeGate.Services.Interface
         /// </summary>
         /// <returns></returns>
         public Task<ApiResult<UserDto>> GetUser(string serviceName);
+
+        /// <summary>
+        /// 修改密码
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        public Task<ApiResult<string>> ChangePassword(ChangePasswordParam param);
     }
 }

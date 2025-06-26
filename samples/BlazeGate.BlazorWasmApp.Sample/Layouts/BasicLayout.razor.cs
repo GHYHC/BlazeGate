@@ -17,6 +17,9 @@ namespace BlazeGate.BlazorWasmApp.Sample.Layouts
 
         protected override async Task OnInitializedAsync()
         {
+            //关闭之前的所有页面
+            TabService.CloseAll();
+
             //验证是否登录
             var authStae = await authenticationState;
             var user = authStae.User;

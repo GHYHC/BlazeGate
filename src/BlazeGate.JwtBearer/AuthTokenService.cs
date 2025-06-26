@@ -70,7 +70,39 @@ namespace BlazeGate.JwtBearer
         /// <param name="token"></param>
         /// <returns></returns>
         /// <exception cref="BadHttpRequestException"></exception>
-        public async Task<string> RemoveAuthTokenAsync(AuthTokenDto token, SigningCredentials signingCredentials)
+        public async Task<UserDto> RemoveAuthTokenAsync(AuthTokenDto token, SigningCredentials signingCredentials, ClaimsPrincipal principal = null)
+        {
+            principal = principal ?? GetClaimsPrincipal(token, signingCredentials);
+
+            var user = principal.GetUser();
+            var identity = principal.Identities.First();
+            var refreshTokenId = identity.Claims.FirstOrDefault(c => c.Type == RefreshTokenIdClaimType).Value;
+            var refreshTokenKey = GetRefreshTokenKey(user.Id.ToString(), refreshTokenId);
+            var refreshToken = await _distributedCache.GetStringAsync(refreshTokenKey);
+
+            //验证RefreshToken是否有效
+            if (refreshToken != token.RefreshToken)
+            {
+                throw new BadHttpRequestException("Invalid refresh token");
+            }
+
+            //清除refresh token
+            await _distributedCache.RemoveAsync(refreshTokenKey);
+
+            //删除Cookies
+            _httpContextAccessor.HttpContext?.Response.Cookies.Delete(HeaderNames.Authorization);
+
+            return user;
+        }
+
+        /// <summary>
+        /// 获取ClaimsPrincipal
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="signingCredentials"></param>
+        /// <returns></returns>
+        /// <exception cref="BadHttpRequestException"></exception>
+        public ClaimsPrincipal GetClaimsPrincipal(AuthTokenDto token, SigningCredentials signingCredentials)
         {
             //验证AccessToken有效
             var handler = _jwtBearerOptions.TokenHandlers.OfType<JwtSecurityTokenHandler>().FirstOrDefault()
@@ -92,25 +124,7 @@ namespace BlazeGate.JwtBearer
                 throw new BadHttpRequestException("Invalid access token");
             }
 
-            var identity = principal.Identities.First();
-            var userId = identity.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
-            var refreshTokenId = identity.Claims.FirstOrDefault(c => c.Type == RefreshTokenIdClaimType).Value;
-            var refreshTokenKey = GetRefreshTokenKey(userId, refreshTokenId);
-            var refreshToken = await _distributedCache.GetStringAsync(refreshTokenKey);
-
-            //验证RefreshToken是否有效
-            if (refreshToken != token.RefreshToken)
-            {
-                throw new BadHttpRequestException("Invalid refresh token");
-            }
-
-            //清除refresh token
-            await _distributedCache.RemoveAsync(refreshTokenKey);
-
-            //删除Cookies
-            _httpContextAccessor.HttpContext?.Response.Cookies.Delete(HeaderNames.Authorization);
-
-            return userId;
+            return principal;
         }
 
         /// <summary>
@@ -120,17 +134,17 @@ namespace BlazeGate.JwtBearer
         /// <param name="GetUser"></param>
         /// <returns></returns>
         /// <exception cref="BadHttpRequestException"></exception>
-        public async Task<AuthTokenDto> RefreshAuthTokenAsync(AuthTokenDto token, string audience, SigningCredentials signingCredentials, Func<string, Task<UserDto>> GetUser)
+        public async Task<AuthTokenDto> RefreshAuthTokenAsync(AuthTokenDto token, string audience, SigningCredentials signingCredentials, Func<UserDto, Task<UserDto>> GetUser)
         {
-            string userId = await RemoveAuthTokenAsync(token, signingCredentials);
+            var user = await RemoveAuthTokenAsync(token, signingCredentials);
 
-            var user = await GetUser(userId);
-            if (user == null)
+            var newUser = await GetUser(user);
+            if (newUser == null)
             {
                 throw new BadHttpRequestException("Invalid user");
             }
 
-            return await CreateAuthTokenAsync(user, audience, signingCredentials);
+            return await CreateAuthTokenAsync(newUser, audience, signingCredentials);
         }
 
         /// <summary>
@@ -219,6 +233,14 @@ namespace BlazeGate.JwtBearer
         /// </summary>
         /// <param name="token"></param>
         /// <returns></returns>
-        Task<string> RemoveAuthTokenAsync(AuthTokenDto token, SigningCredentials signingCredentials);
+        Task<UserDto> RemoveAuthTokenAsync(AuthTokenDto token, SigningCredentials signingCredentials, ClaimsPrincipal principal = null);
+
+        /// <summary>
+        /// 获取ClaimsPrincipal
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="signingCredentials"></param>
+        /// <returns></returns>
+        ClaimsPrincipal GetClaimsPrincipal(AuthTokenDto token, SigningCredentials signingCredentials);
     }
 }

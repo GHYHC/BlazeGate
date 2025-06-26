@@ -12,9 +12,9 @@
                 </AntDesign.Input>
             </FormItem>
             <FormItem Rules='new FormValidationRule[] { new FormValidationRule { Required = true, Message = "密码不能为空" } }' Label="密码" LabelStyle="display: none;">
-                <AntDesign.Input Placeholder="密码" Size="InputSize.Large" @bind-Value="@context.Password" Type="InputType.Password">
+                <AntDesign.InputPassword Placeholder="密码" Size="InputSize.Large" @bind-Value="@context.Password" Type="InputType.Password">
                     <Prefix><Icon Type="lock" /></Prefix>
-                </AntDesign.Input>
+                </AntDesign.InputPassword>
             </FormItem>
             <Button Type="ButtonType.Primary" HtmlType="submit" Class="submit" Size="ButtonSize.Large" Block>登录</Button>
         </Form>

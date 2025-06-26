@@ -126,14 +126,26 @@ namespace BlazeGate.Controllers
                     return ApiResult<AuthTokenDto>.FailResult("服务授权秘钥格式不正确");
                 }
 
-                //移除令牌
-                var userId = await authTokenService.RemoveAuthTokenAsync(authToken, signingCredentials);
+                //验证authToken
+                var principal = authTokenService.GetClaimsPrincipal(authToken, signingCredentials);
+                var tokenUser = principal.GetUser();
 
-                var user = await BlazeGateContext.Users.AsNoTracking().Where(b => b.Id == long.Parse(userId) && b.Enabled == true).FirstOrDefaultAsync();
+                var user = await BlazeGateContext.Users.AsNoTracking().Where(b => b.Id == tokenUser.Id && b.Enabled == true).FirstOrDefaultAsync();
+
+                //如果用户不存在
                 if (user == null)
                 {
                     return ApiResult<AuthTokenDto>.FailResult("无效用户");
                 }
+
+                //验证更新时间是否一致
+                if (user.UpdateTime != tokenUser.UpdateTime)
+                {
+                    return ApiResult<AuthTokenDto>.FailResult("用户信息已更新，请重新登录");
+                }
+
+                //移除令牌
+                await authTokenService.RemoveAuthTokenAsync(authToken, signingCredentials, principal);
 
                 //查询用户角色的Id
                 var roleIds = await BlazeGateContext.UserRoles.AsNoTracking().Where(b => b.UserId == user.Id && b.ServiceName.ToLower() == serviceName.ToLower()).Select(b => b.RoleId).ToListAsync();
@@ -181,9 +193,9 @@ namespace BlazeGate.Controllers
                     return ApiResult<string>.FailResult("服务授权秘钥格式不正确");
                 }
 
-                var userId = await authTokenService.RemoveAuthTokenAsync(authToken, signingCredentials);
+                var user = await authTokenService.RemoveAuthTokenAsync(authToken, signingCredentials);
 
-                return ApiResult<string>.SuccessResult(userId);
+                return ApiResult<string>.SuccessResult(user.Id.ToString());
             }
             catch (BadHttpRequestException ex)
             {
@@ -204,6 +216,33 @@ namespace BlazeGate.Controllers
             {
                 return await Task.FromResult(ApiResult<UserDto>.FailResult("未认证"));
             }
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<ApiResult<string>> ChangePassword(ChangePasswordParam param)
+        {
+            if (param.OldPassword == param.NewPassword)
+            {
+                return ApiResult<string>.FailResult("新密码不能与旧密码相同");
+            }
+
+            var user = User.GetUser();
+            var userdb = await BlazeGateContext.Users.FirstOrDefaultAsync(u => u.Id == user.Id);
+            if (userdb == null)
+            {
+                return ApiResult<string>.FailResult("用户未找到");
+            }
+            if (userdb.Password != param.OldPassword)
+            {
+                return ApiResult<string>.FailResult("旧密码不正确");
+            }
+
+            userdb.Password = param.NewPassword;
+            userdb.UpdateTime = DateTime.Now;
+            await BlazeGateContext.SaveChangesAsync();
+
+            return ApiResult<string>.SuccessResult("密码已成功更改");
         }
     }
 }

@@ -32,5 +32,10 @@ namespace BlazeGate.Services.Implement.Remote
         {
             return await HttpPostJsonAsync<AuthTokenDto, ApiResult<AuthTokenDto>>($"/api/Account/RefreshToken?serviceName={serviceName}", authToken);
         }
+
+        public async Task<ApiResult<string>> ChangePassword(ChangePasswordParam param)
+        {
+            return await HttpPostJsonAsync<ChangePasswordParam, ApiResult<string>>($"/api/Account/ChangePassword", param);
+        }
     }
 }

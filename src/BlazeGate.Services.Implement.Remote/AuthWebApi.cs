@@ -22,7 +22,7 @@ namespace BlazeGate.Services.Implement.Remote
         private readonly IHttpClientFactory httpClientFactory;
         private readonly IAuthTokenStorageServices authTokenStorage;
 
-        private Task<bool> refreshTask = null;
+        private Task<ApiResult<AuthTokenDto>> refreshTask = null;
         private object lockObj = new object();
         private static SemaphoreSlim refreshTokenSemaphore = new SemaphoreSlim(1, 1);
 
@@ -41,10 +41,15 @@ namespace BlazeGate.Services.Implement.Remote
             //判断是否授权过期
             if (httpResponse.StatusCode == HttpStatusCode.Unauthorized && httpResponse.Headers.TryGetValues("x-access-token", out IEnumerable<string>? headerValue) && headerValue != null && headerValue.Contains("expired"))
             {
-                // 刷新Token成功后重新请求
-                if (await RefreshTokenAsync())
+                var result = await RefreshTokenAsync();
+                if (result.Success)
                 {
+                    // 刷新Token成功后重新请求
                     httpResponse = await AuthPostAsJsonAsync(url, value, timeout);
+                }
+                else
+                {
+                    throw new Exception("刷新Token失败: " + result.Msg);
                 }
             }
 
@@ -60,7 +65,7 @@ namespace BlazeGate.Services.Implement.Remote
         /// 刷新Token(同一个类下同时刷新，只会刷新一次)
         /// </summary>
         /// <returns></returns>
-        private Task<bool> RefreshTokenAsync()
+        private Task<ApiResult<AuthTokenDto>> RefreshTokenAsync()
         {
             // 双重检查锁定
             if (refreshTask != null)
@@ -92,7 +97,7 @@ namespace BlazeGate.Services.Implement.Remote
         /// 刷新Token
         /// </summary>
         /// <returns></returns>
-        private async Task<bool> InternalRefreshTokenAsync()
+        private async Task<ApiResult<AuthTokenDto>> InternalRefreshTokenAsync()
         {
             await refreshTokenSemaphore.WaitAsync();
             try
@@ -103,13 +108,16 @@ namespace BlazeGate.Services.Implement.Remote
                 var httpClient = httpClientFactory.CreateClient();
 
                 HttpResponseMessage httpResponse = await httpClient.PostAsJsonAsync(url, authToken);
-                ApiResult<AuthTokenDto> result = await httpResponse.Content.ReadFromJsonAsync<ApiResult<AuthTokenDto>>();
+                var result = await httpResponse.Content.ReadFromJsonAsync<ApiResult<AuthTokenDto>>();
                 if (result.Success)
                 {
                     await authTokenStorage.SetAuthToken(result.Data);
-                    return true;
                 }
-                return false;
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return ApiResult<AuthTokenDto>.FailResult(ex.Message);
             }
             finally
             {

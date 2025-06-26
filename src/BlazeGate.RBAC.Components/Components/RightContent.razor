@@ -21,6 +21,7 @@
 @code {
     public AvatarMenuItem[] AvatarMenuItems { get; set; } = new AvatarMenuItem[]
     {
+        new() { Key = "changePassword", IconType = "edit", Option = "修改密码"},
         new() { Key = "logout", IconType = "logout", Option = "退出登录"}
     };
 
@@ -50,6 +51,9 @@
             case "logout":
                 await Logout();
                 break;
+            case "changePassword":
+                await ChangePassword();
+                break;
         }
     }
 
@@ -65,5 +69,10 @@
         }
         await AuthTokenStorage.SetAuthToken(null);
         NavigationManager.NavigateTo("/login");
+    }
+
+    public async Task ChangePassword()
+    {
+        NavigationManager.NavigateTo("/changePassword");
     }
 }

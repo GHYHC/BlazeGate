@@ -52,6 +52,13 @@ namespace BlazeGate.Model.JwtBearer
                 }
             }
 
+            //获取用户更新时间
+            string updateTimeStr = claimsPrincipal.Claims.FirstOrDefault(x => x.Type == "user_update_time")?.Value;
+            if (!string.IsNullOrEmpty(updateTimeStr) && DateTime.TryParse(updateTimeStr, out DateTime dateTime))
+            {
+                user.UpdateTime = dateTime;
+            }
+
             return user;
         }
 
@@ -76,6 +83,7 @@ namespace BlazeGate.Model.JwtBearer
                 new Claim(ClaimTypes.MobilePhone, user.Phone ?? ""),
                 new Claim("remark", user.Remark ?? ""),
                 new Claim(ClaimTypes.UserData, user.UserData ?? ""),
+                new Claim("user_update_time", user.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss.fff"))
             };
 
             // 添加用户角色

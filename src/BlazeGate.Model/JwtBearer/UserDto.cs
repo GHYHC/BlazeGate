@@ -48,5 +48,10 @@ namespace BlazeGate.Model.JwtBearer
         /// 用户数据字典
         /// </summary>
         public Dictionary<string, string> UserDataDict { get; set; } = new Dictionary<string, string>();
+
+        /// <summary>
+        /// 更新时间
+        /// </summary>
+        public DateTime UpdateTime { get; set; }
     }
 }
