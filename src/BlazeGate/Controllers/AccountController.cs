@@ -222,20 +222,47 @@ namespace BlazeGate.Controllers
         [HttpPost]
         public async Task<ApiResult<string>> ChangePassword(ChangePasswordParam param)
         {
-            if (param.OldPassword == param.NewPassword)
+            var user = User.GetUser();
+
+            // 使用单个缓存键存储修改密码错误次数
+            string cacheKey = $"ChangePassword:BlazeGateAttempts:{user.Account}";
+            string attemptsStr = await distributedCache.GetStringAsync(cacheKey);
+            int attempts = 0;
+
+            // 如果有缓存记录，则解析尝试次数
+            if (!string.IsNullOrEmpty(attemptsStr) && int.TryParse(attemptsStr, out attempts))
             {
-                return ApiResult<string>.FailResult("新密码不能与旧密码相同");
+                // 如果尝试次数达到或超过3次，返回账号锁定信息
+                if (attempts >= 3)
+                {
+                    return ApiResult<string>.FailResult("失败次数过多，账号已被锁定，请1分钟后再试");
+                }
             }
 
-            var user = User.GetUser();
             var userdb = await BlazeGateContext.Users.FirstOrDefaultAsync(u => u.Id == user.Id);
             if (userdb == null)
             {
                 return ApiResult<string>.FailResult("用户未找到");
             }
+            if (param.OldPassword == param.NewPassword)
+            {
+                return ApiResult<string>.FailResult("新密码不能与旧密码相同");
+            }
             if (userdb.Password != param.OldPassword)
             {
+                //增加错误次数，并设置1分钟过期时间
+                attempts++;
+                await distributedCache.SetStringAsync(cacheKey, attempts.ToString(), new DistributedCacheEntryOptions
+                {
+                    SlidingExpiration = TimeSpan.FromMinutes(1)
+                });
+
                 return ApiResult<string>.FailResult("旧密码不正确");
+            }
+            else
+            {
+                // 修改成功，清除错误计数
+                await distributedCache.RemoveAsync(cacheKey);
             }
 
             userdb.Password = param.NewPassword;
