@@ -1,5 +1,9 @@
-﻿@using Microsoft.AspNetCore.Components.Authorization;
+﻿@using AntDesign.Extensions.Localization
+@using BlazeGate.Dashboard.Resources
+@using Microsoft.AspNetCore.Components.Authorization;
 @using System.Security.Claims;
+@using Microsoft.Extensions.Localization
+@using System.Globalization
 @inherits AntDomComponentBase
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
@@ -10,19 +14,43 @@
                 <AvatarDropdown Name="@context?.User?.Identity?.Name" MenuItems="AvatarMenuItems" OnItemSelected="HandleSelectUser" />
             </Authorized>
             <NotAuthorized>
-                <AvatarDropdown Name="未登录" MenuItems="@(new AvatarMenuItem[]{})" />
+                <AvatarDropdown Name="未登录" MenuItems="@(new AvatarMenuItem[] { })" />
             </NotAuthorized>
         </AuthorizeView>
+    </SpaceItem>
+    <SpaceItem>
+        <SelectLang Locales="Locales" LanguageLabels="LanguageLabels" LanguageIcons="LanguageIcons" OnItemSelected="HandleSelectLang" />
     </SpaceItem>
 </Space>
 
 @code {
-    public AvatarMenuItem[] AvatarMenuItems { get; set; } = new AvatarMenuItem[]
+    public AvatarMenuItem[] AvatarMenuItems =>
+    [
+        new () { Key = "logout", IconType = "logout", Option = L["menu.account.logout"]}
+    ];
+
+    public string[] Locales { get; set; } = { "zh-CN", "en-US" };
+
+    public IDictionary<string, string> LanguageLabels { get; set; } = new Dictionary<string, string>
     {
-        new() { Key = "logout", IconType = "logout", Option = "退出登录"}
+        ["zh-CN"] = "简体中文",
+        ["en-US"] = "English",
     };
 
-    [Inject] protected NavigationManager NavigationManager { get; set; }
+    public IDictionary<string, string> LanguageIcons { get; set; } = new Dictionary<string, string>
+    {
+        ["zh-CN"] = "🇨🇳",
+        ["en-US"] = "🇺🇸",
+    };
+
+    [Inject]
+    protected NavigationManager NavigationManager { get; set; }
+
+    [Inject]
+    private ILocalizationService LocalizationService { get; set; }
+
+    [Inject]
+    private IStringLocalizer<I18n> L { get; set; }
 
     public void HandleSelectUser(MenuItem item)
     {
@@ -32,5 +60,10 @@
                 NavigationManager.NavigateTo("/api/account/logout", true);
                 break;
         }
+    }
+
+    public void HandleSelectLang(MenuItem item)
+    {
+        LocalizationService.SetLanguage(CultureInfo.GetCultureInfo(item.Key));
     }
 }

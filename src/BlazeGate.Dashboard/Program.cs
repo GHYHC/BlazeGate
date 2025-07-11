@@ -19,6 +19,8 @@ builder.Services.AddRazorComponents()
 
 builder.Services.AddAntDesign();
 builder.Services.Configure<ProSettings>(builder.Configuration.GetSection("ProSettings"));
+builder.Services.AddInteractiveStringLocalizer();
+builder.Services.AddLocalization();
 
 //ÃÌº”»œ÷§
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
