@@ -13,6 +13,7 @@ using BlazeGate.Policy;
 using BlazeGate.Services.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using Yarp.ReverseProxy.Health;
@@ -146,6 +147,16 @@ builder.Services.AddOpenTelemetry()
         .AddHttpClientInstrumentation()
         .AddSource("Yarp.ReverseProxy")
         .AddOtlpExporter(options => options.Endpoint = new Uri("http://localhost:8200"));
+    })
+    .WithMetrics(meterBuilder =>
+    {
+        meterBuilder
+            .AddAspNetCoreInstrumentation()
+            .AddHttpClientInstrumentation()
+            .AddMeter("BlazeGate")
+            .AddMeter("Microsoft.AspNetCore.Hosting")
+            .AddMeter("Microsoft.AspNetCore.Server.Kestrel")
+            .AddOtlpExporter(otlpOptions => otlpOptions.Endpoint = new Uri("http://localhost:8200"));
     });
 
 var app = builder.Build();
