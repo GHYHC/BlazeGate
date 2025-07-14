@@ -9,11 +9,12 @@
 @page "/"
 @attribute [ReuseTabsPage(Title = "服务")]
 @attribute [Authorize]
+@inject IStringLocalizer<I18n> L
 
 <ServiceList @ref="ServiceList">
     <FunctionTemplate>
         <Button Type="@ButtonType.Primary" OnClick="async () => { await AddService(); }">
-            添加
+            @L["service.add"]
         </Button>
     </FunctionTemplate>
     <HeaderTemplate>
@@ -26,24 +27,24 @@
                     <SpaceItem>
                         <Space Size="SpaceSize.Middle">
                             <SpaceItem>
-                                <Text Type="TextElementType.Secondary">主动</Text>
+                                <Text Type="TextElementType.Secondary">@L["service.active"]</Text>
                             </SpaceItem>
                             <SpaceItem>
-                                <Tooltip Title="主动健康检测【正常】数量">
+                                <Tooltip Title="@(L["service.activeHealthyCount"])" >
                                     <Text Type="TextElementType.Success" Strong>
                                         @(HealthStateCounts.FirstOrDefault(b => b.ServiceName == context.ServiceName)?.ActiveHealthyCount ?? 0)
                                     </Text>
                                 </Tooltip>
                             </SpaceItem>
                             <SpaceItem>
-                                <Tooltip Title="主动健康检测【异常】数量">
+                                <Tooltip Title="@(L["service.activeUnhealthyCount"])" >
                                     <Text Type="TextElementType.Danger" Strong>
                                         @(HealthStateCounts.FirstOrDefault(b => b.ServiceName == context.ServiceName)?.ActiveUnhealthyCount ?? 0)
                                     </Text>
                                 </Tooltip>
                             </SpaceItem>
                             <SpaceItem>
-                                <Tooltip Title="主动健康检测【未知】数量">
+                                <Tooltip Title="@(L["service.activeUnknownCount"])" >
                                     <Text Type="TextElementType.Warning" Strong>
                                         @(HealthStateCounts.FirstOrDefault(b => b.ServiceName == context.ServiceName)?.ActiveUnknownCount ?? 0)
                                     </Text>
@@ -54,24 +55,24 @@
                     <SpaceItem>
                         <Space Size="SpaceSize.Middle">
                             <SpaceItem>
-                                <Text Type="TextElementType.Secondary">被动</Text>
+                                <Text Type="TextElementType.Secondary">@L["service.passive"]</Text>
                             </SpaceItem>
                             <SpaceItem>
-                                <Tooltip Title="被动健康检测【正常】数量">
+                                <Tooltip Title="@(L["service.passiveHealthyCount"])" >
                                     <Text Type="TextElementType.Success" Strong>
                                         @(HealthStateCounts.FirstOrDefault(b => b.ServiceName == context.ServiceName)?.PassiveHealthyCount ?? 0)
                                     </Text>
                                 </Tooltip>
                             </SpaceItem>
                             <SpaceItem>
-                                <Tooltip Title="被动健康检测【异常】数量">
+                                <Tooltip Title="@(L["service.passiveUnhealthyCount"])" >
                                     <Text Type="TextElementType.Danger" Strong>
                                         @(HealthStateCounts.FirstOrDefault(b => b.ServiceName == context.ServiceName)?.PassiveUnhealthyCount ?? 0)
                                     </Text>
                                 </Tooltip>
                             </SpaceItem>
                             <SpaceItem>
-                                <Tooltip Title="被动健康检测【未知】数量">
+                                <Tooltip Title="@(L["service.passiveUnknownCount"])" >
                                     <Text Type="TextElementType.Warning" Strong>
                                         @(HealthStateCounts.FirstOrDefault(b => b.ServiceName == context.ServiceName)?.PassiveUnknownCount ?? 0)
                                     </Text>
@@ -86,21 +87,21 @@
                     <SpaceItem>
                         <span @onclick:stopPropagation="true">
                             <Text Disabled="context.Enabled == true" Type="TextElementType.Success">
-                                <span @onclick="async b =>{ await EnabledChanged(context.Id, true); }">启用</span>
+                                <span @onclick="async b =>{ await EnabledChanged(context.Id, true); }">@L["service.enable"]</span>
                             </Text>
                         </span>
                     </SpaceItem>
                     <SpaceItem>
                         <span @onclick:stopPropagation="true">
                             <Text Disabled="context.Enabled == false" Type="TextElementType.Secondary">
-                                <span @onclick="async b =>{ await EnabledChanged(context.Id, false); }">禁用</span>
+                                <span @onclick="async b =>{ await EnabledChanged(context.Id, false); }">@L["service.disable"]</span>
                             </Text>
                         </span>
                     </SpaceItem>
                     <SpaceItem>
                         <span @onclick:stopPropagation="true">
-                            <Popconfirm Title="确定删除这个服务?" OnConfirm="async () => { await DeleteService(context.Id); }">
-                                <Text Type="TextElementType.Danger">删除</Text>
+                            <Popconfirm Title="@(L["service.delete.confirm"])" OnConfirm="async () => { await DeleteService(context.Id); }">
+                                <Text Type="TextElementType.Danger">@L["service.delete"]</Text>
                             </Popconfirm>
                         </span>
                     </SpaceItem>
@@ -110,25 +111,25 @@
     </HeaderTemplate>
     <ChildContent>
         <Tabs>
-            <TabPane Tab="服务配置">
+            <TabPane Tab="@(L["service.config"])" >
                 <ServiceConfigIndex ServiceName="@context.ServiceName" OnFinish="async (id) => { await ServiceList.Refresh(id); }" />
             </TabPane>
-            <TabPane Tab="目标节点">
+            <TabPane Tab="@(L["service.destination"])" >
                 <DestinationIndex ServiceName="@context.ServiceName" ServiceToken="@context.Token"></DestinationIndex>
             </TabPane>
-            <TabPane Tab="授权RSA秘钥">
+            <TabPane Tab="@(L["service.authRsaKey"])" >
                 <AuthRsaKeyIndex ServiceName="@context.ServiceName"></AuthRsaKeyIndex>
             </TabPane>
-            <TabPane Tab="授权白名单">
+            <TabPane Tab="@(L["service.authWhiteList"])" >
                 <AuthWhiteListIndex ServiceName="@context.ServiceName"></AuthWhiteListIndex>
             </TabPane>
-            <TabPane Tab="页面管理">
+            <TabPane Tab="@(L["service.page"])" >
                 <PageIndex ServiceName="@context.ServiceName"></PageIndex>
             </TabPane>
-            <TabPane Tab="角色管理">
+            <TabPane Tab="@(L["service.role"])" >
                 <RoleIndex ServiceName="@context.ServiceName"></RoleIndex>
             </TabPane>
-            <TabPane Tab="用户角色">
+            <TabPane Tab="@(L["service.userRole"])" >
                 <UserRoleIndex ServiceName="@context.ServiceName"></UserRoleIndex>
             </TabPane>
         </Tabs>

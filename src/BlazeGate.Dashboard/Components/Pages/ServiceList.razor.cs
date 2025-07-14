@@ -2,6 +2,8 @@ using AntDesign;
 using BlazeGate.Services.Implement;
 using BlazeGate.Services.Interface;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
+using BlazeGate.Dashboard.Resources;
 
 namespace BlazeGate.Dashboard.Components.Pages
 {
@@ -54,7 +56,7 @@ namespace BlazeGate.Dashboard.Components.Pages
             }
             catch (Exception ex)
             {
-                Message.Error($"加载数据异常:{ex.Message}");
+                Message.Error(string.Format(L["service.load.error"], ex.Message));
             }
 
             Collapse.Deactivate(ActiveKey.ToArray());
@@ -84,7 +86,7 @@ namespace BlazeGate.Dashboard.Components.Pages
             }
             catch (Exception ex)
             {
-                Message.Error($"刷新异常:{ex.Message}");
+                Message.Error(string.Format(L["service.refresh.error"], ex.Message));
             }
         }
 

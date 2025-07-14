@@ -14,6 +14,7 @@ namespace BlazeGate.BlazorWasmApp.Sample
 
             builder.Services.AddAntDesign();
             builder.Services.Configure<ProSettings>(builder.Configuration.GetSection("ProSettings"));
+            builder.Services.AddLocalization();
 
             builder.Services.AddBlazeGateRBAC();
             builder.Services.AddScoped<WebApi>();

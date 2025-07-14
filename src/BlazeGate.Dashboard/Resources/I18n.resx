@@ -120,4 +120,118 @@
   <data name="menu.account.logout" xml:space="preserve">
     <value>Logout</value>
   </data>
+  <data name="menu.serviceManagement" xml:space="preserve">
+    <value>Service Manager</value>
+  </data>
+  <data name="menu.userManagement" xml:space="preserve">
+    <value>User Manager</value>
+  </data>
+  <data name="service.add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="service.title" xml:space="preserve">
+    <value>Service</value>
+  </data>
+  <data name="service.active" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="service.activeHealthyCount" xml:space="preserve">
+    <value>Active Health Check [Healthy] Count</value>
+  </data>
+  <data name="service.activeUnhealthyCount" xml:space="preserve">
+    <value>Active Health Check [Unhealthy] Count</value>
+  </data>
+  <data name="service.activeUnknownCount" xml:space="preserve">
+    <value>Active Health Check [Unknown] Count</value>
+  </data>
+  <data name="service.passive" xml:space="preserve">
+    <value>Passive</value>
+  </data>
+  <data name="service.passiveHealthyCount" xml:space="preserve">
+    <value>Passive Health Check [Healthy] Count</value>
+  </data>
+  <data name="service.passiveUnhealthyCount" xml:space="preserve">
+    <value>Passive Health Check [Unhealthy] Count</value>
+  </data>
+  <data name="service.passiveUnknownCount" xml:space="preserve">
+    <value>Passive Health Check [Unknown] Count</value>
+  </data>
+  <data name="service.enable" xml:space="preserve">
+    <value>Enable</value>
+  </data>
+  <data name="service.disable" xml:space="preserve">
+    <value>Disable</value>
+  </data>
+  <data name="service.delete.confirm" xml:space="preserve">
+    <value>Are you sure to delete this service?</value>
+  </data>
+  <data name="service.delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="service.config" xml:space="preserve">
+    <value>Service Config</value>
+  </data>
+  <data name="service.destination" xml:space="preserve">
+    <value>Destination Node</value>
+  </data>
+  <data name="service.authRsaKey" xml:space="preserve">
+    <value>Auth RSA Key</value>
+  </data>
+  <data name="service.authWhiteList" xml:space="preserve">
+    <value>Auth White List</value>
+  </data>
+  <data name="service.page" xml:space="preserve">
+    <value>Page Management</value>
+  </data>
+  <data name="service.role" xml:space="preserve">
+    <value>Role Management</value>
+  </data>
+  <data name="service.userRole" xml:space="preserve">
+    <value>User Role</value>
+  </data>
+  <data name="service.add.success" xml:space="preserve">
+    <value>Add succeeded</value>
+  </data>
+  <data name="service.add.error" xml:space="preserve">
+    <value>Add failed: {0}</value>
+  </data>
+  <data name="service.delete.success" xml:space="preserve">
+    <value>Delete succeeded</value>
+  </data>
+  <data name="service.delete.error" xml:space="preserve">
+    <value>Delete failed: {0}</value>
+  </data>
+  <data name="service.update.success" xml:space="preserve">
+    <value>Update succeeded</value>
+  </data>
+  <data name="service.update.error" xml:space="preserve">
+    <value>Update failed: {0}</value>
+  </data>
+  <data name="service.get.error" xml:space="preserve">
+    <value>Get failed: {0}</value>
+  </data>
+  <data name="service.name" xml:space="preserve">
+    <value>Service Name</value>
+  </data>
+  <data name="service.query" xml:space="preserve">
+    <value>Query</value>
+  </data>
+  <data name="service.load.error" xml:space="preserve">
+    <value>Load data error: {0}</value>
+  </data>
+  <data name="service.refresh.error" xml:space="preserve">
+    <value>Refresh error: {0}</value>
+  </data>
+  <data name="account.login.username" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="account.login.password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="account.login.button" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="account.login.error" xml:space="preserve">
+    <value>Login error</value>
+  </data>
 </root>

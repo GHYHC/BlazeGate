@@ -1,5 +1,6 @@
 ﻿@using AntDesign.Extensions.Localization
 @using BlazeGate.Dashboard.Resources
+@using BlazeGate.Model.Culture
 @using Microsoft.AspNetCore.Components.Authorization;
 @using System.Security.Claims;
 @using Microsoft.Extensions.Localization
@@ -19,7 +20,7 @@
         </AuthorizeView>
     </SpaceItem>
     <SpaceItem>
-        <SelectLang Locales="Locales" LanguageLabels="LanguageLabels" LanguageIcons="LanguageIcons" OnItemSelected="HandleSelectLang" />
+        <SelectLang Locales="LanguageOptions.Languages" LanguageLabels="LanguageOptions.LanguageLabels" LanguageIcons="LanguageOptions.LanguageIcons" OnItemSelected="HandleSelectLang" />
     </SpaceItem>
 </Space>
 
@@ -29,28 +30,14 @@
         new () { Key = "logout", IconType = "logout", Option = L["menu.account.logout"]}
     ];
 
-    public string[] Locales { get; set; } = { "zh-CN", "en-US" };
-
-    public IDictionary<string, string> LanguageLabels { get; set; } = new Dictionary<string, string>
-    {
-        ["zh-CN"] = "简体中文",
-        ["en-US"] = "English",
-    };
-
-    public IDictionary<string, string> LanguageIcons { get; set; } = new Dictionary<string, string>
-    {
-        ["zh-CN"] = "🇨🇳",
-        ["en-US"] = "🇺🇸",
-    };
-
     [Inject]
     protected NavigationManager NavigationManager { get; set; }
 
     [Inject]
-    private ILocalizationService LocalizationService { get; set; }
+    private IStringLocalizer<I18n> L { get; set; }
 
     [Inject]
-    private IStringLocalizer<I18n> L { get; set; }
+    protected NavigationManager Navigation { get; set; }
 
     public void HandleSelectUser(MenuItem item)
     {
@@ -64,6 +51,17 @@
 
     public void HandleSelectLang(MenuItem item)
     {
-        LocalizationService.SetLanguage(CultureInfo.GetCultureInfo(item.Key));
+        var cultureInfo = CultureInfo.GetCultureInfo(item.Key);
+
+        if (CultureInfo.CurrentCulture.Name != cultureInfo.Name)
+        {
+            var uri = new Uri(Navigation.Uri).GetComponents(UriComponents.PathAndQuery, UriFormat.Unescaped);
+            var cultureEscaped = Uri.EscapeDataString(cultureInfo.Name);
+            var uriEscaped = Uri.EscapeDataString(uri);
+
+            Navigation.NavigateTo(
+                $"api/Culture/Set?culture={cultureEscaped}&redirectUri={uriEscaped}",
+                forceLoad: true);
+        }
     }
 }

@@ -5,39 +5,40 @@
 @using AntDesign.TableModels
 @using BlazeGate.Model.WebApi.Response
 @using BlazeGate.RBAC.Components.Models
+@inject Microsoft.Extensions.Localization.IStringLocalizer<BlazeGate.RBAC.Components.Resources.I18n> L
 
 <GridContent>
     <Card Style="margin-bottom: 8px">
         <Form Model="SearchModel" Layout="@FormLayout.Inline" OnFinish="()=>{Table.ReloadData();}">
-            <FormItem Label="角色名称">
+            <FormItem Label="@L["role.name"]">
                 <Input @bind-Value="context.RoleName" Style="width:183px" AllowClear />
             </FormItem>
             <FormItem>
                 <Button Type="@ButtonType.Primary" HtmlType="submit">
-                    查询
+                    @L["role.query"]
                 </Button>
                 <Button Type="@ButtonType.Primary" OnClick="async ()=>{await RoleEdit.ShowAsync(ServiceName,null);}">
-                    添加
+                    @L["role.add"]
                 </Button>
             </FormItem>
         </Form>
     </Card>
     <Card>
         <Table @ref="Table" TItem="RolePageInfo" Loading="Loading" Total="Total" DataSource="DataList" OnChange="OnChange" ScrollX="100%" RemoteDataSource Bordered Resizable>
-            <ActionColumn Width="140" Title="操作" Fixed="ColumnFixPlacement.Left">
+            <ActionColumn Width="140" Title="@L["role.action"]" Fixed="ColumnFixPlacement.Left">
                 <Space Size="SpaceSize.Small" Direction="SpaceDirection.Horizontal">
                     <SpaceItem>
-                        <a @onclick="async ()=>{await RoleEdit.ShowAsync(ServiceName,context);}">编辑</a>
+                        <a @onclick="async ()=>{await RoleEdit.ShowAsync(ServiceName,context);}">@L["role.edit"]</a>
                     </SpaceItem>
                     <SpaceItem>
-                        <Popconfirm Title="您确定要删除此数据吗？" OnConfirm="async ()=>{await OnRemove(context.Role.Id); Table.ReloadData(Table.GetQueryModel());}">
-                            <a>删除</a>
+                        <Popconfirm Title="@L["role.delete.confirm"]" OnConfirm="async ()=>{await OnRemove(context.Role.Id); Table.ReloadData(Table.GetQueryModel());}">
+                            <a>@L["role.delete"]</a>
                         </Popconfirm>
                     </SpaceItem>
                 </Space>
             </ActionColumn>
-            <PropertyColumn Title="角色名称" Property="c=>c.Role.RoleName" Ellipsis />
-            <PropertyColumn Title="角色页面" Property="c=>c.Pages" Ellipsis>
+            <PropertyColumn Title="@L["role.name"]" Property="c=>c.Role.RoleName" Ellipsis />
+            <PropertyColumn Title="@L["role.pages"]" Property="c=>c.Pages" Ellipsis>
                 <Tree TItem="PageNode"
                       DataSource="RolePageNodes.TryGetValue(context.Role.Id, out var pageNodes) ? pageNodes : new List<PageNode>()"
                       TitleExpression='x => x.DataItem.Title'
@@ -45,11 +46,11 @@
                       IconExpression="x => x.DataItem.Icon"
                       KeyExpression="x => x.DataItem.Id.ToString()">
                     <TitleTemplate Context="item">
-                        @item.DataItem.Title @(item.DataItem.Type == 0 ? "(菜单)" : "(按钮)")
+                        @item.DataItem.Title @(item.DataItem.Type == 0 ? $"({L["role.menu"]})" : $"({L["role.button"]})")
                     </TitleTemplate>
                 </Tree>
             </PropertyColumn>
-            <PropertyColumn Title="备注" Property="c=>c.Role.Remark" Ellipsis />
+            <PropertyColumn Title="@L["role.remark"]" Property="c=>c.Role.Remark" Ellipsis />
         </Table>
     </Card>
 

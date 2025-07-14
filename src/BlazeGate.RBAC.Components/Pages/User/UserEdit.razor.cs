@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Localization;
+using BlazeGate.RBAC.Components.Resources;
 using System.Text;
 using System.Text.Json;
 using System.Text.Unicode;
@@ -28,7 +30,8 @@ namespace BlazeGate.RBAC.Components.Pages.User
         public EventCallback OnComplete { get; set; }
         [Inject]
         public MessageService Message { get; set; }
-        private string Title { get; set; } = "新增";
+        // 保留一个 Title 字段，初始为空
+        private string Title { get; set; } = string.Empty;
 
         public string ServiceName { get; set; }
 
@@ -50,11 +53,11 @@ namespace BlazeGate.RBAC.Components.Pages.User
 
             if (id == null)
             {
-                Title = "新增";
+                Title = L["user.edit.title.add"];
             }
             else
             {
-                Title = "编辑";
+                Title = L["user.edit.title.edit"];
                 await LoadDataById(id.Value);
             }
         }
@@ -81,7 +84,7 @@ namespace BlazeGate.RBAC.Components.Pages.User
             }
             catch (Exception ex)
             {
-                Message.Error($"获取数据异常:{ex.Message}");
+                Message.Error(string.Format(L["user.edit.get.error"], ex.Message));
             }
             finally
             {
@@ -113,7 +116,7 @@ namespace BlazeGate.RBAC.Components.Pages.User
             }
             catch (Exception ex)
             {
-                Message.Error($"异常:{ex.Message}");
+                Message.Error(string.Format(L["user.edit.error"], ex.Message));
             }
             finally
             {

@@ -4,48 +4,49 @@
 @using AntDesign.ProLayout
 @using AntDesign.TableModels
 @using BlazeGate.Model.WebApi.Response
+@inject Microsoft.Extensions.Localization.IStringLocalizer<BlazeGate.RBAC.Components.Resources.I18n> L
 
 <GridContent>
     <Card Style="margin-bottom: 8px">
         <Form Model="SearchModel" Layout="@FormLayout.Inline" OnFinish="()=>{Table.ReloadData();}">
-            <FormItem Label="名称/账号">
+            <FormItem Label="@(L["user.search.nameOrAccount"])" >
                 <Input @bind-Value="context.NameOrAccount" Style="width:183px" AllowClear />
             </FormItem>
             <FormItem>
                 <Button Type="@ButtonType.Primary" HtmlType="submit">
-                    查询
+                    @(L["user.search.query"])
                 </Button>
                 <Button Type="@ButtonType.Primary" OnClick="async ()=>{await UserEdit.ShowAsync(null);}">
-                    添加
+                    @(L["user.search.add"])
                 </Button>
             </FormItem>
         </Form>
     </Card>
     <Card>
         <Table @ref="Table" TItem="UserInfo" Loading="Loading" Total="Total" DataSource="DataList" OnChange="OnChange" ScrollX="100%" RemoteDataSource Bordered Resizable>
-            <ActionColumn Width="140" Title="操作" Fixed="ColumnFixPlacement.Left">
+            <ActionColumn Width="140" Title="@(L["user.table.action"])" Fixed="ColumnFixPlacement.Left">
                 <Space Size="SpaceSize.Small" Direction="SpaceDirection.Horizontal">
                     <SpaceItem>
-                        <a @onclick="async ()=>{await UserEdit.ShowAsync(context.Id);}">编辑</a>
+                        <a @onclick="async ()=>{await UserEdit.ShowAsync(context.Id);}">@(L["user.table.edit"])</a>
                     </SpaceItem>
                     <SpaceItem>
-                        <Popconfirm Title="您确定要删除此数据吗？" OnConfirm="async ()=>{await OnRemove(context.Id); Table.ReloadData(Table.GetQueryModel());}">
-                            <a>删除</a>
+                        <Popconfirm Title="@(L["user.table.delete.confirm"])" OnConfirm="async ()=>{await OnRemove(context.Id); Table.ReloadData(Table.GetQueryModel());}">
+                            <a>@(L["user.table.delete"])</a>
                         </Popconfirm>
                     </SpaceItem>
                 </Space>
             </ActionColumn>
-            <PropertyColumn Title="用户名称" Property="c=>c.UserName" Ellipsis />
-            <PropertyColumn Title="账号" Property="c=>c.Account" Ellipsis />
-            <PropertyColumn Title="电话" Property="c=>c.Phone" Ellipsis />
-            <PropertyColumn Title="用户数据" Property="c=>c.UserData" Ellipsis />
-            <PropertyColumn Title="备注" Property="c=>c.Remark" Ellipsis />
-            <PropertyColumn Title="创建时间" Property='c=>c.CreateTime.ToString("yyyy-MM-dd HH:mm:ss")' Width="190" Ellipsis />
-            <PropertyColumn Title="更新时间" Property='c=>c.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss")' Width="190" Ellipsis />
-            <ActionColumn Width="140" Title="状态" Fixed="ColumnFixPlacement.Right">
+            <PropertyColumn Title="@(L["user.table.userName"])" Property="c=>c.UserName" Ellipsis />
+            <PropertyColumn Title="@(L["user.table.account"])" Property="c=>c.Account" Ellipsis />
+            <PropertyColumn Title="@(L["user.table.phone"])" Property="c=>c.Phone" Ellipsis />
+            <PropertyColumn Title="@(L["user.table.userData"])" Property="c=>c.UserData" Ellipsis />
+            <PropertyColumn Title="@(L["user.table.remark"])" Property="c=>c.Remark" Ellipsis />
+            <PropertyColumn Title="@(L["user.table.createTime"])" Property='c=>c.CreateTime.ToString("yyyy-MM-dd HH:mm:ss")' Width="190" Ellipsis />
+            <PropertyColumn Title="@(L["user.table.updateTime"])" Property='c=>c.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss")' Width="190" Ellipsis />
+            <ActionColumn Width="140" Title="@(L["user.table.status"])" Fixed="ColumnFixPlacement.Right">
                 <Space Size="SpaceSize.Small" Direction="SpaceDirection.Horizontal">
                     <SpaceItem>
-                        <Switch @bind-Checked="context.Enabled" CheckedChildren="启用" UnCheckedChildren="禁用" OnChange="async (b)=>{await OnChangeEnabled(context.Id,b); Table.ReloadData(Table.GetQueryModel());}" />
+                        <Switch @bind-Checked="context.Enabled" CheckedChildren="@(L["user.table.enable"])" UnCheckedChildren="@(L["user.table.disable"])" OnChange="async (b)=>{await OnChangeEnabled(context.Id,b); Table.ReloadData(Table.GetQueryModel());}" />
                     </SpaceItem>
                 </Space>
             </ActionColumn>

@@ -3,10 +3,12 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using BlazeGate.Common.Autofac;
 using BlazeGate.Dashboard.Components;
+using BlazeGate.Model.Culture;
 using BlazeGate.Model.EFCore;
 using BlazeGate.Model.WebApi;
 using BlazeGate.Services.Interface;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -59,6 +61,12 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
 }
+
+// 使用以根据客户端提供的信息自动设置请求的文化信息
+app.UseRequestLocalization(new RequestLocalizationOptions()
+    .SetDefaultCulture(LanguageOptions.Languages[0])
+    .AddSupportedCultures(LanguageOptions.Languages)
+    .AddSupportedUICultures(LanguageOptions.Languages));
 
 app.UseStaticFiles();
 app.UseAntiforgery();

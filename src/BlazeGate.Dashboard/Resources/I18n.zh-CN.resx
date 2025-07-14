@@ -120,4 +120,118 @@
   <data name="menu.account.logout" xml:space="preserve">
     <value>退出登录</value>
   </data>
+  <data name="menu.serviceManagement" xml:space="preserve">
+    <value>服务管理</value>
+  </data>
+  <data name="menu.userManagement" xml:space="preserve">
+    <value>用户管理</value>
+  </data>
+  <data name="service.add" xml:space="preserve">
+    <value>添加</value>
+  </data>
+  <data name="service.title" xml:space="preserve">
+    <value>服务</value>
+  </data>
+  <data name="service.active" xml:space="preserve">
+    <value>主动</value>
+  </data>
+  <data name="service.activeHealthyCount" xml:space="preserve">
+    <value>主动健康检测【正常】数量</value>
+  </data>
+  <data name="service.activeUnhealthyCount" xml:space="preserve">
+    <value>主动健康检测【异常】数量</value>
+  </data>
+  <data name="service.activeUnknownCount" xml:space="preserve">
+    <value>主动健康检测【未知】数量</value>
+  </data>
+  <data name="service.passive" xml:space="preserve">
+    <value>被动</value>
+  </data>
+  <data name="service.passiveHealthyCount" xml:space="preserve">
+    <value>被动健康检测【正常】数量</value>
+  </data>
+  <data name="service.passiveUnhealthyCount" xml:space="preserve">
+    <value>被动健康检测【异常】数量</value>
+  </data>
+  <data name="service.passiveUnknownCount" xml:space="preserve">
+    <value>被动健康检测【未知】数量</value>
+  </data>
+  <data name="service.enable" xml:space="preserve">
+    <value>启用</value>
+  </data>
+  <data name="service.disable" xml:space="preserve">
+    <value>禁用</value>
+  </data>
+  <data name="service.delete.confirm" xml:space="preserve">
+    <value>确定删除这个服务?</value>
+  </data>
+  <data name="service.delete" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="service.config" xml:space="preserve">
+    <value>服务配置</value>
+  </data>
+  <data name="service.destination" xml:space="preserve">
+    <value>目标节点</value>
+  </data>
+  <data name="service.authRsaKey" xml:space="preserve">
+    <value>授权RSA秘钥</value>
+  </data>
+  <data name="service.authWhiteList" xml:space="preserve">
+    <value>授权白名单</value>
+  </data>
+  <data name="service.page" xml:space="preserve">
+    <value>页面管理</value>
+  </data>
+  <data name="service.role" xml:space="preserve">
+    <value>角色管理</value>
+  </data>
+  <data name="service.userRole" xml:space="preserve">
+    <value>用户角色</value>
+  </data>
+  <data name="service.add.success" xml:space="preserve">
+    <value>添加成功</value>
+  </data>
+  <data name="service.add.error" xml:space="preserve">
+    <value>添加异常:{0}</value>
+  </data>
+  <data name="service.delete.success" xml:space="preserve">
+    <value>删除成功</value>
+  </data>
+  <data name="service.delete.error" xml:space="preserve">
+    <value>删除异常:{0}</value>
+  </data>
+  <data name="service.update.success" xml:space="preserve">
+    <value>修改成功</value>
+  </data>
+  <data name="service.update.error" xml:space="preserve">
+    <value>修改异常:{0}</value>
+  </data>
+  <data name="service.get.error" xml:space="preserve">
+    <value>获取异常:{0}</value>
+  </data>
+  <data name="service.name" xml:space="preserve">
+    <value>服务名称</value>
+  </data>
+  <data name="service.query" xml:space="preserve">
+    <value>查询</value>
+  </data>
+  <data name="service.load.error" xml:space="preserve">
+    <value>加载数据异常:{0}</value>
+  </data>
+  <data name="service.refresh.error" xml:space="preserve">
+    <value>刷新异常:{0}</value>
+  </data>
+  <data name="account.login.username" xml:space="preserve">
+    <value>账号</value>
+  </data>
+  <data name="account.login.password" xml:space="preserve">
+    <value>密码</value>
+  </data>
+  <data name="account.login.button" xml:space="preserve">
+    <value>登录</value>
+  </data>
+  <data name="account.login.error" xml:space="preserve">
+    <value>登录异常</value>
+  </data>
 </root>

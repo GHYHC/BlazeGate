@@ -35,6 +35,7 @@
 		<PackageReference Include="Blazored.SessionStorage" Version="2.4.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="8.0.14" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.14" />
+		<PackageReference Include="Microsoft.Extensions.Localization" Version="9.0.7" />
 	</ItemGroup>
 
 	<ItemGroup>

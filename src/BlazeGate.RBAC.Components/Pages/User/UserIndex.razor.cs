@@ -7,6 +7,8 @@ using BlazeGate.Services.Interface;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Localization;
+using BlazeGate.RBAC.Components.Resources;
 
 namespace BlazeGate.RBAC.Components.Pages.User
 {
@@ -53,7 +55,7 @@ namespace BlazeGate.RBAC.Components.Pages.User
             }
             catch (Exception ex)
             {
-                Message.Error($"获取数据异常:{ex.Message}");
+                Message.Error(string.Format(L["user.get.error"], ex.Message));
             }
             finally
             {
@@ -79,7 +81,7 @@ namespace BlazeGate.RBAC.Components.Pages.User
             }
             catch (Exception ex)
             {
-                Message.Error($"删除异常:{ex.Message}");
+                Message.Error(string.Format(L["user.delete.error"], ex.Message));
             }
             finally
             {
@@ -105,7 +107,7 @@ namespace BlazeGate.RBAC.Components.Pages.User
             }
             catch (Exception ex)
             {
-                Message.Error($"状态修改异常:{ex.Message}");
+                Message.Error(string.Format(L["user.status.error"], ex.Message));
             }
             finally
             {

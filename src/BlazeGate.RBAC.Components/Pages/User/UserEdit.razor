@@ -1,29 +1,30 @@
 ﻿@using AntDesign
 @using AntDesign.ProLayout
 @using BlazeGate.RBAC.Components.Components
+@inject Microsoft.Extensions.Localization.IStringLocalizer<BlazeGate.RBAC.Components.Resources.I18n> L
 
 <Modal Title="@Title" Width="700" Visible="@Visible" ConfirmLoading=Loading OnOk="()=>{Form.Submit();}" OnCancel="()=>{Visible=false;}" MaskClosable=false>
     <Form @ref="Form" Model="UserSave" Size="FormSize.Default" LabelColSpan="4" OnFinish="OnFinish" Loading=Loading ValidateMode="@FormValidateMode.Complex" ValidateOnChange>
-        <FormItem Label="用户名称">
+        <FormItem Label="@(L["user.edit.label.userName"])">
             <Input @bind-Value="context.UserName" AllowClear />
         </FormItem>
-        <FormItem Label="账号">
+        <FormItem Label="@(L["user.edit.label.account"])">
             <Input @bind-Value="context.Account" AllowClear />
         </FormItem>
-        <FormItem Label="密码">
+        <FormItem Label="@(L["user.edit.label.password"])">
             <InputPassword @bind-Value="context.Password" AllowClear />
         </FormItem>
-        <FormItem Label="电话">
+        <FormItem Label="@(L["user.edit.label.phone"])">
             <Input @bind-Value="context.Phone" AllowClear />
         </FormItem>
-        <FormItem Label="用户数据">
+        <FormItem Label="@(L["user.edit.label.userData"])">
             <KeyValue @bind-Value="context.UserData"></KeyValue>
         </FormItem>
-        <FormItem Label="备注">
+        <FormItem Label="@(L["user.edit.label.remark"])">
             <TextArea @bind-Value="context.Remark" AllowClear />
         </FormItem>
-        <FormItem Label="状态">
-            <Switch @bind-Checked="context.Enabled" CheckedChildren="启用" UnCheckedChildren="禁用" />
+        <FormItem Label="@(L["user.edit.label.status"])">
+            <Switch @bind-Checked="context.Enabled" CheckedChildren="@(L["user.edit.enable"] )" UnCheckedChildren="@(L["user.edit.disable"] )" />
         </FormItem>
     </Form>
 </Modal>

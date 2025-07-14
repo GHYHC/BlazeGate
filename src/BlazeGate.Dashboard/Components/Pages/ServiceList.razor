@@ -1,12 +1,13 @@
-﻿<GridContent>
+﻿@inject Microsoft.Extensions.Localization.IStringLocalizer<BlazeGate.Dashboard.Resources.I18n> L
+<GridContent>
     <Card Style="margin-bottom: 8px">
         <Form Model="Model" Layout="@FormLayout.Inline" OnFinish="async ()=>{await LoadData();}">
-            <FormItem Label="服务名称">
+            <FormItem Label="@(L["service.name"])" >
                 <Input @bind-Value="context.ServiceName" Style="width:183px" AllowClear />
              </FormItem>
              <FormItem>
                  <Button Type="@ButtonType.Primary" HtmlType="submit">
-                     查询
+                     @(L["service.query"])
                  </Button>
              </FormItem>
              <FormItem>

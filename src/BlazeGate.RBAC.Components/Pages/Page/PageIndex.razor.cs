@@ -67,7 +67,7 @@ namespace BlazeGate.RBAC.Components.Pages.Page
             }
             catch (Exception ex)
             {
-                Message.Error($"获取数据异常:{ex.Message}");
+                Message.Error(string.Format(L["page.get.error"], ex.Message));
             }
             finally
             {
@@ -125,7 +125,7 @@ namespace BlazeGate.RBAC.Components.Pages.Page
                     Model.IndexNumber = PageList.Where(b => b.ParentPageId == Model.ParentPageId).Select(b => b.IndexNumber).DefaultIfEmpty(-1).Max() + 1;
                 }
 
-                var result = await PageService.SavePage(ServiceName,Model);
+                var result = await PageService.SavePage(ServiceName, Model);
                 if (result.Success)
                 {
                     Model.Id = result.Data;
@@ -138,7 +138,7 @@ namespace BlazeGate.RBAC.Components.Pages.Page
             }
             catch (Exception ex)
             {
-                Message.Error($"异常:{ex.Message}");
+                Message.Error(string.Format(L["page.error"], ex.Message));
             }
             finally
             {
@@ -153,36 +153,13 @@ namespace BlazeGate.RBAC.Components.Pages.Page
             await Tree.SelectedKeysChanged.InvokeAsync(Tree.SelectedKeys);
         }
 
-        private async Task OnChangeParent(long pageId, PageNode target)
-        {
-            try
-            {
-                //int i = await HttpClient.PostJsonAsync<BlazeGate.Model.WebApi.Response.PageTree, int>($"/api/Page/ChangePageParentId?serviceId={ServiceId}&pageId={pageId}", target);
-                //await LoadTreeList(ServiceId);
-                //if (Model.PageId > 0)
-                //{
-                //    Model.ParentPageId = target.ParentPageId;
-                //    Model.IndexNumber = target.IndexNumber + 1;
-                //    ParentPageId = target.ParentPageId.ToString();
-                //}
-                //else
-                //{
-                //    OnLoad();
-                //}
-            }
-            catch (Exception ex)
-            {
-                Message.Error($"异常:{ex.Message}");
-            }
-        }
-
         private async Task OnRemove(long pageId)
         {
             if (Loading) return;
             Loading = true;
             try
             {
-                var result = await PageService.RemovePage(ServiceName,pageId);
+                var result = await PageService.RemovePage(ServiceName, pageId);
                 if (result.Success)
                 {
                     Model = new PageNode();
@@ -195,7 +172,7 @@ namespace BlazeGate.RBAC.Components.Pages.Page
             }
             catch (Exception ex)
             {
-                Message.Error($"删除异常:{ex.Message}");
+                Message.Error(string.Format(L["page.delete.error"], ex.Message));
             }
             finally
             {
@@ -216,7 +193,7 @@ namespace BlazeGate.RBAC.Components.Pages.Page
 
                 if (node.Id == target.Id)
                 {
-                    Message.Error("不能拖动到自己");
+                    Message.Error(L["page.drag.error"].Value);
                     return;
                 }
 
@@ -259,7 +236,7 @@ namespace BlazeGate.RBAC.Components.Pages.Page
                     SortIds = pageNodes.Select(b => b.Id).ToList()
                 };
 
-                var result = await PageService.SaveDrop(ServiceName,pageDropSave);
+                var result = await PageService.SaveDrop(ServiceName, pageDropSave);
                 if (result.Success)
                 {
                     Message.Success(result.Msg);
@@ -271,7 +248,7 @@ namespace BlazeGate.RBAC.Components.Pages.Page
             }
             catch (Exception ex)
             {
-                Message.Error($"异常:{ex.Message}");
+                Message.Error(string.Format(L["page.error"], ex.Message));
             }
             finally
             {

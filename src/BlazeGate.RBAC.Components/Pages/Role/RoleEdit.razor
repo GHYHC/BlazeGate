@@ -1,13 +1,14 @@
 ﻿@using AntDesign
 @using AntDesign.ProLayout
 @using BlazeGate.RBAC.Components.Models
+@inject Microsoft.Extensions.Localization.IStringLocalizer<BlazeGate.RBAC.Components.Resources.I18n> L
 
 <Modal Title="@Title" Width="700" Visible="@Visible" ConfirmLoading=Loading OnOk="()=>{Form.Submit();}" OnCancel="()=>{Visible=false;}" MaskClosable=false>
     <Form @ref="Form" Model="Model" Size="FormSize.Default" LabelColSpan="4" OnFinish="OnFinish" Loading=Loading ValidateMode="@FormValidateMode.Complex" ValidateOnChange>
-        <FormItem Label="角色名称">
+        <FormItem Label="@L["role.name"]">
             <Input @bind-Value="context.RoleName" AllowClear />
          </FormItem>        
-         <FormItem Label="角色页面">
+         <FormItem Label="@L["role.pages"]">
              <Card>
                  <CardGrid Style="width:100%;height:400px; overflow-x:hidden;overflow-y:auto;padding:10px;">
                      <Tree @ref="Tree"
@@ -21,13 +22,13 @@
                            IconExpression="x => x.DataItem.Icon"
                            KeyExpression="x => x.DataItem.Id.ToString()">
                          <TitleTemplate Context="item">
-                             @item.DataItem.Title @(item.DataItem.Type == 0 ? "(菜单)" : "(按钮)")
+                             @item.DataItem.Title @(item.DataItem.Type == 0 ? $"({L["role.menu"]})" : $"({L["role.button"]})")
                         </TitleTemplate>
                     </Tree>
                 </CardGrid>
             </Card>
         </FormItem>
-        <FormItem Label="备注">
+        <FormItem Label="@L["role.remark"]">
             <TextArea @bind-Value="context.Remark" AllowClear />
         </FormItem>
     </Form>

@@ -8,6 +8,8 @@ using BlazeGate.Model.WebApi.Response;
 using BlazeGate.Services.Interface;
 using Microsoft.AspNetCore.Components;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.Extensions.Localization;
+using BlazeGate.Dashboard.Resources;
 using static BlazeGate.Dashboard.Components.Pages.ServiceList;
 
 namespace BlazeGate.Dashboard.Components.Pages.Service
@@ -46,7 +48,7 @@ namespace BlazeGate.Dashboard.Components.Pages.Service
                 var result = await ServiceService.AddService();
                 if (result.Success)
                 {
-                    Message.Success("添加成功");
+                    Message.Success(L["service.add.success"].Value);
                     await ServiceList.LoadData();
                 }
                 else
@@ -56,7 +58,7 @@ namespace BlazeGate.Dashboard.Components.Pages.Service
             }
             catch (Exception ex)
             {
-                Message.Error($"添加异常:{ex.Message}");
+                Message.Error(string.Format(L["service.add.error"], ex.Message));
             }
         }
 
@@ -67,7 +69,7 @@ namespace BlazeGate.Dashboard.Components.Pages.Service
                 var result = await ServiceService.DeleteService(serviceId);
                 if (result.Success)
                 {
-                    Message.Success("删除成功");
+                    Message.Success(L["service.delete.success"].Value);
                     await ServiceList.LoadData();
                 }
                 else
@@ -77,7 +79,7 @@ namespace BlazeGate.Dashboard.Components.Pages.Service
             }
             catch (Exception ex)
             {
-                Message.Error($"删除异常:{ex.Message}");
+                Message.Error(string.Format(L["service.delete.error"], ex.Message));
             }
         }
 
@@ -110,7 +112,7 @@ namespace BlazeGate.Dashboard.Components.Pages.Service
             }
             catch (Exception ex)
             {
-                Message.Error($"修改异常:{ex.Message}");
+                Message.Error(string.Format(L["service.update.error"], ex.Message));
             }
         }
 
@@ -141,7 +143,7 @@ namespace BlazeGate.Dashboard.Components.Pages.Service
             }
             catch (Exception ex)
             {
-                Message.Error($"获取异常:{ex.Message}");
+                Message.Error(string.Format(L["service.get.error"], ex.Message));
             }
         }
 

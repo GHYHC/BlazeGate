@@ -2,21 +2,22 @@
 @layout UserLayout
 @page "/login"
 @attribute [ReuseTabsPage(Ignore = true)]
+@inject Microsoft.Extensions.Localization.IStringLocalizer<BlazeGate.RBAC.Components.Resources.I18n> L
 
 <div class="main__b__0">
     <div class="login">
         <Form Loading="Loading" Model="@Model" OnFinish="HandleSubmit">
-            <FormItem Rules='new FormValidationRule[] { new FormValidationRule { Required = true, Message = "账号不能为空" } }' Label="账号" LabelStyle="display: none;">
-                <AntDesign.Input Placeholder="账号" Size="InputSize.Large" @bind-Value="@context.Account">
+            <FormItem Rules='new FormValidationRule[] { new FormValidationRule { Required = true, Message = L["account.login.account.required"] } }' Label="@(L["account.login.account"] )" LabelStyle="display: none;">
+                <AntDesign.Input Placeholder="@(L["account.login.account"] )" Size="InputSize.Large" @bind-Value="@context.Account">
                     <Prefix><Icon Type="user" /></Prefix>
                 </AntDesign.Input>
             </FormItem>
-            <FormItem Rules='new FormValidationRule[] { new FormValidationRule { Required = true, Message = "密码不能为空" } }' Label="密码" LabelStyle="display: none;">
-                <AntDesign.InputPassword Placeholder="密码" Size="InputSize.Large" @bind-Value="@context.Password">
+            <FormItem Rules='new FormValidationRule[] { new FormValidationRule { Required = true, Message = L["account.login.password.required"] } }' Label="@(L["account.login.password"] )" LabelStyle="display: none;">
+                <AntDesign.InputPassword Placeholder="@(L["account.login.password"] )" Size="InputSize.Large" @bind-Value="@context.Password">
                     <Prefix><Icon Type="lock" /></Prefix>
                 </AntDesign.InputPassword>
             </FormItem>
-            <Button Type="ButtonType.Primary" HtmlType="submit" Class="submit" Size="ButtonSize.Large" Block>登录</Button>
+            <Button Type="ButtonType.Primary" HtmlType="submit" Class="submit" Size="ButtonSize.Large" Block>@L["account.login.button"]</Button>
         </Form>
     </div>
 </div>

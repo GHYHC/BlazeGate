@@ -7,6 +7,8 @@ using BlazeGate.Services.Interface;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Localization;
+using BlazeGate.RBAC.Components.Resources;
 using System.Linq;
 
 namespace BlazeGate.RBAC.Components.Pages.Role
@@ -27,7 +29,7 @@ namespace BlazeGate.RBAC.Components.Pages.Role
 
         private Form<RoleSave> Form { get; set; }
 
-        private string Title { get; set; } = "新增";
+        private string Title { get; set; } = string.Empty;
 
         private Tree<PageNode> Tree { get; set; }
         private List<PageNode> TreeList { get; set; } = new List<PageNode>();
@@ -60,12 +62,12 @@ namespace BlazeGate.RBAC.Components.Pages.Role
 
             if (rolePageInfo == null)
             {
-                Title = "新增";
+                Title = L["role.add"];
             }
             else
             {
                 await LoadData(rolePageInfo);
-                Title = "编辑";
+                Title = L["role.edit"];
             }
 
             StateHasChanged();
@@ -113,7 +115,7 @@ namespace BlazeGate.RBAC.Components.Pages.Role
             }
             catch (Exception ex)
             {
-                Message.Error($"获取数据异常:{ex.Message}");
+                Message.Error(string.Format(L["role.get.error"], ex.Message));
             }
             finally
             {
@@ -150,7 +152,7 @@ namespace BlazeGate.RBAC.Components.Pages.Role
             }
             catch (Exception ex)
             {
-                Message.Error($"{Title}异常:{ex.Message}");
+                Message.Error(string.Format(L["role.save.error"], Title, ex.Message));
             }
             finally
             {
@@ -182,7 +184,7 @@ namespace BlazeGate.RBAC.Components.Pages.Role
             }
             catch (Exception ex)
             {
-                Message.Error($"获取数据异常:{ex.Message}");
+                Message.Error(string.Format(L["role.page.get.error"], ex.Message));
             }
             finally
             {

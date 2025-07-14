@@ -1,8 +1,10 @@
 ﻿@using AntDesign.ProLayout
 @using BlazeGate.Dashboard.Components.Share
+@using BlazeGate.Dashboard.Resources
+@using Microsoft.Extensions.Localization
 @inherits LayoutComponentBase
 
-<AntDesign.ProLayout.BasicLayout Logo="@("assets/logo.svg")" MenuData="_menuData">
+<AntDesign.ProLayout.BasicLayout Logo="@("assets/logo.svg")" MenuData="MenuData">
     <RightContentRender>
         <RightContent></RightContent>
     </RightContentRender>
@@ -17,23 +19,26 @@
 
 @code
 {
-    private readonly MenuDataItem[] _menuData =
-    {
+    [Inject]
+    private IStringLocalizer<I18n> L { get; set; }
+
+    private MenuDataItem[] MenuData =>
+    [
         new MenuDataItem
         {
             Path = "/",
-            Name = "服务管理",
+            Name = L["menu.serviceManagement"],
             Key = "service",
             Icon = "smile",
         },
         new MenuDataItem
         {
             Path = "/user",
-            Name = "用户管理",
+            Name = L["menu.userManagement"],
             Key = "user",
             Icon = "smile",
         }
-    };
+    ];
 
     public LinkItem[] Links { get; set; } = new LinkItem[] { };
 }

@@ -2,6 +2,8 @@
 using BlazeGate.Dashboard.Components.Share;
 using BlazeGate.Dashboard.Models;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
+using BlazeGate.Dashboard.Resources;
 using static BlazeGate.Dashboard.Components.Share.Ajax;
 
 namespace BlazeGate.Dashboard.Components.Pages.Account
@@ -55,7 +57,7 @@ namespace BlazeGate.Dashboard.Components.Pages.Account
             }
             catch (Exception ex)
             {
-                Message.Error("登录异常");
+                Message.Error(L["account.login.error"].Value);
             }
             finally
             {

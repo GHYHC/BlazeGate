@@ -5,10 +5,10 @@ namespace BlazeGate.Dashboard.Models
 {
     public class LoginParams
     {
-        [Required(ErrorMessage = "账号不能为空")]
+        [Required]
         public string UserName { get; set; }
 
-        [Required(ErrorMessage = "密码不能为空")]
+        [Required]
         public string Password { get; set; }
     }
 }
