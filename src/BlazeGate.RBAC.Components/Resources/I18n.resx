@@ -342,10 +342,76 @@
   <data name="role.get.error" xml:space="preserve">
     <value>Get data error: {0}</value>
   </data>
-  <data name="role.page.get.error" xml:space="preserve">
+  <data name="role.delete.error" xml:space="preserve">
+    <value>Delete error: {0}</value>
+  </data>
+  <data name="role.edit.title.add" xml:space="preserve">
+    <value>Add Role</value>
+  </data>
+  <data name="role.edit.title.edit" xml:space="preserve">
+    <value>Edit Role</value>
+  </data>
+  <data name="role.edit.get.error" xml:space="preserve">
+    <value>Get role data failed: {0}</value>
+  </data>
+  <data name="role.edit.save.error" xml:space="preserve">
+    <value>Role save failed: {0}</value>
+  </data>
+  <data name="role.edit.page.get.error" xml:space="preserve">
     <value>Get page data failed: {0}</value>
   </data>
-  <data name="role.save.error" xml:space="preserve">
-    <value>{0} error: {1}</value>
+  <data name="userRole.index.userName" xml:space="preserve">
+    <value>User Name</value>
+  </data>
+  <data name="userRole.index.account" xml:space="preserve">
+    <value>Account</value>
+  </data>
+  <data name="userRole.index.query" xml:space="preserve">
+    <value>Query</value>
+  </data>
+  <data name="userRole.index.add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="userRole.index.action" xml:space="preserve">
+    <value>Action</value>
+  </data>
+  <data name="userRole.index.edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="userRole.index.delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="userRole.index.delete.confirm" xml:space="preserve">
+    <value>Are you sure to delete this data?</value>
+  </data>
+  <data name="userRole.index.role" xml:space="preserve">
+    <value>Role</value>
+  </data>
+  <data name="userRole.index.get.error" xml:space="preserve">
+    <value>Get user role data failed: {0}</value>
+  </data>
+  <data name="userRole.index.delete.error" xml:space="preserve">
+    <value>Delete user role failed: {0}</value>
+  </data>
+  <data name="userRole.edit.userName" xml:space="preserve">
+    <value>User Name</value>
+  </data>
+  <data name="userRole.edit.role" xml:space="preserve">
+    <value>User Role</value>
+  </data>
+  <data name="userRole.edit.title.add" xml:space="preserve">
+    <value>Add User Role</value>
+  </data>
+  <data name="userRole.edit.title.edit" xml:space="preserve">
+    <value>Edit User Role</value>
+  </data>
+  <data name="userRole.edit.get.error" xml:space="preserve">
+    <value>Get user role data failed: {0}</value>
+  </data>
+  <data name="userRole.edit.save.error" xml:space="preserve">
+    <value>User role save failed: {0}</value>
+  </data>
+  <data name="userRole.edit.action.error" xml:space="preserve">
+    <value>Operation error: {0}</value>
   </data>
 </root>

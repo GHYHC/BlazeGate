@@ -3,43 +3,44 @@
 @using AntDesign
 @using AntDesign.ProLayout
 @using AntDesign.TableModels
+@inject Microsoft.Extensions.Localization.IStringLocalizer<BlazeGate.RBAC.Components.Resources.I18n> L
 
 <GridContent>
     <Card Style="margin-bottom: 8px">
         <Form Model="SearchModel" Layout="@FormLayout.Inline" OnFinish="()=>{Table.ReloadData();}">
-            <FormItem Label="用户名称">
+            <FormItem Label="@L["userRole.index.userName"]">
                 <Input @bind-Value="context.UserName" Style="width:183px" AllowClear />
             </FormItem>
-            <FormItem Label="账号">
+            <FormItem Label="@L["userRole.index.account"]">
                 <Input @bind-Value="context.Account" Style="width:183px" AllowClear />
             </FormItem>
             <FormItem>
                 <Button Type="@ButtonType.Primary" HtmlType="submit">
-                    查询
+                    @L["userRole.index.query"]
                 </Button>
                 <Button Type="@ButtonType.Primary" OnClick="async ()=>{await UserRoleEdit.ShowAsync(ServiceName,null);}">
-                    添加
+                    @L["userRole.index.add"]
                 </Button>
             </FormItem>
         </Form>
     </Card>
     <Card>
         <Table @ref="Table" TItem="BlazeGate.Model.WebApi.Response.UserRoleInfo" Loading="Loading" Total="Total" DataSource="DataList" OnChange="OnChange" ScrollX="100%" RemoteDataSource Bordered Resizable>
-            <ActionColumn Width="140" Title="操作" Fixed="ColumnFixPlacement.Left">
+            <ActionColumn Width="140" Title="@L["userRole.index.action"]" Fixed="ColumnFixPlacement.Left">
                 <Space Size="SpaceSize.Small" Direction="SpaceDirection.Horizontal">
                     <SpaceItem>
-                        <a @onclick="async ()=>{await UserRoleEdit.ShowAsync(ServiceName,context);}">编辑</a>
+                        <a @onclick="async ()=>{await UserRoleEdit.ShowAsync(ServiceName,context);}">@L["userRole.index.edit"]</a>
                     </SpaceItem>
                     <SpaceItem>
-                        <Popconfirm Title="您确定要删除此数据吗？" OnConfirm="async ()=>{await OnRemove(context.User.Id); Table.ReloadData(Table.GetQueryModel());}">
-                            <a>删除</a>
+                        <Popconfirm Title="@L["userRole.index.delete.confirm"]" OnConfirm="async ()=>{await OnRemove(context.User.Id); Table.ReloadData(Table.GetQueryModel());}">
+                            <a>@L["userRole.index.delete"]</a>
                         </Popconfirm>
                     </SpaceItem>
                 </Space>
             </ActionColumn>
-            <PropertyColumn Title="用户名称" Property="c=>c.User.UserName" Ellipsis />
-            <PropertyColumn Title="账号" Property="c=>c.User.Account" Ellipsis />
-            <PropertyColumn Title="角色" Property="c=>c.Roles" Ellipsis>
+            <PropertyColumn Title="@L["userRole.index.userName"]" Property="c=>c.User.UserName" Ellipsis />
+            <PropertyColumn Title="@L["userRole.index.account"]" Property="c=>c.User.Account" Ellipsis />
+            <PropertyColumn Title="@L["userRole.index.role"]" Property="c=>c.Roles" Ellipsis>
                 @string.Join(",", context.Roles.Select(x => x.RoleName))
             </PropertyColumn>
         </Table>

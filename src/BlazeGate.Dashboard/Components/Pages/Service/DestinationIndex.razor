@@ -1,10 +1,11 @@
-﻿<GridContent>
+﻿@inject Microsoft.Extensions.Localization.IStringLocalizer<BlazeGate.Dashboard.Resources.I18n> L
+<GridContent>
     <Card Style="margin-bottom: 8px">
         <Form Model="SearchModel" Layout="@FormLayout.Inline" OnFinish="()=>{Table.ReloadData();}">
-            <FormItem Label="地址">
+            <FormItem Label="@L["destination.index.address"]">
                 <Input @bind-Value="context.Address" Style="width:183px" AllowClear />
             </FormItem>
-            <FormItem Label="主动健康状态">
+            <FormItem Label="@L["destination.index.activeHealthState"]">
                 <SimpleSelect @bind-Value="context.ActiveHealthState" Style="width:183px" AllowClear>
                     <SelectOptions>
                         <SimpleSelectOption Value="Unknown" Label="Unknown"></SimpleSelectOption>
@@ -13,7 +14,7 @@
                     </SelectOptions>
                 </SimpleSelect>
             </FormItem>
-            <FormItem Label="被动健康状态">
+            <FormItem Label="@L["destination.index.passiveHealthState"]">
                 <SimpleSelect @bind-Value="context.PassiveHealthState" Style="width:183px" AllowClear>
                     <SelectOptions>
                         <SimpleSelectOption Value="Unknown" Label="Unknown"></SimpleSelectOption>
@@ -24,30 +25,30 @@
             </FormItem>
             <FormItem>
                 <Button Type="@ButtonType.Primary" HtmlType="submit">
-                    查询
+                    @L["destination.index.query"]
                 </Button>
                 <Button Type="@ButtonType.Primary" OnClick="async ()=>{await DestinationEdit.ShowAsync(context.Address,context.ServiceName,context.Token);}">
-                    添加
+                    @L["destination.index.add"]
                 </Button>
             </FormItem>
         </Form>
     </Card>
     <Card>
         <Table @ref="Table" TItem="BlazeGate.Model.EFCore.Destination" Loading="Loading" Total="Total" DataSource="DataList" OnChange="OnChange" ScrollX="100%" HidePagination RemoteDataSource Bordered Resizable>
-            <ActionColumn Width="140" Title="操作" Fixed="ColumnFixPlacement.Left">
+            <ActionColumn Width="140" Title="@L["destination.index.action"]" Fixed="ColumnFixPlacement.Left">
                 <Space Size=@("middle") Direction="SpaceDirection.Horizontal">
                     <SpaceItem>
-                        <Popconfirm Title="您确定要删除此数据吗？" OnConfirm="async ()=>{await OnRemove(context.Address); Table.ReloadData(Table.GetQueryModel());}">
-                            <a>删除</a>
+                        <Popconfirm Title="@L["destination.index.delete.confirm"]" OnConfirm="async ()=>{await OnRemove(context.Address); Table.ReloadData(Table.GetQueryModel());}">
+                            <a>@L["destination.index.delete"]</a>
                         </Popconfirm>
                     </SpaceItem>
                 </Space>
             </ActionColumn>
-            <PropertyColumn Title="地址" Property="c=>c.Address" Ellipsis />
-            <PropertyColumn Title="主动健康状态" Property="c=>c.ActiveHealthState" Ellipsis>
+            <PropertyColumn Title="@L["destination.index.address"]" Property="c=>c.Address" Ellipsis />
+            <PropertyColumn Title="@L["destination.index.activeHealthState"]" Property="c=>c.ActiveHealthState" Ellipsis>
                 <Text Type="GetTextTypeByHealthState(context.ActiveHealthState)">@context.ActiveHealthState</Text>
             </PropertyColumn>
-            <PropertyColumn Title="被动健康状态" Property="c=>c.PassiveHealthState" Ellipsis>
+            <PropertyColumn Title="@L["destination.index.passiveHealthState"]" Property="c=>c.PassiveHealthState" Ellipsis>
                 <Text Type="GetTextTypeByHealthState(context.PassiveHealthState)">@context.PassiveHealthState</Text>
             </PropertyColumn>
         </Table>

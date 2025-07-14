@@ -1,9 +1,10 @@
 ﻿@using AntDesign
 @using AntDesign.ProLayout
+@inject Microsoft.Extensions.Localization.IStringLocalizer<BlazeGate.RBAC.Components.Resources.I18n> L
 
 <Modal Title="@Title" Width="700" Visible="@Visible" ConfirmLoading=Loading OnOk="()=>{Form.Submit();}" OnCancel="()=>{Visible=false;}" MaskClosable=false DestroyOnClose>
     <Form @ref="Form" Model="UserRoleSave" Size="@FormSize.Default" ValidateMode="@FormValidateMode.Complex" OnFinish="OnFinish" LabelColSpan="4" Loading=Loading>
-        <FormItem Label="用户名称">
+        <FormItem Label="@L["userRole.edit.userName"]">
             <Select Disabled="!UserRoleSave.IsAdd"
                     DataSource="UserInfoList"
                     @bind-Value="UserRoleSave.UserId"
@@ -23,7 +24,7 @@
                 </ItemTemplate>
             </Select>
         </FormItem>
-        <FormItem Label="用户角色">
+        <FormItem Label="@L["userRole.edit.role"]">
             <Select Mode="SelectMode.Multiple"
                     TItem="BlazeGate.Model.EFCore.Role"
                     TItemValue="long"

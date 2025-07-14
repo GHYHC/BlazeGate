@@ -43,7 +43,7 @@ namespace BlazeGate.Dashboard.Components.Pages.Service
             }
             catch (Exception ex)
             {
-                Message.Error("加载异常:" + ex.Message);
+                Message.Error(string.Format(L["authWhiteList.load.error"], ex.Message));
             }
         }
 
@@ -70,7 +70,7 @@ namespace BlazeGate.Dashboard.Components.Pages.Service
                 var result = await authWhiteListService.SaveWhiteList(ServiceName, authWhiteLists);
                 if (result.Success)
                 {
-                    Message.Success("保存成功");
+                    Message.Success(L["authWhiteList.save.success"].Value);
                 }
                 else
                 {
@@ -79,7 +79,7 @@ namespace BlazeGate.Dashboard.Components.Pages.Service
             }
             catch (Exception ex)
             {
-                Message.Error("保存异常:" + ex.Message);
+                Message.Error(string.Format(L["authWhiteList.save.error"], ex.Message));
             }
         }
     }

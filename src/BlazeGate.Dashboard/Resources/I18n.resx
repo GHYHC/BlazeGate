@@ -234,4 +234,243 @@
   <data name="account.login.error" xml:space="preserve">
     <value>Login error</value>
   </data>
+  <data name="authRsaKey.publicKey" xml:space="preserve">
+    <value>Public Key</value>
+  </data>
+  <data name="authRsaKey.privateKey" xml:space="preserve">
+    <value>Private Key</value>
+  </data>
+  <data name="authRsaKey.save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="authRsaKey.save.success" xml:space="preserve">
+    <value>Save succeeded!</value>
+  </data>
+  <data name="authRsaKey.save.error" xml:space="preserve">
+    <value>Save error: {0}</value>
+  </data>
+  <data name="authRsaKey.generate" xml:space="preserve">
+    <value>Generate New Key</value>
+  </data>
+  <data name="authRsaKey.generate.error" xml:space="preserve">
+    <value>Generate key error: {0}</value>
+  </data>
+  <data name="authRsaKey.load.error" xml:space="preserve">
+    <value>Load error: {0}</value>
+  </data>
+  <data name="authWhiteList.placeholder" xml:space="preserve">
+    <value>1. Addresses in the whitelist can be accessed without login authentication, one per line.  2. You can add * after the address to match only the part before *, e.g. /api/Test/*</value>
+  </data>
+  <data name="authWhiteList.save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="authWhiteList.tips" xml:space="preserve">
+    <value>1. Addresses in the whitelist can be accessed without login authentication. Enter one per line.
+&lt;br /&gt;
+2. You can add * at the end of an address to match only the part before the , for example: /api/Test/*.</value>
+  </data>
+  <data name="authWhiteList.save.success" xml:space="preserve">
+    <value>Save succeeded</value>
+  </data>
+  <data name="authWhiteList.save.error" xml:space="preserve">
+    <value>Save error: {0}</value>
+  </data>
+  <data name="authWhiteList.load.error" xml:space="preserve">
+    <value>Load error: {0}</value>
+  </data>
+  <data name="destination.index.address" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="destination.index.activeHealthState" xml:space="preserve">
+    <value>Active Health State</value>
+  </data>
+  <data name="destination.index.passiveHealthState" xml:space="preserve">
+    <value>Passive Health State</value>
+  </data>
+  <data name="destination.index.query" xml:space="preserve">
+    <value>Query</value>
+  </data>
+  <data name="destination.index.add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="destination.index.action" xml:space="preserve">
+    <value>Action</value>
+  </data>
+  <data name="destination.index.delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="destination.index.delete.confirm" xml:space="preserve">
+    <value>Are you sure to delete this data?</value>
+  </data>
+  <data name="destination.index.get.error" xml:space="preserve">
+    <value>Get destination data failed: {0}</value>
+  </data>
+  <data name="destination.index.delete.error" xml:space="preserve">
+    <value>Delete destination failed: {0}</value>
+  </data>
+  <data name="serviceConfig.name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="serviceConfig.loadBalancingPolicy" xml:space="preserve">
+    <value>Load Balancing Policy</value>
+  </data>
+  <data name="serviceConfig.loadBalancingPolicy.firstAlphabetical" xml:space="preserve">
+    <value>FirstAlphabetical (Select the first available target in alphabetical order, useful for dual-target failover systems)</value>
+  </data>
+  <data name="serviceConfig.loadBalancingPolicy.random" xml:space="preserve">
+    <value>Random (Select a target randomly)</value>
+  </data>
+  <data name="serviceConfig.loadBalancingPolicy.roundRobin" xml:space="preserve">
+    <value>RoundRobin (Select targets in a round-robin fashion)</value>
+  </data>
+  <data name="serviceConfig.loadBalancingPolicy.leastRequests" xml:space="preserve">
+    <value>LeastRequests (Select the target with the fewest assigned requests, requires checking all targets)</value>
+  </data>
+  <data name="serviceConfig.loadBalancingPolicy.powerOfTwoChoices" xml:space="preserve">
+    <value>PowerOfTwoChoices (Select two random targets, then choose the one with the fewest assigned requests)</value>
+  </data>
+  <data name="serviceConfig.authorizationPolicy" xml:space="preserve">
+    <value>Authorization Policy</value>
+  </data>
+  <data name="serviceConfig.authorizationPolicy.default" xml:space="preserve">
+    <value>Default, requires authentication</value>
+  </data>
+  <data name="serviceConfig.authorizationPolicy.anonymous" xml:space="preserve">
+    <value>Anonymous, no authentication or authorization required</value>
+  </data>
+  <data name="serviceConfig.authorizationPolicy.rbac" xml:space="preserve">
+    <value>Role-based access control</value>
+  </data>
+  <data name="serviceConfig.none" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="serviceConfig.rateLimiterPolicy" xml:space="preserve">
+    <value>Rate Limiter Policy</value>
+  </data>
+  <data name="serviceConfig.requestTimeout" xml:space="preserve">
+    <value>Request Timeout</value>
+  </data>
+  <data name="serviceConfig.second" xml:space="preserve">
+    <value>seconds</value>
+  </data>
+  <data name="serviceConfig.minute" xml:space="preserve">
+    <value>minute</value>
+  </data>
+  <data name="serviceConfig.activeHealthCheck" xml:space="preserve">
+    <value>Active Health Check</value>
+  </data>
+  <data name="serviceConfig.activeHealthCheck.tooltip" xml:space="preserve">
+    <value>Periodically send check requests to the specified address and monitor server health based on the response.</value>
+  </data>
+  <data name="serviceConfig.activeHealthCheck.policy" xml:space="preserve">
+    <value>Check Policy</value>
+  </data>
+  <data name="serviceConfig.activeHealthCheck.policy.consecutiveFailures" xml:space="preserve">
+    <value>ConsecutiveFailures (Mark as unhealthy after a set number of consecutive failures)</value>
+  </data>
+  <data name="serviceConfig.activeHealthCheck.path" xml:space="preserve">
+    <value>Check Path</value>
+  </data>
+  <data name="serviceConfig.passiveHealthCheck" xml:space="preserve">
+    <value>Passive Health Check</value>
+  </data>
+  <data name="serviceConfig.passiveHealthCheck.tooltip" xml:space="preserve">
+    <value>Monitor server health by passively listening to the success or failure of target responses.</value>
+  </data>
+  <data name="serviceConfig.passiveHealthCheck.policy" xml:space="preserve">
+    <value>Check Policy</value>
+  </data>
+  <data name="serviceConfig.passiveHealthCheck.policy.transportFailureRate" xml:space="preserve">
+    <value>Mark as unhealthy if the failure rate within one minute reaches the set threshold.</value>
+  </data>
+  <data name="serviceConfig.passiveHealthCheck.policy.firstUnsuccessfulResponse" xml:space="preserve">
+    <value>Mark as unhealthy on the first failure.</value>
+  </data>
+  <data name="serviceConfig.passiveHealthCheck.reactivationPeriod" xml:space="preserve">
+    <value>Reactivation Period</value>
+  </data>
+  <data name="serviceConfig.passiveHealthCheck.reactivationPeriod.tooltip" xml:space="preserve">
+    <value>After the set time, reset the unhealthy target to Unknown and resume traffic.</value>
+  </data>
+  <data name="serviceConfig.passiveHealthCheck.failureRate" xml:space="preserve">
+    <value>Failure Rate</value>
+  </data>
+  <data name="serviceConfig.passiveHealthCheck.failureRate.tooltip" xml:space="preserve">
+    <value>Failure rate = failures within one minute / total requests (10)</value>
+  </data>
+  <data name="serviceConfig.sessionAffinity" xml:space="preserve">
+    <value>Session Affinity</value>
+  </data>
+  <data name="serviceConfig.sessionAffinity.tooltip" xml:space="preserve">
+    <value>Session affinity ensures a user's related operations are always handled by the same server.</value>
+  </data>
+  <data name="serviceConfig.sessionAffinity.policy" xml:space="preserve">
+    <value>Session Policy</value>
+  </data>
+  <data name="serviceConfig.sessionAffinity.policy.hashCookie" xml:space="preserve">
+    <value>HashCookie (Put the key in a cookie and use Hash64 encryption)</value>
+  </data>
+  <data name="serviceConfig.sessionAffinity.policy.arrCookie" xml:space="preserve">
+    <value>ArrCookie (Put the key in a cookie and use SHA-256 encryption)</value>
+  </data>
+  <data name="serviceConfig.sessionAffinity.policy.cookie" xml:space="preserve">
+    <value>Cookie (Put the key in a cookie)</value>
+  </data>
+  <data name="serviceConfig.sessionAffinity.policy.customHeader" xml:space="preserve">
+    <value>CustomHeader (Put the key in the request header)</value>
+  </data>
+  <data name="serviceConfig.sessionAffinity.failurePolicy" xml:space="preserve">
+    <value>Failure Policy</value>
+  </data>
+  <data name="serviceConfig.sessionAffinity.failurePolicy.redistribute" xml:space="preserve">
+    <value>Redistribute (Establish a new association from healthy targets)</value>
+  </data>
+  <data name="serviceConfig.sessionAffinity.failurePolicy.return503Error" xml:space="preserve">
+    <value>Return503Error (Return 503 status, request will be terminated)</value>
+  </data>
+  <data name="serviceConfig.sessionAffinity.keyName" xml:space="preserve">
+    <value>Session Key Name</value>
+  </data>
+  <data name="serviceConfig.sessionAffinity.cookieHttpOnly" xml:space="preserve">
+    <value>Cookie HttpOnly</value>
+  </data>
+  <data name="serviceConfig.sessionAffinity.cookieMaxAge" xml:space="preserve">
+    <value>Cookie MaxAge</value>
+  </data>
+  <data name="serviceConfig.save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="serviceConfig.copy" xml:space="preserve">
+    <value>Copy Destination Config</value>
+  </data>
+  <data name="serviceConfig.activeHealthCheck.threshold" xml:space="preserve">
+    <value>Failure Threshold</value>
+  </data>
+  <data name="serviceConfig.activeHealthCheck.interval" xml:space="preserve">
+    <value>Interval</value>
+  </data>
+  <data name="serviceConfig.activeHealthCheck.timeout" xml:space="preserve">
+    <value>Timeout</value>
+  </data>
+  <data name="serviceConfig.activeHealthCheck.removeUnhealthy" xml:space="preserve">
+    <value>Remove Unhealthy Target</value>
+  </data>
+  <data name="serviceConfig.load.error" xml:space="preserve">
+    <value>Get failed: {0}</value>
+  </data>
+  <data name="serviceConfig.save.error" xml:space="preserve">
+    <value>Save error: {0}</value>
+  </data>
+  <data name="serviceConfig.copy.success" xml:space="preserve">
+    <value>Copy succeeded!</value>
+  </data>
+  <data name="serviceConfig.copy.failure" xml:space="preserve">
+    <value>Copy failure!</value>
+  </data>
+  <data name="serviceConfig.copy.error" xml:space="preserve">
+    <value>Copy error: {0}</value>
+  </data>
+  <data name="serviceConfig.activeHealthCheck.removeUnhealthy.tooltip" xml:space="preserve">
+    <value>Automatically remove unhealthy targets after the specified minutes during active health checks. Set to 0 to disable removal.</value>
+  </data>
 </root>

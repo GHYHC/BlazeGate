@@ -28,9 +28,8 @@ namespace BlazeGate.Model.WebApi.Request
         /// <summary>
         /// 角色名称
         /// </summary>
-        [Display(Name = "角色名称")]
-        [Required(ErrorMessage = ErrorMessage.Required)]
-        [StringLength(64, ErrorMessage = ErrorMessage.StringLength)]
+        [Required]
+        [StringLength(64)]
         public string RoleName { get; set; }
 
         /// <summary>

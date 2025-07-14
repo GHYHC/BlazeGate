@@ -7,8 +7,6 @@ using BlazeGate.Services.Interface;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Localization;
-using BlazeGate.RBAC.Components.Resources;
 using System.Linq;
 
 namespace BlazeGate.RBAC.Components.Pages.Role
@@ -29,7 +27,7 @@ namespace BlazeGate.RBAC.Components.Pages.Role
 
         private Form<RoleSave> Form { get; set; }
 
-        private string Title { get; set; } = string.Empty;
+        private string Title { get; set; } = "新增";
 
         private Tree<PageNode> Tree { get; set; }
         private List<PageNode> TreeList { get; set; } = new List<PageNode>();
@@ -62,12 +60,12 @@ namespace BlazeGate.RBAC.Components.Pages.Role
 
             if (rolePageInfo == null)
             {
-                Title = L["role.add"];
+                Title = L["role.edit.title.add"];
             }
             else
             {
                 await LoadData(rolePageInfo);
-                Title = L["role.edit"];
+                Title = L["role.edit.title.edit"];
             }
 
             StateHasChanged();
@@ -115,7 +113,7 @@ namespace BlazeGate.RBAC.Components.Pages.Role
             }
             catch (Exception ex)
             {
-                Message.Error(string.Format(L["role.get.error"], ex.Message));
+                Message.Error(string.Format(L["role.edit.get.error"], ex.Message));
             }
             finally
             {
@@ -152,7 +150,7 @@ namespace BlazeGate.RBAC.Components.Pages.Role
             }
             catch (Exception ex)
             {
-                Message.Error(string.Format(L["role.save.error"], Title, ex.Message));
+                Message.Error(string.Format(L["role.edit.save.error"], ex.Message));
             }
             finally
             {
@@ -184,7 +182,7 @@ namespace BlazeGate.RBAC.Components.Pages.Role
             }
             catch (Exception ex)
             {
-                Message.Error(string.Format(L["role.page.get.error"], ex.Message));
+                Message.Error(string.Format(L["role.edit.page.get.error"], ex.Message));
             }
             finally
             {

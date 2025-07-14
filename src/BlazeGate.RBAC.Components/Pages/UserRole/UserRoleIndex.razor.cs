@@ -63,7 +63,7 @@ namespace BlazeGate.RBAC.Components.Pages.UserRole
             }
             catch (Exception ex)
             {
-                Message.Error($"获取数据异常:{ex.Message}");
+                Message.Error(string.Format(L["userRole.index.get.error"], ex.Message));
             }
             finally
             {
@@ -89,7 +89,7 @@ namespace BlazeGate.RBAC.Components.Pages.UserRole
             }
             catch (Exception ex)
             {
-                Message.Error($"删除异常:{ex.Message}");
+                Message.Error(string.Format(L["userRole.index.delete.error"], ex.Message));
             }
             finally
             {

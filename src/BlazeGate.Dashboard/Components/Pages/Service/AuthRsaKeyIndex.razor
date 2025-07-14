@@ -2,21 +2,22 @@
 @using System.Security.Cryptography
 @using BlazeGate.Services.Interface
 @using Newtonsoft.Json
+@inject Microsoft.Extensions.Localization.IStringLocalizer<BlazeGate.Dashboard.Resources.I18n> L
 
-<Form Model="Model" Loading="Loading" OnFinish="Save">
-    <FormItem Label="公钥" Rules="new FormValidationRule[] { new FormValidationRule { Required = true } }">
+<Form Model="Model" Loading="Loading" OnFinish="Save" LabelColSpan="2">
+    <FormItem Label="@L["authRsaKey.publicKey"]" Rules="new FormValidationRule[] { new FormValidationRule { Required = true } }">
         <TextArea @bind-Value="context.PublicKey" Rows="9"></TextArea>
     </FormItem>
-    <FormItem Label="私钥" Rules="new FormValidationRule[] { new FormValidationRule { Required = true } }">
+    <FormItem Label="@L["authRsaKey.privateKey"]" Rules="new FormValidationRule[] { new FormValidationRule { Required = true } }">
         <TextArea @bind-Value="context.PrivateKey" Rows="9"></TextArea>
     </FormItem>
-    <FormItem WrapperColOffset="1">
+    <FormItem Label="" WrapperColOffset="2">
         <Space>
             <SpaceItem>
-                <Button Type="@ButtonType.Primary" HtmlType="submit">保存</Button>
+                <Button Type="@ButtonType.Primary" HtmlType="submit">@L["authRsaKey.save"]</Button>
             </SpaceItem>
             <SpaceItem>
-                <Button Type="@ButtonType.Primary" OnClick="CreateKey">生成新秘钥</Button>
+                <Button Type="@ButtonType.Primary" OnClick="CreateKey">@L["authRsaKey.generate"]</Button>
             </SpaceItem>
         </Space>
     </FormItem>
@@ -54,7 +55,7 @@
             var result = await AuthRsaKeyService.SaveAuthRsaKey(ServiceName, Model);
             if (result.Success)
             {
-                Message.Success("保存成功！");
+                Message.Success(L["authRsaKey.save.success"].Value);
             }
             else
             {
@@ -63,7 +64,7 @@
         }
         catch (Exception ex)
         {
-            Message.Error("保存异常: " + ex.Message);
+            Message.Error(string.Format(L["authRsaKey.save.error"], ex.Message));
         }
         finally
         {
@@ -96,7 +97,7 @@
         }
         catch (Exception ex)
         {
-            Message.Error("加载异常: " + ex.Message);
+            Message.Error(string.Format(L["authRsaKey.load.error"], ex.Message));
         }
         finally
         {
@@ -127,7 +128,7 @@
         }
         catch (Exception ex)
         {
-            Message.Error("生成秘钥异常: " + ex.Message);
+            Message.Error(string.Format(L["authRsaKey.generate.error"], ex.Message));
         }
         finally
         {

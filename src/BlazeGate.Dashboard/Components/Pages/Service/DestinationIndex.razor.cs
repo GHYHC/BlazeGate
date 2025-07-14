@@ -63,7 +63,7 @@ namespace BlazeGate.Dashboard.Components.Pages.Service
             }
             catch (Exception ex)
             {
-                Message.Error($"获取数据异常:{ex.Message}");
+                Message.Error(string.Format(L["destination.index.get.error"], ex.Message));
             }
             finally
             {
@@ -94,7 +94,7 @@ namespace BlazeGate.Dashboard.Components.Pages.Service
             }
             catch (Exception ex)
             {
-                Message.Error($"删除异常:{ex.Message}");
+                Message.Error(string.Format(L["destination.index.delete.error"], ex.Message));
             }
             finally
             {

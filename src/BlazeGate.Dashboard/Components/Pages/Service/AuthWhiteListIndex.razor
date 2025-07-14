@@ -1,11 +1,10 @@
-﻿<TextArea @bind-Value="@AuthWhiteListStr" Rows="16" Placeholder="1.白名单中地址不用登录认证就可以访问，一行填写一个  2.可以在地址后面填写*，表示只匹配*前面的地址，如/api/Test/*" />
+﻿@inject Microsoft.Extensions.Localization.IStringLocalizer<BlazeGate.Dashboard.Resources.I18n> L
+<TextArea @bind-Value="@AuthWhiteListStr" Rows="16" Placeholder="@L["authWhiteList.placeholder"]"></TextArea>
 <div style="margin-top: 8px;position: relative;">
     <Button Type="@ButtonType.Primary" OnClick="Save">
-        保存
+        @L["authWhiteList.save"]
     </Button>
     <Text Style="position: absolute;top: 0px;right: 0px;" Type="TextElementType.Secondary">
-        1.白名单中地址不用登录认证就可以访问，一行填写一个。
-        <br />
-        2.可以在地址后面填写*，表示只匹配*前面的地址，如/api/Test/*。
+        @(new MarkupString(L["authWhiteList.tips"]))
     </Text>
 </div>

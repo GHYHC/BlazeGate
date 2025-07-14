@@ -313,7 +313,7 @@
     <value>查询</value>
   </data>
   <data name="role.add" xml:space="preserve">
-    <value>新增</value>
+    <value>添加</value>
   </data>
   <data name="role.action" xml:space="preserve">
     <value>操作</value>
@@ -342,10 +342,76 @@
   <data name="role.get.error" xml:space="preserve">
     <value>获取数据异常:{0}</value>
   </data>
-  <data name="role.page.get.error" xml:space="preserve">
+  <data name="role.delete.error" xml:space="preserve">
+    <value>删除异常:{0}</value>
+  </data>
+  <data name="role.edit.title.add" xml:space="preserve">
+    <value>新增角色</value>
+  </data>
+  <data name="role.edit.title.edit" xml:space="preserve">
+    <value>编辑角色</value>
+  </data>
+  <data name="role.edit.get.error" xml:space="preserve">
+    <value>获取角色数据失败，{0}</value>
+  </data>
+  <data name="role.edit.save.error" xml:space="preserve">
+    <value>角色保存失败，{0}</value>
+  </data>
+  <data name="role.edit.page.get.error" xml:space="preserve">
     <value>获取页面数据失败，{0}</value>
   </data>
-  <data name="role.save.error" xml:space="preserve">
-    <value>{0}异常:{1}</value>
+  <data name="userRole.index.userName" xml:space="preserve">
+    <value>用户名称</value>
+  </data>
+  <data name="userRole.index.account" xml:space="preserve">
+    <value>账号</value>
+  </data>
+  <data name="userRole.index.query" xml:space="preserve">
+    <value>查询</value>
+  </data>
+  <data name="userRole.index.add" xml:space="preserve">
+    <value>添加</value>
+  </data>
+  <data name="userRole.index.action" xml:space="preserve">
+    <value>操作</value>
+  </data>
+  <data name="userRole.index.edit" xml:space="preserve">
+    <value>编辑</value>
+  </data>
+  <data name="userRole.index.delete" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="userRole.index.delete.confirm" xml:space="preserve">
+    <value>您确定要删除此数据吗？</value>
+  </data>
+  <data name="userRole.index.role" xml:space="preserve">
+    <value>角色</value>
+  </data>
+  <data name="userRole.index.get.error" xml:space="preserve">
+    <value>获取用户角色数据失败，{0}</value>
+  </data>
+  <data name="userRole.index.delete.error" xml:space="preserve">
+    <value>删除用户角色失败，{0}</value>
+  </data>
+  <data name="userRole.edit.userName" xml:space="preserve">
+    <value>用户名称</value>
+  </data>
+  <data name="userRole.edit.role" xml:space="preserve">
+    <value>用户角色</value>
+  </data>
+  <data name="userRole.edit.title.add" xml:space="preserve">
+    <value>新增用户角色</value>
+  </data>
+  <data name="userRole.edit.title.edit" xml:space="preserve">
+    <value>编辑用户角色</value>
+  </data>
+  <data name="userRole.edit.get.error" xml:space="preserve">
+    <value>获取用户角色数据失败，{0}</value>
+  </data>
+  <data name="userRole.edit.save.error" xml:space="preserve">
+    <value>用户角色保存失败，{0}</value>
+  </data>
+  <data name="userRole.edit.action.error" xml:space="preserve">
+    <value>操作异常:{0}</value>
   </data>
 </root>

@@ -234,4 +234,243 @@
   <data name="account.login.error" xml:space="preserve">
     <value>登录异常</value>
   </data>
+  <data name="authRsaKey.publicKey" xml:space="preserve">
+    <value>公钥</value>
+  </data>
+  <data name="authRsaKey.privateKey" xml:space="preserve">
+    <value>私钥</value>
+  </data>
+  <data name="authRsaKey.save" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="authRsaKey.save.success" xml:space="preserve">
+    <value>保存成功！</value>
+  </data>
+  <data name="authRsaKey.save.error" xml:space="preserve">
+    <value>保存异常: {0}</value>
+  </data>
+  <data name="authRsaKey.generate" xml:space="preserve">
+    <value>生成新秘钥</value>
+  </data>
+  <data name="authRsaKey.generate.error" xml:space="preserve">
+    <value>生成秘钥异常: {0}</value>
+  </data>
+  <data name="authRsaKey.load.error" xml:space="preserve">
+    <value>加载异常: {0}</value>
+  </data>
+  <data name="authWhiteList.placeholder" xml:space="preserve">
+    <value>1.白名单中地址不用登录认证就可以访问，一行填写一个  2.可以在地址后面填写*，表示只匹配*前面的地址，如/api/Test/*</value>
+  </data>
+  <data name="authWhiteList.save" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="authWhiteList.tips" xml:space="preserve">
+    <value>1.白名单中地址不用登录认证就可以访问，一行填写一个。
+&lt;br /&gt;
+2.可以在地址后面填写*，表示只匹配*前面的地址，如/api/Test/*。</value>
+  </data>
+  <data name="authWhiteList.save.success" xml:space="preserve">
+    <value>保存成功</value>
+  </data>
+  <data name="authWhiteList.save.error" xml:space="preserve">
+    <value>保存异常: {0}</value>
+  </data>
+  <data name="authWhiteList.load.error" xml:space="preserve">
+    <value>加载异常: {0}</value>
+  </data>
+  <data name="destination.index.address" xml:space="preserve">
+    <value>地址</value>
+  </data>
+  <data name="destination.index.activeHealthState" xml:space="preserve">
+    <value>主动健康状态</value>
+  </data>
+  <data name="destination.index.passiveHealthState" xml:space="preserve">
+    <value>被动健康状态</value>
+  </data>
+  <data name="destination.index.query" xml:space="preserve">
+    <value>查询</value>
+  </data>
+  <data name="destination.index.add" xml:space="preserve">
+    <value>添加</value>
+  </data>
+  <data name="destination.index.action" xml:space="preserve">
+    <value>操作</value>
+  </data>
+  <data name="destination.index.delete" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="destination.index.delete.confirm" xml:space="preserve">
+    <value>您确定要删除此数据吗？</value>
+  </data>
+  <data name="destination.index.get.error" xml:space="preserve">
+    <value>获取目标数据失败，{0}</value>
+  </data>
+  <data name="destination.index.delete.error" xml:space="preserve">
+    <value>删除目标失败，{0}</value>
+  </data>
+  <data name="serviceConfig.name" xml:space="preserve">
+    <value>名称</value>
+  </data>
+  <data name="serviceConfig.loadBalancingPolicy" xml:space="preserve">
+    <value>负载均衡策略</value>
+  </data>
+  <data name="serviceConfig.loadBalancingPolicy.firstAlphabetical" xml:space="preserve">
+    <value>FirstAlphabetical（按字母顺序选择第一个可用目标，这对于双目标故障转移系统非常有用）</value>
+  </data>
+  <data name="serviceConfig.loadBalancingPolicy.random" xml:space="preserve">
+    <value>Random（随机选择目标）</value>
+  </data>
+  <data name="serviceConfig.loadBalancingPolicy.roundRobin" xml:space="preserve">
+    <value>RoundRobin（通过按顺序循环来选择目标）</value>
+  </data>
+  <data name="serviceConfig.loadBalancingPolicy.leastRequests" xml:space="preserve">
+    <value>LeastRequests（选择分配请求最少的目标，这需要检查所有目标）</value>
+  </data>
+  <data name="serviceConfig.loadBalancingPolicy.powerOfTwoChoices" xml:space="preserve">
+    <value>PowerOfTwoChoices（选择两个随机目标，然后选择具有最小分配请求的一个目标）</value>
+  </data>
+  <data name="serviceConfig.authorizationPolicy" xml:space="preserve">
+    <value>授权策略</value>
+  </data>
+  <data name="serviceConfig.authorizationPolicy.default" xml:space="preserve">
+    <value>默认，需要身份验证</value>
+  </data>
+  <data name="serviceConfig.authorizationPolicy.anonymous" xml:space="preserve">
+    <value>匿名，不需要身份验证和授权</value>
+  </data>
+  <data name="serviceConfig.authorizationPolicy.rbac" xml:space="preserve">
+    <value>基于角色的访问控制</value>
+  </data>
+  <data name="serviceConfig.none" xml:space="preserve">
+    <value>无</value>
+  </data>
+  <data name="serviceConfig.rateLimiterPolicy" xml:space="preserve">
+    <value>限流策略</value>
+  </data>
+  <data name="serviceConfig.requestTimeout" xml:space="preserve">
+    <value>请求超时</value>
+  </data>
+  <data name="serviceConfig.second" xml:space="preserve">
+    <value>秒</value>
+  </data>
+  <data name="serviceConfig.minute" xml:space="preserve">
+    <value>分钟</value>
+  </data>
+  <data name="serviceConfig.activeHealthCheck" xml:space="preserve">
+    <value>主动健康检查</value>
+  </data>
+  <data name="serviceConfig.activeHealthCheck.tooltip" xml:space="preserve">
+    <value>定时向目标指定的地址发送检查请求，并根据响应结果自动监测服务器是否正常运行</value>
+  </data>
+  <data name="serviceConfig.activeHealthCheck.policy" xml:space="preserve">
+    <value>检查策略</value>
+  </data>
+  <data name="serviceConfig.activeHealthCheck.policy.consecutiveFailures" xml:space="preserve">
+    <value>ConsecutiveFailures（当连续检测失败次数达到设定的故障阈值时，系统会标记该目标为异常）</value>
+  </data>
+  <data name="serviceConfig.activeHealthCheck.path" xml:space="preserve">
+    <value>检查路径</value>
+  </data>
+  <data name="serviceConfig.passiveHealthCheck" xml:space="preserve">
+    <value>被动健康检查</value>
+  </data>
+  <data name="serviceConfig.passiveHealthCheck.tooltip" xml:space="preserve">
+    <value>通过被动监听目标响应的成功或失败情况，来判断服务器是否正常运行</value>
+  </data>
+  <data name="serviceConfig.passiveHealthCheck.policy" xml:space="preserve">
+    <value>检查策略</value>
+  </data>
+  <data name="serviceConfig.passiveHealthCheck.policy.transportFailureRate" xml:space="preserve">
+    <value>一分钟内失败次数到达设置的失败率时，系统会标记该目标为异常</value>
+  </data>
+  <data name="serviceConfig.passiveHealthCheck.policy.firstUnsuccessfulResponse" xml:space="preserve">
+    <value>只要有一次的失败就将目标标记为异常</value>
+  </data>
+  <data name="serviceConfig.passiveHealthCheck.reactivationPeriod" xml:space="preserve">
+    <value>重新激活时间</value>
+  </data>
+  <data name="serviceConfig.passiveHealthCheck.reactivationPeriod.tooltip" xml:space="preserve">
+    <value>经过设定的时间后，将异常目标状态重置为 Unknown，并开始重新接收流量</value>
+  </data>
+  <data name="serviceConfig.passiveHealthCheck.failureRate" xml:space="preserve">
+    <value>失败率</value>
+  </data>
+  <data name="serviceConfig.passiveHealthCheck.failureRate.tooltip" xml:space="preserve">
+    <value>失败率 = 一分钟内失败次数 / 请求总数(10)</value>
+  </data>
+  <data name="serviceConfig.sessionAffinity" xml:space="preserve">
+    <value>关联性会话</value>
+  </data>
+  <data name="serviceConfig.sessionAffinity.tooltip" xml:space="preserve">
+    <value>关联性会话是一种“固定搭配”机制，它可以把用户的一系列关联操作（比如登录后连续点餐、支付）全部分配给同一台服务器处理</value>
+  </data>
+  <data name="serviceConfig.sessionAffinity.policy" xml:space="preserve">
+    <value>会话策略</value>
+  </data>
+  <data name="serviceConfig.sessionAffinity.policy.hashCookie" xml:space="preserve">
+    <value>HashCookie（将密钥放入cookie中,并使用Hash64加密）</value>
+  </data>
+  <data name="serviceConfig.sessionAffinity.policy.arrCookie" xml:space="preserve">
+    <value>ArrCookie（将密钥放入cookie中,并使用SHA-256加密）</value>
+  </data>
+  <data name="serviceConfig.sessionAffinity.policy.cookie" xml:space="preserve">
+    <value>Cookie（将密钥放入cookie中）</value>
+  </data>
+  <data name="serviceConfig.sessionAffinity.policy.customHeader" xml:space="preserve">
+    <value>CustomHeader（将密钥放入请求头中）</value>
+  </data>
+  <data name="serviceConfig.sessionAffinity.failurePolicy" xml:space="preserve">
+    <value>故障策略</value>
+  </data>
+  <data name="serviceConfig.sessionAffinity.failurePolicy.redistribute" xml:space="preserve">
+    <value>Redistribute（从现有健康目标中建立新的关联）</value>
+  </data>
+  <data name="serviceConfig.sessionAffinity.failurePolicy.return503Error" xml:space="preserve">
+    <value>Return503Error（返回503状态，请求处理将终止）</value>
+  </data>
+  <data name="serviceConfig.sessionAffinity.keyName" xml:space="preserve">
+    <value>会话名称</value>
+  </data>
+  <data name="serviceConfig.sessionAffinity.cookieHttpOnly" xml:space="preserve">
+    <value>Cookie HttpOnly</value>
+  </data>
+  <data name="serviceConfig.sessionAffinity.cookieMaxAge" xml:space="preserve">
+    <value>Cookie MaxAge</value>
+  </data>
+  <data name="serviceConfig.save" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="serviceConfig.copy" xml:space="preserve">
+    <value>复制目标配置</value>
+  </data>
+  <data name="serviceConfig.activeHealthCheck.threshold" xml:space="preserve">
+    <value>故障阈值</value>
+  </data>
+  <data name="serviceConfig.activeHealthCheck.interval" xml:space="preserve">
+    <value>间隔时间</value>
+  </data>
+  <data name="serviceConfig.activeHealthCheck.timeout" xml:space="preserve">
+    <value>超时时间</value>
+  </data>
+  <data name="serviceConfig.activeHealthCheck.removeUnhealthy" xml:space="preserve">
+    <value>移除异常目标</value>
+  </data>
+  <data name="serviceConfig.load.error" xml:space="preserve">
+    <value>获取异常:{0}</value>
+  </data>
+  <data name="serviceConfig.activeHealthCheck.removeUnhealthy.tooltip" xml:space="preserve">
+    <value>从目标标记为异常状态开始计时，到达设置时间就移除该目标。填0分钟代表不移除</value>
+  </data>
+  <data name="serviceConfig.save.error" xml:space="preserve">
+    <value>保存异常: {0}</value>
+  </data>
+  <data name="serviceConfig.copy.success" xml:space="preserve">
+    <value>复制成功！</value>
+  </data>
+  <data name="serviceConfig.copy.failure" xml:space="preserve">
+    <value>复制失败！</value>
+  </data>
+  <data name="serviceConfig.copy.error" xml:space="preserve">
+    <value>复制异常: {0}</value>
+  </data>
 </root>

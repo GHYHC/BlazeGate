@@ -63,7 +63,7 @@ namespace BlazeGate.Dashboard.Components.Pages.Service
             }
             catch (Exception ex)
             {
-                Message.Error("加载异常:" + ex.Message);
+                Message.Error(string.Format(L["serviceConfig.load.error"], ex.Message));
             }
         }
 
@@ -102,7 +102,7 @@ namespace BlazeGate.Dashboard.Components.Pages.Service
             }
             catch (Exception ex)
             {
-                Message.Error("保存异常:" + ex.Message);
+                Message.Error(string.Format(L["serviceConfig.save.error"], ex.Message));
             }
             finally
             {
@@ -121,11 +121,11 @@ namespace BlazeGate.Dashboard.Components.Pages.Service
                 {
                     if (await CopyToClipboard.Copy(result.Data))
                     {
-                        Message.Success("复制成功");
+                        Message.Success(L["serviceConfig.copy.success"].Value);
                     }
                     else
                     {
-                        Message.Error("复制失败");
+                        Message.Error(L["serviceConfig.copy.failure"].Value);
                     }
                 }
                 else
@@ -135,7 +135,7 @@ namespace BlazeGate.Dashboard.Components.Pages.Service
             }
             catch (Exception ex)
             {
-                Message.Error("复制异常:" + ex.Message);
+                Message.Error(L["serviceConfig.copy.error"].Value);
             }
             finally
             {

@@ -57,13 +57,13 @@ namespace BlazeGate.RBAC.Components.Pages.UserRole
             if (userRoleInfo == null)
             {
                 UserRoleSave.IsAdd = true;
-                Title = "新增";
+                Title = L["userRole.edit.title.add"];
             }
             else
             {
                 UserRoleSave.IsAdd = false;
                 await LoadData(userRoleInfo);
-                Title = "编辑";
+                Title = L["userRole.edit.title.edit"];
             }
         }
 
@@ -83,7 +83,7 @@ namespace BlazeGate.RBAC.Components.Pages.UserRole
             }
             catch (Exception ex)
             {
-                Message.Error($"获取数据异常:{ex.Message}");
+                Message.Error(string.Format(L["userRole.edit.get.error"], ex.Message));
             }
         }
 
@@ -111,7 +111,7 @@ namespace BlazeGate.RBAC.Components.Pages.UserRole
             }
             catch (Exception ex)
             {
-                Message.Error($"获取数据异常:{ex.Message}");
+                Message.Error(string.Format(L["userRole.edit.get.error"], ex.Message));
             }
             finally
             {
@@ -136,7 +136,7 @@ namespace BlazeGate.RBAC.Components.Pages.UserRole
             }
             catch (Exception ex)
             {
-                Message.Error($"获取数据异常:{ex.Message}");
+                Message.Error(string.Format(L["userRole.edit.get.error"], ex.Message));
             }
             finally
             {
@@ -164,7 +164,7 @@ namespace BlazeGate.RBAC.Components.Pages.UserRole
             }
             catch (Exception ex)
             {
-                Message.Error($"操作异常:{ex.Message}");
+                Message.Error(string.Format(L["userRole.edit.action.error"], ex.Message));
             }
             finally
             {
