@@ -1,7 +1,12 @@
-﻿@using BlazeGate.Model.JwtBearer
+﻿@using BlazeGate.Model.Culture
+@using BlazeGate.Model.JwtBearer
 @using BlazeGate.RBAC.Components.Extensions.Authentication
+@using BlazeGate.RBAC.Components.Resources
 @using Microsoft.AspNetCore.Components.Authorization;
 @using Microsoft.Extensions.Configuration
+@using System.Globalization
+@using Microsoft.Extensions.Localization
+@using Microsoft.JSInterop
 @inherits AntDomComponentBase
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
@@ -12,18 +17,21 @@
                 <AvatarDropdown Name="@context?.User?.GetUser()?.UserName" MenuItems="AvatarMenuItems" OnItemSelected="HandleSelectUser" />
             </Authorized>
             <NotAuthorized>
-                <AvatarDropdown Name="未登录" MenuItems="@(new AvatarMenuItem[] { })" />
+                <AvatarDropdown Name="@(L["menu.account.notLoggedIn"])" MenuItems="@(new AvatarMenuItem[] { })" />
             </NotAuthorized>
         </AuthorizeView>
+    </SpaceItem>
+    <SpaceItem>
+        <SelectLang Locales="LanguageOptions.Languages" LanguageLabels="LanguageOptions.LanguageLabels" LanguageIcons="LanguageOptions.LanguageIcons" OnItemSelected="HandleSelectLang" />
     </SpaceItem>
 </Space>
 
 @code {
-    public AvatarMenuItem[] AvatarMenuItems { get; set; } = new AvatarMenuItem[]
-    {
-        new() { Key = "changePassword", IconType = "edit", Option = "修改密码"},
-        new() { Key = "logout", IconType = "logout", Option = "退出登录"}
-    };
+    public AvatarMenuItem[] AvatarMenuItems =>
+    [
+        new() { Key = "changePassword", IconType = "edit", Option = L["menu.account.changePassword"]},
+        new() { Key = "logout", IconType = "logout", Option = L["menu.account.logout"]}
+    ];
 
     [Inject]
     protected NavigationManager NavigationManager { get; set; }
@@ -36,6 +44,12 @@
 
     [Inject]
     private IConfiguration Configuration { get; set; }
+
+    [Inject]
+    private IJSRuntime JS { get; set; }
+
+    [Inject]
+    private IStringLocalizer<I18n> L { get; set; }
 
     public string ServiceName { get; set; }
 
@@ -74,5 +88,17 @@
     public async Task ChangePassword()
     {
         NavigationManager.NavigateTo("/changePassword");
+    }
+
+    public async Task HandleSelectLang(MenuItem item)
+    {
+        var cultureInfo = CultureInfo.GetCultureInfo(item.Key);
+
+        if (CultureInfo.CurrentCulture.Name != cultureInfo.Name)
+        {
+            await JS.InvokeVoidAsync("blazorCulture.set", cultureInfo.Name);
+
+            NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
+        }
     }
 }

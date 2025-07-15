@@ -231,27 +231,6 @@
   <data name="account.login.button" xml:space="preserve">
     <value>登录</value>
   </data>
-  <data name="account.changePassword.title" xml:space="preserve">
-    <value>修改密码</value>
-  </data>
-  <data name="account.changePassword.old" xml:space="preserve">
-    <value>旧密码</value>
-  </data>
-  <data name="account.changePassword.new" xml:space="preserve">
-    <value>新密码</value>
-  </data>
-  <data name="account.changePassword.confirm" xml:space="preserve">
-    <value>确认新密码</value>
-  </data>
-  <data name="account.changePassword.submit" xml:space="preserve">
-    <value>确认修改</value>
-  </data>
-  <data name="account.changePassword.success" xml:space="preserve">
-    <value>密码修改成功，请重新登录。</value>
-  </data>
-  <data name="account.changePassword.error" xml:space="preserve">
-    <value>异常:{0}</value>
-  </data>
   <data name="page.menu" xml:space="preserve">
     <value>菜单</value>
   </data>
@@ -305,6 +284,27 @@
   </data>
   <data name="page.drag.error" xml:space="preserve">
     <value>不能拖动到自己</value>
+  </data>
+  <data name="account.changePassword.title" xml:space="preserve">
+    <value>修改密码</value>
+  </data>
+  <data name="account.changePassword.old" xml:space="preserve">
+    <value>旧密码</value>
+  </data>
+  <data name="account.changePassword.new" xml:space="preserve">
+    <value>新密码</value>
+  </data>
+  <data name="account.changePassword.confirm" xml:space="preserve">
+    <value>确认新密码</value>
+  </data>
+  <data name="account.changePassword.submit" xml:space="preserve">
+    <value>确认修改</value>
+  </data>
+  <data name="account.changePassword.success" xml:space="preserve">
+    <value>密码修改成功，请重新登录。</value>
+  </data>
+  <data name="account.changePassword.error" xml:space="preserve">
+    <value>异常:{0}</value>
   </data>
   <data name="role.name" xml:space="preserve">
     <value>角色名称</value>
@@ -413,5 +413,14 @@
   </data>
   <data name="userRole.edit.action.error" xml:space="preserve">
     <value>操作异常:{0}</value>
+  </data>
+  <data name="menu.account.logout" xml:space="preserve">
+    <value>退出登录</value>
+  </data>
+  <data name="menu.account.changePassword" xml:space="preserve">
+    <value>修改密码</value>
+  </data>
+  <data name="menu.account.notLoggedIn" xml:space="preserve">
+    <value>未登录</value>
   </data>
 </root>

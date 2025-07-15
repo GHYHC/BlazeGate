@@ -414,4 +414,13 @@
   <data name="userRole.edit.action.error" xml:space="preserve">
     <value>Operation error: {0}</value>
   </data>
+  <data name="menu.account.logout" xml:space="preserve">
+    <value>Logout</value>
+  </data>
+  <data name="menu.account.changePassword" xml:space="preserve">
+    <value>Change password</value>
+  </data>
+  <data name="menu.account.notLoggedIn" xml:space="preserve">
+    <value>Not logged in</value>
+  </data>
 </root>
