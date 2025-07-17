@@ -18,6 +18,7 @@ namespace BlazeGate.RBAC.Components.Pages.User
         private IServiceProvider ServiceProvider { get; set; }
         [Inject]
         private IConfiguration Configuration { get; set; }
+        [Inject]
         private IUserService UserService { get; set; }
         private string NameOrAccount { get; set; }
         private List<UserInfo> DataList { get; set; } = new List<UserInfo>();
@@ -32,7 +33,11 @@ namespace BlazeGate.RBAC.Components.Pages.User
         protected override async Task OnInitializedAsync()
         {
             ServiceName = Configuration["BlazeGate:ServiceName"];
-            UserService = ServiceProvider.CreateScope().ServiceProvider.GetRequiredService<IUserService>();
+
+            if (!(UserService is BlazeGate.Services.Implement.Remote.UserService))
+            {
+                UserService = ServiceProvider.CreateScope().ServiceProvider.GetRequiredService<IUserService>();
+            }
         }
 
         private async Task OnChange(QueryModel<UserInfo> queryModel)

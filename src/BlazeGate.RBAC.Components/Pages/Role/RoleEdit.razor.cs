@@ -36,8 +36,10 @@ namespace BlazeGate.RBAC.Components.Pages.Role
         [Inject]
         private IServiceProvider ServiceProvider { get; set; }
 
+        [Inject]
         private IPageService PageService { get; set; }
 
+        [Inject]
         private IRoleService RoleService { get; set; }
 
         protected override Task OnInitializedAsync()
@@ -49,8 +51,14 @@ namespace BlazeGate.RBAC.Components.Pages.Role
         {
             Visible = true;
 
-            PageService = ServiceProvider.CreateScope().ServiceProvider.GetRequiredService<IPageService>();
-            RoleService = ServiceProvider.CreateScope().ServiceProvider.GetRequiredService<IRoleService>();
+            if (!(PageService is BlazeGate.Services.Implement.Remote.PageService))
+            {
+                PageService = ServiceProvider.CreateScope().ServiceProvider.GetRequiredService<IPageService>();
+            }
+            if (!(RoleService is BlazeGate.Services.Implement.Remote.RoleService))
+            {
+                RoleService = ServiceProvider.CreateScope().ServiceProvider.GetRequiredService<IRoleService>();
+            }
 
             //注意一定要先加载树形菜单，再加载勾选数据
             await LoadTreeList(serviceName);
@@ -89,7 +97,7 @@ namespace BlazeGate.RBAC.Components.Pages.Role
                         Model.RoleId = rolePage.Role.Id;
                         Model.ServiceId = rolePage.Role.ServiceId;
                         Model.RoleName = rolePage.Role.RoleName;
-                        Model.Remark= rolePage.Role.Remark;
+                        Model.Remark = rolePage.Role.Remark;
 
                         List<string> checkedKeys = new List<string>();
 
@@ -137,7 +145,7 @@ namespace BlazeGate.RBAC.Components.Pages.Role
 
                 Model.PageIds = pageIds.Distinct().ToArray();
 
-                var result = await RoleService.SaveRole(Model.ServiceName,Model);
+                var result = await RoleService.SaveRole(Model.ServiceName, Model);
                 if (result.Success)
                 {
                     Message.Success(result.Msg);

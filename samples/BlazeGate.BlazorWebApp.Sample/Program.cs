@@ -1,7 +1,9 @@
 using AntDesign.ProLayout;
 using BlazeGate.BlazorWebApp.Sample.Components;
+using BlazeGate.Components.Sample.Api;
 using BlazeGate.Model.Culture;
 using BlazeGate.RBAC.Components;
+using BlazeGate.RBAC.Components.Extensions.AuthTokenStorage;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,8 +13,6 @@ builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
 
 builder.Services.AddHttpContextAccessor();
-
-builder.Services.AddAntDesign();
 
 builder.Services.AddScoped(sp =>
 {
@@ -27,9 +27,11 @@ builder.Services.AddScoped(sp =>
     return new HttpClient();
 });
 
-BlazeGate.BlazorWebApp.Sample.Program.AddClientServices(builder.Services);
-
 builder.Services.Configure<ProSettings>(builder.Configuration.GetSection("ProSettings"));
+
+builder.Services.AddAntDesign();
+builder.Services.AddBlazeGateRBAC(AuthTokenStorageEnum.LocalStorage);
+builder.Services.AddScoped<WebApi>();
 
 var app = builder.Build();
 

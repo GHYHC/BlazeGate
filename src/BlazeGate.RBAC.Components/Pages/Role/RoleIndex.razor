@@ -9,7 +9,7 @@
 
 <GridContent>
     <Card Style="margin-bottom: 8px">
-        <Form Model="SearchModel" Layout="@FormLayout.Inline" OnFinish="()=>{Table.ReloadData();}">
+        <Form Model="SearchModel" Layout="@FormLayout.Inline" OnFinish="() => { Table.ReloadData(); }">
             <FormItem Label="@L["role.name"]">
                 <Input @bind-Value="context.RoleName" Style="width:183px" AllowClear />
             </FormItem>
@@ -17,7 +17,7 @@
                 <Button Type="@ButtonType.Primary" HtmlType="submit">
                     @L["role.query"]
                 </Button>
-                <Button Type="@ButtonType.Primary" OnClick="async ()=>{await RoleEdit.ShowAsync(ServiceName,null);}">
+                <Button Type="@ButtonType.Primary" OnClick="async () => { await RoleEdit.ShowAsync(ServiceName, null); }">
                     @L["role.add"]
                 </Button>
             </FormItem>
@@ -28,17 +28,17 @@
             <ActionColumn Width="140" Title="@L["role.action"]" Fixed="ColumnFixPlacement.Left">
                 <Space Size="SpaceSize.Small" Direction="SpaceDirection.Horizontal">
                     <SpaceItem>
-                        <a @onclick="async ()=>{await RoleEdit.ShowAsync(ServiceName,context);}">@L["role.edit"]</a>
+                        <a @onclick="async () => { await RoleEdit.ShowAsync(ServiceName, context); }">@L["role.edit"]</a>
                     </SpaceItem>
                     <SpaceItem>
-                        <Popconfirm Title="@L["role.delete.confirm"]" OnConfirm="async ()=>{await OnRemove(context.Role.Id); Table.ReloadData(Table.GetQueryModel());}">
+                        <Popconfirm Title="@L["role.delete.confirm"]" OnConfirm="async () => { await OnRemove(context.Role.Id); Table.ReloadData(Table.GetQueryModel()); }">
                             <a>@L["role.delete"]</a>
                         </Popconfirm>
                     </SpaceItem>
                 </Space>
             </ActionColumn>
-            <PropertyColumn Title="@L["role.name"]" Property="c=>c.Role.RoleName" Ellipsis />
-            <PropertyColumn Title="@L["role.pages"]" Property="c=>c.Pages" Ellipsis>
+            <PropertyColumn Title="@L["role.name"]" Property="c => c.Role.RoleName" Ellipsis />
+            <PropertyColumn Title="@L["role.pages"]" Property="c => c.Pages" Ellipsis>
                 <Tree TItem="PageNode"
                       DataSource="RolePageNodes.TryGetValue(context.Role.Id, out var pageNodes) ? pageNodes : new List<PageNode>()"
                       TitleExpression='x => x.DataItem.Title'
@@ -50,9 +50,9 @@
                     </TitleTemplate>
                 </Tree>
             </PropertyColumn>
-            <PropertyColumn Title="@L["role.remark"]" Property="c=>c.Role.Remark" Ellipsis />
+            <PropertyColumn Title="@L["role.remark"]" Property="c => c.Role.Remark" Ellipsis />
         </Table>
     </Card>
 
-    <RoleEdit @ref="RoleEdit" OnComplete="()=>{Table.ReloadData(Table.GetQueryModel());}"></RoleEdit>
+    <RoleEdit @ref="RoleEdit" OnComplete="() => { Table.ReloadData(Table.GetQueryModel()); }"></RoleEdit>
 </GridContent>

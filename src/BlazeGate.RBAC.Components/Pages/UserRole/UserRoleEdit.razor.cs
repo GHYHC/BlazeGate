@@ -37,7 +37,11 @@ namespace BlazeGate.RBAC.Components.Pages.UserRole
 
         [Inject]
         private IServiceProvider ServiceProvider { get; set; }
+
+        [Inject]
         private IUserRoleService UserRoleService { get; set; }
+
+        [Inject]
         private IUserService UserService { get; set; }
 
         private List<BlazeGate.Model.EFCore.Role> Roles { get; set; } = new List<Model.EFCore.Role>();
@@ -46,8 +50,14 @@ namespace BlazeGate.RBAC.Components.Pages.UserRole
         {
             Visible = true;
 
-            UserRoleService = ServiceProvider.CreateScope().ServiceProvider.GetRequiredService<IUserRoleService>();
-            UserService = ServiceProvider.CreateScope().ServiceProvider.GetRequiredService<IUserService>();
+            if (!(UserRoleService is BlazeGate.Services.Implement.Remote.UserRoleService))
+            {
+                UserRoleService = ServiceProvider.CreateScope().ServiceProvider.GetRequiredService<IUserRoleService>();
+            }
+            if (!(UserService is BlazeGate.Services.Implement.Remote.UserService))
+            {
+                UserService = ServiceProvider.CreateScope().ServiceProvider.GetRequiredService<IUserService>();
+            }
 
             UserRoleSave = new UserRoleSave();
             UserRoleSave.ServiceName = serviceName;
@@ -97,7 +107,7 @@ namespace BlazeGate.RBAC.Components.Pages.UserRole
                 {
                     UserId = userRoleInfo.User.Id,
                 };
-                var result = await UserRoleService.QueryByPage(UserRoleSave.ServiceName,1, 1, userQuery);
+                var result = await UserRoleService.QueryByPage(UserRoleSave.ServiceName, 1, 1, userQuery);
                 if (result.Success)
                 {
                     var userRole = result.Data.DataList.FirstOrDefault();
@@ -151,7 +161,7 @@ namespace BlazeGate.RBAC.Components.Pages.UserRole
             Loading = true;
             try
             {
-                var result = await UserRoleService.SaveUserRole(UserRoleSave.ServiceName,UserRoleSave);
+                var result = await UserRoleService.SaveUserRole(UserRoleSave.ServiceName, UserRoleSave);
                 if (result.Success)
                 {
                     Message.Success(result.Msg);

@@ -29,6 +29,7 @@ namespace BlazeGate.RBAC.Components.Pages.UserRole
         [Inject]
         private IServiceProvider ServiceProvider { get; set; }
 
+        [Inject]
         private IUserRoleService UserRoleService { get; set; }
 
         [Inject]
@@ -36,7 +37,10 @@ namespace BlazeGate.RBAC.Components.Pages.UserRole
 
         protected override async Task OnInitializedAsync()
         {
-            UserRoleService = ServiceProvider.CreateScope().ServiceProvider.GetRequiredService<IUserRoleService>();
+            if (!(UserRoleService is BlazeGate.Services.Implement.Remote.UserRoleService))
+            {
+                UserRoleService = ServiceProvider.CreateScope().ServiceProvider.GetRequiredService<IUserRoleService>();
+            }
 
             if (string.IsNullOrWhiteSpace(ServiceName))
             {
@@ -50,7 +54,7 @@ namespace BlazeGate.RBAC.Components.Pages.UserRole
             Loading = true;
             try
             {
-                var result = await UserRoleService.QueryByPage(ServiceName,queryModel.PageIndex, queryModel.PageSize, SearchModel);
+                var result = await UserRoleService.QueryByPage(ServiceName, queryModel.PageIndex, queryModel.PageSize, SearchModel);
                 if (result.Success)
                 {
                     DataList = result.Data.DataList;

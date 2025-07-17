@@ -32,11 +32,16 @@ namespace BlazeGate.RBAC.Components.Pages.Role
         private int Total { get; set; } = 0;
         [Inject]
         private IServiceProvider ServiceProvider { get; set; }
+        [Inject]
         private IRoleService RoleService { get; set; }
         private Dictionary<long, List<PageNode>> RolePageNodes { get; set; } = new Dictionary<long, List<PageNode>>();
         protected override async Task OnInitializedAsync()
         {
-            RoleService = ServiceProvider.CreateScope().ServiceProvider.GetRequiredService<IRoleService>();
+            if (!(RoleService is BlazeGate.Services.Implement.Remote.RoleService))
+            {
+                RoleService = ServiceProvider.CreateScope().ServiceProvider.GetRequiredService<IRoleService>();
+            }
+
             if (string.IsNullOrWhiteSpace(ServiceName))
             {
                 ServiceName = Configuration["BlazeGate:ServiceName"];

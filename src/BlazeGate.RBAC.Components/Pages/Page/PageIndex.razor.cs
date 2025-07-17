@@ -13,11 +13,11 @@ using System.Text.Json;
 
 namespace BlazeGate.RBAC.Components.Pages.Page
 {
-    [Authorize]
     public partial class PageIndex
     {
         [Parameter]
         public string ServiceName { get; set; }
+
         private bool Loading { get; set; } = false;
 
         [Inject]
@@ -26,6 +26,7 @@ namespace BlazeGate.RBAC.Components.Pages.Page
         [Inject]
         private IConfiguration Configuration { get; set; }
 
+        [Inject]
         private IPageService PageService { get; set; }
 
         private List<PageNode> TreeList { get; set; } = new List<PageNode>();
@@ -48,7 +49,10 @@ namespace BlazeGate.RBAC.Components.Pages.Page
 
         private async Task LoadTreeList(string serviceName)
         {
-            PageService = ServiceProvider.CreateScope().ServiceProvider.GetRequiredService<IPageService>();
+            if (!(PageService is BlazeGate.Services.Implement.Remote.PageService))
+            {
+                PageService = ServiceProvider.CreateScope().ServiceProvider.GetRequiredService<IPageService>();
+            }
 
             if (Loading) return;
             Loading = true;

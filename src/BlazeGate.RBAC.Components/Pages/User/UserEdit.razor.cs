@@ -21,6 +21,7 @@ namespace BlazeGate.RBAC.Components.Pages.User
 
         [Inject]
         private IServiceProvider ServiceProvider { get; set; }
+        [Inject]
         private IUserService UserService { get; set; }
         private UserSave UserSave { get; set; } = new UserSave();
         private Form<UserSave> Form { get; set; }
@@ -47,7 +48,10 @@ namespace BlazeGate.RBAC.Components.Pages.User
         {
             Visible = true;
 
-            UserService = ServiceProvider.CreateScope().ServiceProvider.GetRequiredService<IUserService>();
+            if (!(UserService is BlazeGate.Services.Implement.Remote.UserService))
+            {
+                UserService = ServiceProvider.CreateScope().ServiceProvider.GetRequiredService<IUserService>();
+            }
 
             UserSave = new UserSave();
 
