@@ -1,5 +1,6 @@
 ﻿using AntDesign.ProLayout;
 using BlazeGate.Model.EFCore;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 
 namespace BlazeGate.RBAC.Components.Extensions.Menu
@@ -15,14 +16,14 @@ namespace BlazeGate.RBAC.Components.Extensions.Menu
             this.pageDataStorageServices = pageDataStorageServices;
         }
 
-        public async Task<List<MenuDataItem>> GetMenu()
+        public async Task<List<MenuDataItem>> GetMenu(IStringLocalizer stringLocalizer = null)
         {
             List<MenuDataItem> menus = new List<MenuDataItem>();
 
             try
             {
                 var pages = await pageDataStorageServices.GetPageData();
-                var menuList = ConvertMenu(pages, null);
+                var menuList = ConvertMenu(pages, null, stringLocalizer);
                 if (menuList != null && menuList.Count > 0)
                 {
                     menus = menuList;
@@ -36,7 +37,7 @@ namespace BlazeGate.RBAC.Components.Extensions.Menu
             return menus;
         }
 
-        private List<MenuDataItem> ConvertMenu(List<Page> totalPage, long? parentId)
+        private List<MenuDataItem> ConvertMenu(List<Page> totalPage, long? parentId, IStringLocalizer stringLocalizer = null)
         {
             List<MenuDataItem> menus = null;
 
@@ -57,7 +58,7 @@ namespace BlazeGate.RBAC.Components.Extensions.Menu
                 foreach (Page item in pages)
                 {
                     MenuDataItem menu = new MenuDataItem();
-                    menu.Name = item.Title;
+                    menu.Name = stringLocalizer == null ? item.Title : stringLocalizer[item.Title];
                     menu.Path = item.Path;
                     menu.Key = item.Id.ToString();
                     menu.Icon = item.Icon;
@@ -76,6 +77,6 @@ namespace BlazeGate.RBAC.Components.Extensions.Menu
         /// 获取菜单
         /// </summary>
         /// <returns></returns>
-        Task<List<MenuDataItem>> GetMenu();
+        Task<List<MenuDataItem>> GetMenu(IStringLocalizer stringLocalizer = null);
     }
 }

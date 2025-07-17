@@ -20,6 +20,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\src\BlazeGate.RBAC.Components\BlazeGate.RBAC.Components.csproj" />
+		<ProjectReference Include="..\BlazeGate.Components.Sample\BlazeGate.Components.Sample.csproj" />
 		<ProjectReference Include="..\BlazeGate.Model.Sample\BlazeGate.Model.Sample.csproj" />
 	</ItemGroup>
 

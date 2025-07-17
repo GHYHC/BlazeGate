@@ -1,2 +1,2 @@
 ﻿global using AntDesign;
-global using BlazeGate.BlazorWebApp.Sample.Client.Resources;
+global using BlazeGate.BlazorWebApp.Client.Sample.Resources;

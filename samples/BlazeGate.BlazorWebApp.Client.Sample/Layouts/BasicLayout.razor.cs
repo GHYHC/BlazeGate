@@ -1,8 +1,11 @@
 ﻿using AntDesign.Extensions.Localization;
 using AntDesign.ProLayout;
+using BlazeGate.BlazorWebApp.Client.Sample.Resources;
+using BlazeGate.Components.Sample.Resources;
 using BlazeGate.RBAC.Components.Extensions.Menu;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.Extensions.Localization;
 using System.Globalization;
 using System.Net.Http.Json;
 
@@ -21,6 +24,9 @@ namespace BlazeGate.BlazorWebApp.Sample.Layouts
         [Inject]
         private IMenuServices MenuServices { get; set; }
 
+        [Inject]
+        private IStringLocalizer<menu> L { get; set; }
+
         protected override async Task OnInitializedAsync()
         {
             //关闭之前的所有页面
@@ -31,7 +37,7 @@ namespace BlazeGate.BlazorWebApp.Sample.Layouts
             var user = authStae.User;
             if (user.Identity is not null && user.Identity.IsAuthenticated)
             {
-                var menuList = await MenuServices.GetMenu();
+                var menuList = await MenuServices.GetMenu(L);
                 MenuData = menuList.ToArray();
             }
         }

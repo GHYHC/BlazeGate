@@ -1,5 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Components.Authorization
-<Router AppAssembly="typeof(Program).Assembly" AdditionalAssemblies="new List<System.Reflection.Assembly>{typeof(BlazeGate.RBAC.Components.Pages.Page.PageIndex).Assembly}">
+<Router AppAssembly="typeof(Program).Assembly" AdditionalAssemblies="new List<System.Reflection.Assembly> { typeof(BlazeGate.RBAC.Components._Imports).Assembly, typeof(BlazeGate.Components.Sample._Imports).Assembly }">
     <Found Context="routeData">
         <CascadingValue Value="routeData">
             <RouteView RouteData="routeData" DefaultLayout="typeof(BlazeGate.BlazorWasmApp.Sample.Layouts.BasicLayout)" />
