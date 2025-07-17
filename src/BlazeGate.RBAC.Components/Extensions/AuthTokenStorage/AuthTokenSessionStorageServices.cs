@@ -1,11 +1,5 @@
 ﻿using BlazeGate.Model.JwtBearer;
 using BlazeGate.Services.Interface;
-using Blazored.SessionStorage;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BlazeGate.RBAC.Components.Extensions.AuthTokenStorage
 {

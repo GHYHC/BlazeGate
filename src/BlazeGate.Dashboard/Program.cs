@@ -1,11 +1,14 @@
 using AntDesign.ProLayout;
 using Autofac;
+using Autofac.Core;
 using Autofac.Extensions.DependencyInjection;
 using BlazeGate.Common.Autofac;
 using BlazeGate.Dashboard.Components;
 using BlazeGate.Model.Culture;
 using BlazeGate.Model.EFCore;
 using BlazeGate.Model.WebApi;
+using BlazeGate.RBAC.Components;
+using BlazeGate.RBAC.Components.Extensions.AuthTokenStorage;
 using BlazeGate.Services.Interface;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Localization;
@@ -47,6 +50,9 @@ builder.Services.AddDistributedMemoryCache();
 //添加HttpClient
 builder.Services.AddHttpClient();
 
+//添加Cookie服务
+builder.Services.AddScoped<ICookieService, CookieService>();
+
 var app = builder.Build();
 
 //自动迁移数据库
@@ -62,11 +68,8 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
 }
 
-// 使用以根据客户端提供的信息自动设置请求的文化信息
-app.UseRequestLocalization(new RequestLocalizationOptions()
-    .SetDefaultCulture(LanguageOptions.Languages[0])
-    .AddSupportedCultures(LanguageOptions.Languages)
-    .AddSupportedUICultures(LanguageOptions.Languages));
+//设置应用程序的文化信息
+app.SetCultureAsync();
 
 app.UseStaticFiles();
 app.UseAntiforgery();

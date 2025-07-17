@@ -1,5 +1,6 @@
 ﻿@using BlazeGate.Model.Culture
 @using BlazeGate.Model.JwtBearer
+@using BlazeGate.RBAC.Components.Extensions.AuthTokenStorage
 @using BlazeGate.RBAC.Components.Extensions.Authentication
 @using BlazeGate.RBAC.Components.Resources
 @using Microsoft.AspNetCore.Components.Authorization;
@@ -7,6 +8,7 @@
 @using System.Globalization
 @using Microsoft.Extensions.Localization
 @using Microsoft.JSInterop
+@using Microsoft.AspNetCore.Localization
 @inherits AntDomComponentBase
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
@@ -22,7 +24,7 @@
         </AuthorizeView>
     </SpaceItem>
     <SpaceItem>
-        <SelectLang Locales="LanguageOptions.Languages" LanguageLabels="LanguageOptions.LanguageLabels" LanguageIcons="LanguageOptions.LanguageIcons" OnItemSelected="HandleSelectLang" />
+        <SelectLang Locales="Locales" LanguageLabels="LanguageLabels" LanguageIcons="LanguageIcons" OnItemSelected="HandleSelectLang" />
     </SpaceItem>
 </Space>
 
@@ -50,6 +52,18 @@
 
     [Inject]
     private IStringLocalizer<I18n> L { get; set; }
+
+    [Inject]
+    ICookieService CookieService { get; set; }
+
+    [Parameter]
+    public string[] Locales { get; set; } = LanguageOptions.Languages;
+
+    [Parameter]
+    public IDictionary<string, string> LanguageLabels { get; set; } = LanguageOptions.LanguageLabels;
+
+    [Parameter]
+    public IDictionary<string, string> LanguageIcons { get; set; } = LanguageOptions.LanguageIcons;
 
     public string ServiceName { get; set; }
 
@@ -96,7 +110,7 @@
 
         if (CultureInfo.CurrentCulture.Name != cultureInfo.Name)
         {
-            await JS.InvokeVoidAsync("blazorCulture.set", cultureInfo.Name);
+            await CookieService.SetCookieAsync(CookieRequestCultureProvider.DefaultCookieName, CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(cultureInfo)), expiresIn: TimeSpan.FromDays(365));
 
             NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
         }

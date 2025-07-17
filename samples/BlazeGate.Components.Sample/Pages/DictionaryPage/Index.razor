@@ -1,0 +1,219 @@
+﻿@page "/dictionary/index"
+@using AntDesign.TableModels
+@using BlazeGate.Components.Sample.Api
+@using BlazeGate.Model.Sample
+@using BlazeGate.Model.Sample.EFCore
+<GridContent>
+    <Card Size="CardSize.Small" Style="margin-bottom: 8px">
+        <Form Size="FormSize.Small" Model="SearchModel" Layout="@FormLayout.Inline" OnFinish="() => { Table.PageIndex = 1; Table.ReloadData(Table.GetQueryModel()); }">
+            <GridCol Xs="24" Sm="12" Lg="8" Xxl="6">
+                <FormItem Label="类型">
+                    <Select TItem="String"
+                            TItemValue="String"
+                            DataSource="DictionaryTypes"
+                            @bind-Value="context.Type"
+                            EnableSearch
+                            AllowClear>
+                    </Select>
+                </FormItem>
+            </GridCol>
+            <GridCol Xs="24" Sm="12" Lg="8" Xxl="6">
+                <FormItem Label="键">
+                    <Input @bind-Value="context.Key" AllowClear />
+                </FormItem>
+            </GridCol>
+            <GridCol Xs="24" Sm="12" Lg="8" Xxl="6">
+                <FormItem Label="值">
+                    <Input @bind-Value="context.Value" AllowClear />
+                </FormItem>
+            </GridCol>
+            <GridCol Xs="24" Sm="12" Lg="8" Xxl="6">
+                <FormItem>
+                    <Button Loading="Loading" Type="@ButtonType.Primary" HtmlType="submit">
+                        查询
+                    </Button>
+                    <Button Type="@ButtonType.Primary" OnClick="async () => { await Edit.ShowAsync(null); }">
+                        添加
+                    </Button>
+                </FormItem>
+            </GridCol>
+        </Form>
+    </Card>
+    <Card Size="CardSize.Small">
+        <Table Size="TableSize.Small" @ref="Table" TItem="TB_Dictionary" DataSource="DataSource" OnChange="async b =>{ await Search(b); }" Loading="Loading" Total="Total" ScrollX="100%" ScrollBarWidth="8px" RemoteDataSource Bordered Resizable AutoHeight>
+            <ActionColumn Width="90" Title="操作" Fixed="ColumnFixPlacement.Left" Ellipsis>
+                <Space Size="SpaceSize.Small" Direction="SpaceDirection.Horizontal">
+                    <SpaceItem>
+                        <a title="编辑" @onclick="async () => { await Edit.ShowAsync(context.Id); }">编辑</a>
+                    </SpaceItem>
+                    <SpaceItem>
+                        <Popconfirm Title="您确定要删除此数据吗？" OnConfirm="async () => { await OnRemove(context.Id); Table.ReloadData(Table.GetQueryModel()); await GetType(); }">
+                            <a title="删除">
+                                <Text Type="TextElementType.Danger">删除</Text>
+                            </a>
+                        </Popconfirm>
+                    </SpaceItem>
+                </Space>
+            </ActionColumn>
+            <Column Title="类型" TData="String" Ellipsis>
+                @context.Type
+            </Column>
+            <Column Title="键" TData="String" Ellipsis>
+                @context.Key
+            </Column>
+            <Column Title="值" TData="String" Ellipsis>
+                @context.Value
+            </Column>
+            <Column Title="序号" TData="String" Ellipsis>
+                @context.NumberIndex
+            </Column>
+            <Column Title="扩展" TData="String" Ellipsis>
+                @context.Extended
+            </Column>
+            <Column Title="扩展2" TData="String" Ellipsis>
+                @context.Extended2
+            </Column>
+            <Column Title="扩展3" TData="String" Ellipsis>
+                @context.Extended3
+            </Column>
+            <ActionColumn Width="90" Title="状态" Fixed="ColumnFixPlacement.Right" Ellipsis>
+                <Space Size="SpaceSize.Small" Direction="SpaceDirection.Horizontal">
+                    <SpaceItem>
+                        <Switch @bind-Checked="context.Enabled" CheckedChildren="启用" UnCheckedChildren="禁用"
+                                OnChange="async (b)=>{await OnChangeEnabled(context.Id,b); Table.ReloadData(Table.GetQueryModel());}" />
+                    </SpaceItem>
+                </Space>
+            </ActionColumn>
+        </Table>
+        <p style="position: absolute;right: 40px;bottom: 14px;">总数: @Total</p>
+    </Card>
+    <Edit @ref="Edit" DictionaryTypes="DictionaryTypes" OnComplete="async () => { Table.ReloadData(Table.GetQueryModel()); }" />
+</GridContent>
+
+@code {
+    private DictionaryQuery SearchModel { get; set; } = new DictionaryQuery();
+
+    private Table<TB_Dictionary> Table { get; set; }
+
+    private List<TB_Dictionary> DataSource { get; set; } = new List<TB_Dictionary>();
+
+    private IEnumerable<string> DictionaryTypes { get; set; } = new List<string>();
+
+    private bool Loading { get; set; }
+
+    private int Total { get; set; }
+
+    private Edit Edit { get; set; }
+
+    [Inject] private WebApi WebApi { get; set; }
+
+    [Inject] private MessageService Message { get; set; }
+
+    private async Task Search(QueryModel<TB_Dictionary> queryModel)
+    {
+        if (Loading) return;
+        Loading = true;
+        try
+        {
+            var result = await WebApi.Dictionary_QueryByPage(queryModel.PageIndex, queryModel.PageSize, SearchModel);
+            if (result.Success)
+            {
+                DataSource = result.Data.DataList;
+                Total = result.Data.Total;
+            }
+            else
+            {
+                Message.Error(result.Msg);
+            }
+
+        }
+        catch (Exception ex)
+        {
+            Message.Error($"操作异常:{ex.Message}");
+        }
+        finally
+        {
+            Loading = false;
+        }
+
+        await GetType();
+    }
+
+    private async Task OnRemove(long id)
+    {
+        if (Loading) return;
+        Loading = true;
+        try
+        {
+            var result = await WebApi.Dictionary_RemoveById(id);
+            if (result.Success)
+            {
+                Message.Success(result.Msg);
+            }
+            else
+            {
+                Message.Error(result.Msg);
+            }
+        }
+        catch (Exception ex)
+        {
+            Message.Error($"删除异常:{ex.Message}");
+        }
+        finally
+        {
+            Loading = false;
+        }
+    }
+
+    private async Task GetType()
+    {
+        if (Loading) return;
+        Loading = true;
+        try
+        {
+            var result = await WebApi.Dictionary_GetType();
+            if (result.Success)
+            {
+                DictionaryTypes = result.Data;
+            }
+            else
+            {
+                Message.Error(result.Msg);
+            }
+        }
+        catch (Exception ex)
+        {
+            Message.Error($"操作异常:{ex.Message}");
+        }
+        finally
+        {
+            Loading = false;
+        }
+    }
+
+    private async Task OnChangeEnabled(long id, bool enabled)
+    {
+        if (Loading) return;
+        Loading = true;
+        try
+        {
+            var result = await WebApi.Dictionary_ChangeEnabled(id, enabled);
+            if (result.Success)
+            {
+                Message.Success(result.Msg);
+            }
+            else
+            {
+                Message.Error(result.Msg);
+            }
+        }
+        catch (Exception ex)
+        {
+            Message.Error($"状态修改异常:{ex.Message}");
+        }
+        finally
+        {
+            Loading = false;
+        }
+    }
+}

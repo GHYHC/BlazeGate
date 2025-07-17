@@ -1,8 +1,10 @@
 ﻿@using AntDesign.Extensions.Localization
 @using BlazeGate.Dashboard.Resources
 @using BlazeGate.Model.Culture
+@using BlazeGate.RBAC.Components.Extensions.AuthTokenStorage
 @using Microsoft.AspNetCore.Components.Authorization;
 @using System.Security.Claims;
+@using Microsoft.AspNetCore.Localization
 @using Microsoft.Extensions.Localization
 @using System.Globalization
 @inherits AntDomComponentBase
@@ -39,6 +41,9 @@
     [Inject]
     protected NavigationManager Navigation { get; set; }
 
+    [Inject]
+    ICookieService CookieService { get; set; }
+
     public void HandleSelectUser(MenuItem item)
     {
         switch (item.Key)
@@ -49,19 +54,15 @@
         }
     }
 
-    public void HandleSelectLang(MenuItem item)
+    public async Task HandleSelectLang(MenuItem item)
     {
         var cultureInfo = CultureInfo.GetCultureInfo(item.Key);
 
         if (CultureInfo.CurrentCulture.Name != cultureInfo.Name)
         {
-            var uri = new Uri(Navigation.Uri).GetComponents(UriComponents.PathAndQuery, UriFormat.Unescaped);
-            var cultureEscaped = Uri.EscapeDataString(cultureInfo.Name);
-            var uriEscaped = Uri.EscapeDataString(uri);
+            await CookieService.SetCookieAsync(CookieRequestCultureProvider.DefaultCookieName, CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(cultureInfo)), expiresIn: TimeSpan.FromDays(365));
 
-            Navigation.NavigateTo(
-                $"api/Culture/Set?culture={cultureEscaped}&redirectUri={uriEscaped}",
-                forceLoad: true);
+            NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
         }
     }
 }

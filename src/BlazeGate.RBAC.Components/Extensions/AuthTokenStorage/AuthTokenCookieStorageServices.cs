@@ -1,33 +1,27 @@
-﻿using AltairCA.Blazor.WebAssembly.Cookie;
-using BlazeGate.Model.JwtBearer;
+﻿using BlazeGate.Model.JwtBearer;
 using BlazeGate.Services.Interface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BlazeGate.RBAC.Components.Extensions.AuthTokenStorage
 {
     public class AuthTokenCookieStorageServices : IAuthTokenStorageServices
     {
-        private readonly IAltairCABlazorCookieUtil cookieUtil;
+        private readonly ICookieService cookieService;
 
         private readonly string key = "AuthToken";
 
-        public AuthTokenCookieStorageServices(IAltairCABlazorCookieUtil cookieUtil)
+        public AuthTokenCookieStorageServices(ICookieService cookieService)
         {
-            this.cookieUtil = cookieUtil;
+            this.cookieService = cookieService;
         }
 
         public async Task<AuthTokenDto> GetAuthToken()
         {
-            return await cookieUtil.GetValueAsync<AuthTokenDto>(key);
+            return await cookieService.GetCookieAsync<AuthTokenDto>(key);
         }
 
         public async Task SetAuthToken(AuthTokenDto authToken)
         {
-            await cookieUtil.SetValueAsync(key, authToken);
+            await cookieService.SetCookieAsync(key, authToken);
         }
     }
 }
