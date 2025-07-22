@@ -9,7 +9,7 @@ namespace BlazeGate.Components.Sample.Api
 {
     public class WebApi : AuthWebApi
     {
-        public WebApi(IHttpClientFactory httpClientFactory, IAuthTokenStorageServices authTokenStorage, IConfiguration configuration) : base(httpClientFactory, authTokenStorage, configuration)
+        public WebApi(IServiceProvider serviceProvider) : base(serviceProvider)
         {
         }
 

@@ -2,15 +2,17 @@
 using BlazeGate.Model.WebApi;
 using BlazeGate.Services.Interface;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Net.Http.Json;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using System.Net;
+using System.Net.Http;
+using System.Net.Http.Json;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace BlazeGate.Services.Implement.Remote
 {
@@ -19,24 +21,23 @@ namespace BlazeGate.Services.Implement.Remote
     /// </summary>
     public class AuthWebApi : BaseWebApi
     {
-        private readonly IHttpClientFactory httpClientFactory;
         private readonly IAuthTokenStorageServices authTokenStorage;
 
         private Task<ApiResult<AuthTokenDto>> refreshTask = null;
         private object lockObj = new object();
         private static SemaphoreSlim refreshTokenSemaphore = new SemaphoreSlim(1, 1);
 
-        public AuthWebApi(IHttpClientFactory httpClientFactory, IAuthTokenStorageServices authTokenStorage, IConfiguration configuration) : base(httpClientFactory, configuration)
+        public AuthWebApi(IServiceProvider serviceProvider) : base(serviceProvider)
         {
-            this.httpClientFactory = httpClientFactory;
-            this.authTokenStorage = authTokenStorage;
+            this.authTokenStorage = serviceProvider.GetRequiredService<IAuthTokenStorageServices>();
         }
 
         public override async Task<TResult> HttpPostJsonAsync<TValue, TResult>(string requestUri, TValue value, int timeout = 100)
         {
             string url = CombineUrl(WebApiAddress, requestUri);
 
-            HttpResponseMessage httpResponse = await AuthPostAsJsonAsync(url, value, timeout);
+            var httpClient = await CreateAuthHttpClient(timeout);
+            HttpResponseMessage httpResponse = await httpClient.PostAsJsonAsync(url, value);
 
             //判断是否授权过期
             if (httpResponse.StatusCode == HttpStatusCode.Unauthorized && httpResponse.Headers.TryGetValues("x-access-token", out IEnumerable<string>? headerValue) && headerValue != null && headerValue.Contains("expired"))
@@ -45,7 +46,8 @@ namespace BlazeGate.Services.Implement.Remote
                 if (result.Success)
                 {
                     // 刷新Token成功后重新请求
-                    httpResponse = await AuthPostAsJsonAsync(url, value, timeout);
+                    httpClient = await CreateAuthHttpClient(timeout);
+                    httpResponse = await httpClient.PostAsJsonAsync(url, value);
                 }
                 else
                 {
@@ -105,7 +107,7 @@ namespace BlazeGate.Services.Implement.Remote
                 string url = new Uri(new Uri(BlazeGateAddress), $"/api/Account/RefreshToken?serviceName={ServiceName}").ToString();
                 AuthTokenDto authToken = await authTokenStorage.GetAuthToken();
 
-                var httpClient = httpClientFactory.CreateClient();
+                var httpClient = await CreateHttpClient();
 
                 HttpResponseMessage httpResponse = await httpClient.PostAsJsonAsync(url, authToken);
                 var result = await httpResponse.Content.ReadFromJsonAsync<ApiResult<AuthTokenDto>>();
@@ -126,16 +128,13 @@ namespace BlazeGate.Services.Implement.Remote
         }
 
         /// <summary>
-        /// 授权Post
+        /// 创建授权HttpClient
         /// </summary>
-        /// <typeparam name="TValue"></typeparam>
-        /// <param name="requestUri"></param>
-        /// <param name="value"></param>
+        /// <param name="timeout"></param>
         /// <returns></returns>
-        private async Task<HttpResponseMessage> AuthPostAsJsonAsync<TValue>([StringSyntax(StringSyntaxAttribute.Uri)] string? requestUri, TValue value, int timeout = 100)
+        public async Task<HttpClient> CreateAuthHttpClient(int? timeout)
         {
-            var httpClient = httpClientFactory.CreateClient();
-            httpClient.Timeout = TimeSpan.FromSeconds(timeout);
+            var httpClient = await CreateHttpClient(timeout);
 
             //设置授权信息
             AuthTokenDto authToken = await authTokenStorage.GetAuthToken();
@@ -144,7 +143,7 @@ namespace BlazeGate.Services.Implement.Remote
                 httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", authToken.AccessToken);
             }
 
-            return await httpClient.PostAsJsonAsync(requestUri, value);
+            return httpClient;
         }
     }
 }

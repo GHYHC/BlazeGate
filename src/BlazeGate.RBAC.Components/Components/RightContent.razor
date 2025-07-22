@@ -54,7 +54,7 @@
     private IStringLocalizer<I18n> L { get; set; }
 
     [Inject]
-    ICookieService CookieService { get; set; }
+    IAppCultureStorageService AppCultureStorageService { get; set; }
 
     [Parameter]
     public string[] Locales { get; set; } = LanguageOptions.Languages;
@@ -110,7 +110,13 @@
 
         if (CultureInfo.CurrentCulture.Name != cultureInfo.Name)
         {
-            await CookieService.SetCookieAsync(CookieRequestCultureProvider.DefaultCookieName, CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(cultureInfo)), expiresIn: TimeSpan.FromDays(365));
+            AppCultureInfo appCultureInfo = new AppCultureInfo
+            {
+                Culture = cultureInfo.Name,
+                UICulture = cultureInfo.Name
+            };
+
+            await AppCultureStorageService.SetAppCulture(appCultureInfo);
 
             NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
         }

@@ -8,7 +8,7 @@ namespace BlazeGate.Services.Implement.Remote
 {
     public class AccountService : AuthWebApi, IAccountService
     {
-        public AccountService(IHttpClientFactory httpClientFactory, IAuthTokenStorageServices authTokenStorage, IConfiguration configuration) : base(httpClientFactory, authTokenStorage, configuration)
+        public AccountService(IServiceProvider serviceProvider) : base(serviceProvider)
         {
             WebApiAddress = BlazeGateAddress;
         }

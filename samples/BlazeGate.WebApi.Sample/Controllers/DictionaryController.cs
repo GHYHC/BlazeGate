@@ -2,10 +2,12 @@
 using BlazeGate.Model.Sample.EFCore;
 using BlazeGate.Model.WebApi;
 using BlazeGate.Services.Interface;
+using BlazeGate.WebApi.Sample.Resources;
 using LinqKit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 
 namespace BlazeGate.WebApi.Sample.Controllers
 {
@@ -16,11 +18,13 @@ namespace BlazeGate.WebApi.Sample.Controllers
     {
         private readonly BlazeGateSampleContext context;
         private readonly ISnowFlakeService snowFlake;
+        private readonly IStringLocalizer<I18n> l;
 
-        public DictionaryController(BlazeGateSampleContext context, ISnowFlakeService snowFlake)
+        public DictionaryController(BlazeGateSampleContext context, ISnowFlakeService snowFlake, IStringLocalizer<I18n> l)
         {
             this.context = context;
             this.snowFlake = snowFlake;
+            this.l = l;
         }
 
         [HttpPost]
@@ -103,7 +107,7 @@ namespace BlazeGate.WebApi.Sample.Controllers
             var result = await context.TB_Dictionaries.Where(b => b.Id == id).ExecuteUpdateAsync(s => s
                     .SetProperty(t => t.Enabled, t => enabled)
                     .SetProperty(t => t.UpdateTime, t => DateTime.Now));
-            return ApiResult<int>.Result(result > 0, result);
+            return ApiResult<int>.Result(result > 0, result, result > 0 ? l["ApiResult.SuccessMsg"] : l["ApiResult.FailureMsg"]);
         }
 
         [HttpPost]

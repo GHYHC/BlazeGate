@@ -1,4 +1,5 @@
 ﻿using BlazeGate.Model.Culture;
+using BlazeGate.RBAC.Components.Extensions.AppCultureStorage;
 using BlazeGate.RBAC.Components.Extensions.Authentication;
 using BlazeGate.RBAC.Components.Extensions.AuthTokenStorage;
 using BlazeGate.RBAC.Components.Extensions.Menu;
@@ -63,6 +64,9 @@ namespace BlazeGate.RBAC.Components
                 services.AddScoped<IAuthTokenStorageServices, AuthTokenFileStorageServices>();
             }
 
+            //添加应用程序文化信息存储服务
+            services.AddScoped<IAppCultureStorageService, AppCultureCookieStorageServices>();
+
             services.AddAuthorizationCore();
             services.AddCascadingAuthenticationState();
             services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
@@ -75,15 +79,15 @@ namespace BlazeGate.RBAC.Components
         /// </summary>
         public static async Task<WebAssemblyHost> SetCultureAsync(this WebAssemblyHost host)
         {
-            var cookieService = host.Services.GetRequiredService<ICookieService>();
-            var result = await cookieService.GetCookieAsync<string>(CookieRequestCultureProvider.DefaultCookieName);
-            var requestCulture = CookieRequestCultureProvider.ParseCookieValue(result);
+            var appCultureStorageService = host.Services.GetRequiredService<IAppCultureStorageService>();
 
-            if (requestCulture?.Cultures.Count > 0)
-                CultureInfo.DefaultThreadCurrentCulture = CultureInfo.GetCultureInfo(requestCulture.Cultures[0].Value);
+            AppCultureInfo appCultureInfo = await appCultureStorageService.GetAppCulture();
 
-            if (requestCulture?.UICultures.Count > 0)
-                CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.GetCultureInfo(requestCulture.UICultures[0].Value);
+            if (appCultureInfo != null)
+            {
+                CultureInfo.DefaultThreadCurrentCulture = CultureInfo.GetCultureInfo(appCultureInfo.Culture);
+                CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.GetCultureInfo(appCultureInfo.UICulture);
+            }
 
             return host;
         }

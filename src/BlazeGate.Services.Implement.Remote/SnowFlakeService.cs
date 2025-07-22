@@ -11,7 +11,7 @@ namespace BlazeGate.Services.Implement.Remote
 {
     public class SnowFlakeService : BaseWebApi, ISnowFlakeService
     {
-        public SnowFlakeService(IHttpClientFactory httpClientFactory, IConfiguration configuration) : base(httpClientFactory, configuration)
+        public SnowFlakeService(IServiceProvider serviceProvider) : base(serviceProvider)
         {
             WebApiAddress = BlazeGateAddress;
         }

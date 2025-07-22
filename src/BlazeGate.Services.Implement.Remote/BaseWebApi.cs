@@ -1,14 +1,18 @@
-﻿using BlazeGate.Model.JwtBearer;
+﻿using Azure.Core;
+using BlazeGate.Model.JwtBearer;
 using BlazeGate.Model.WebApi;
 using BlazeGate.Services.Interface;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Reflection.PortableExecutable;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -19,8 +23,10 @@ namespace BlazeGate.Services.Implement.Remote
     /// </summary>
     public class BaseWebApi
     {
+        private readonly IServiceProvider serviceProvider;
         private readonly IHttpClientFactory httpClientFactory;
         public readonly IConfiguration configuration;
+        private readonly IAppCultureStorageService appCultureStorageService;
 
         /// <summary>
         /// WebApi地址(后台接口地址)
@@ -37,10 +43,12 @@ namespace BlazeGate.Services.Implement.Remote
         /// </summary>
         public string ServiceName { get; set; }
 
-        public BaseWebApi(IHttpClientFactory httpClientFactory, IConfiguration configuration)
+        public BaseWebApi(IServiceProvider serviceProvider)
         {
-            this.httpClientFactory = httpClientFactory;
-            this.configuration = configuration;
+            this.serviceProvider = serviceProvider;
+            this.httpClientFactory = serviceProvider.GetRequiredService<IHttpClientFactory>();
+            this.configuration = serviceProvider.GetRequiredService<IConfiguration>();
+            this.appCultureStorageService = serviceProvider.GetService<IAppCultureStorageService>();
 
             BlazeGateAddress = configuration["BlazeGate:BlazeGateAddress"];
             ServiceName = configuration["BlazeGate:ServiceName"];
@@ -67,8 +75,7 @@ namespace BlazeGate.Services.Implement.Remote
         {
             string url = CombineUrl(WebApiAddress, requestUri);
 
-            var httpClient = httpClientFactory.CreateClient();
-            httpClient.Timeout = TimeSpan.FromSeconds(timeout);
+            var httpClient = await CreateHttpClient(timeout);
 
             HttpResponseMessage httpResponse = await httpClient.PostAsJsonAsync(url, value);
             if (!httpResponse.IsSuccessStatusCode)
@@ -108,6 +115,35 @@ namespace BlazeGate.Services.Implement.Remote
 
             string url = url1.TrimEnd('/') + "/" + url2.TrimStart('/');
             return url;
+        }
+
+        /// <summary>
+        /// 创建HttpClient
+        /// </summary>
+        /// <param name="timeout"></param>
+        /// <returns></returns>
+        public virtual async Task<HttpClient> CreateHttpClient(int? timeout = null)
+        {
+            var httpClient = httpClientFactory.CreateClient();
+
+            //设置超时时间
+            if (timeout != null)
+            {
+                httpClient.Timeout = TimeSpan.FromSeconds(timeout.Value);
+            }
+
+            //设置请求的语言头
+            if (appCultureStorageService != null)
+            {
+                var appCultureInfo = await appCultureStorageService.GetAppCulture();
+                if (appCultureInfo != null)
+                {
+                    httpClient.DefaultRequestHeaders.AcceptLanguage.Clear();
+                    httpClient.DefaultRequestHeaders.AcceptLanguage.Add(new StringWithQualityHeaderValue(string.IsNullOrWhiteSpace(appCultureInfo.Culture) ? appCultureInfo.UICulture : appCultureInfo.Culture));
+                }
+            }
+
+            return httpClient;
         }
     }
 }

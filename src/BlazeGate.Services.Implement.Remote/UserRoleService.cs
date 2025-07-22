@@ -9,7 +9,7 @@ namespace BlazeGate.Services.Implement.Remote
 {
     public class UserRoleService : AuthWebApi, IUserRoleService
     {
-        public UserRoleService(IHttpClientFactory httpClientFactory, IAuthTokenStorageServices authTokenStorage, IConfiguration configuration) : base(httpClientFactory, authTokenStorage, configuration)
+        public UserRoleService(IServiceProvider serviceProvider) : base(serviceProvider)
         {
             WebApiAddress = BlazeGateAddress;
         }
