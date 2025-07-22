@@ -4,10 +4,12 @@ using BlazeGate.Model.EFCore;
 using BlazeGate.Model.JwtBearer;
 using BlazeGate.Model.WebApi;
 using BlazeGate.Model.WebApi.Request;
+using BlazeGate.Resources;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Localization;
 using Microsoft.IdentityModel.Tokens;
 
 namespace BlazeGate.Controllers
@@ -20,13 +22,15 @@ namespace BlazeGate.Controllers
         private readonly IAuthTokenService authTokenService;
         private readonly IMapper mapper;
         private readonly IDistributedCache distributedCache;
+        private readonly IStringLocalizer<I18n> l;
 
-        public AccountController(BlazeGateContext BlazeGateContext, IAuthTokenService authTokenService, IMapper mapper, IDistributedCache distributedCache)
+        public AccountController(BlazeGateContext BlazeGateContext, IAuthTokenService authTokenService, IMapper mapper, IDistributedCache distributedCache, IStringLocalizer<I18n> l)
         {
             this.BlazeGateContext = BlazeGateContext;
             this.authTokenService = authTokenService;
             this.mapper = mapper;
             this.distributedCache = distributedCache;
+            this.l = l;
         }
 
         [AllowAnonymous]
@@ -44,7 +48,7 @@ namespace BlazeGate.Controllers
                 // 如果尝试次数达到或超过3次，返回账号锁定信息
                 if (attempts >= 3)
                 {
-                    return ApiResult<AuthTokenDto>.FailResult("登录失败次数过多，账号已被锁定，请1分钟后再试");
+                    return ApiResult<AuthTokenDto>.FailResult(l["LoginLocked"]);
                 }
             }
 
@@ -59,7 +63,7 @@ namespace BlazeGate.Controllers
                     SlidingExpiration = TimeSpan.FromMinutes(1)
                 });
 
-                return ApiResult<AuthTokenDto>.FailResult("用户名或密码错误");
+                return ApiResult<AuthTokenDto>.FailResult(l["LoginFailed"]);
             }
             else
             {
@@ -71,7 +75,7 @@ namespace BlazeGate.Controllers
             var privateKey = await BlazeGateContext.AuthRsaKeys.AsNoTracking().Where(b => b.ServiceName.ToLower() == param.ServiceName.ToLower()).Select(b => b.PrivateKey).FirstOrDefaultAsync();
             if (string.IsNullOrWhiteSpace(privateKey))
             {
-                return ApiResult<AuthTokenDto>.FailResult("服务授权秘钥未配置");
+                return ApiResult<AuthTokenDto>.FailResult(l["ServiceKeyNotConfigured"]);
             }
 
             SigningCredentials signingCredentials = null;
@@ -82,7 +86,7 @@ namespace BlazeGate.Controllers
             }
             catch (Exception ex)
             {
-                return ApiResult<AuthTokenDto>.FailResult("服务授权秘钥格式不正确");
+                return ApiResult<AuthTokenDto>.FailResult(l["ServiceKeyFormatError"]);
             }
 
             //查询用户角色的Id
@@ -112,7 +116,7 @@ namespace BlazeGate.Controllers
                 var privateKey = await BlazeGateContext.AuthRsaKeys.AsNoTracking().Where(b => b.ServiceName.ToLower() == serviceName.ToLower()).Select(b => b.PrivateKey).FirstOrDefaultAsync();
                 if (string.IsNullOrWhiteSpace(privateKey))
                 {
-                    return ApiResult<AuthTokenDto>.FailResult("服务授权秘钥未配置");
+                    return ApiResult<AuthTokenDto>.FailResult(l["ServiceKeyNotConfigured"]);
                 }
 
                 SigningCredentials signingCredentials = null;
@@ -123,7 +127,7 @@ namespace BlazeGate.Controllers
                 }
                 catch (Exception ex)
                 {
-                    return ApiResult<AuthTokenDto>.FailResult("服务授权秘钥格式不正确");
+                    return ApiResult<AuthTokenDto>.FailResult(l["ServiceKeyFormatError"]);
                 }
 
                 //验证authToken
@@ -135,13 +139,13 @@ namespace BlazeGate.Controllers
                 //如果用户不存在
                 if (user == null)
                 {
-                    return ApiResult<AuthTokenDto>.FailResult("无效用户");
+                    return ApiResult<AuthTokenDto>.FailResult(l["InvalidUser"]);
                 }
 
                 //验证更新时间是否一致
                 if (user.UpdateTime != tokenUser.UpdateTime)
                 {
-                    return ApiResult<AuthTokenDto>.FailResult("用户信息已更新，请重新登录");
+                    return ApiResult<AuthTokenDto>.FailResult(l["UserInfoUpdated"]);
                 }
 
                 //移除令牌
@@ -179,7 +183,7 @@ namespace BlazeGate.Controllers
                 var privateKey = await BlazeGateContext.AuthRsaKeys.AsNoTracking().Where(b => b.ServiceName.ToLower() == serviceName.ToLower()).Select(b => b.PrivateKey).FirstOrDefaultAsync();
                 if (string.IsNullOrWhiteSpace(privateKey))
                 {
-                    return ApiResult<string>.FailResult("服务授权秘钥未配置");
+                    return ApiResult<string>.FailResult(l["ServiceKeyNotConfigured"]);
                 }
 
                 SigningCredentials signingCredentials = null;
@@ -190,7 +194,7 @@ namespace BlazeGate.Controllers
                 }
                 catch (Exception ex)
                 {
-                    return ApiResult<string>.FailResult("服务授权秘钥格式不正确");
+                    return ApiResult<string>.FailResult(l["ServiceKeyFormatError"]);
                 }
 
                 var user = await authTokenService.RemoveAuthTokenAsync(authToken, signingCredentials);
@@ -214,7 +218,7 @@ namespace BlazeGate.Controllers
             }
             else
             {
-                return await Task.FromResult(ApiResult<UserDto>.FailResult("未认证"));
+                return await Task.FromResult(ApiResult<UserDto>.FailResult(l["NotAuthenticated"]));
             }
         }
 
@@ -235,18 +239,18 @@ namespace BlazeGate.Controllers
                 // 如果尝试次数达到或超过3次，返回账号锁定信息
                 if (attempts >= 3)
                 {
-                    return ApiResult<string>.FailResult("失败次数过多，账号已被锁定，请1分钟后再试");
+                    return ApiResult<string>.FailResult(l["ChangePasswordLocked"]);
                 }
             }
 
             var userdb = await BlazeGateContext.Users.FirstOrDefaultAsync(u => u.Id == user.Id);
             if (userdb == null)
             {
-                return ApiResult<string>.FailResult("用户未找到");
+                return ApiResult<string>.FailResult(l["UserNotFound"]);
             }
             if (param.OldPassword == param.NewPassword)
             {
-                return ApiResult<string>.FailResult("新密码不能与旧密码相同");
+                return ApiResult<string>.FailResult(l["NewPasswordSameAsOld"]);
             }
             if (userdb.Password != param.OldPassword)
             {
@@ -257,7 +261,7 @@ namespace BlazeGate.Controllers
                     SlidingExpiration = TimeSpan.FromMinutes(1)
                 });
 
-                return ApiResult<string>.FailResult("旧密码不正确");
+                return ApiResult<string>.FailResult(l["OldPasswordIncorrect"]);
             }
             else
             {
@@ -269,7 +273,7 @@ namespace BlazeGate.Controllers
             userdb.UpdateTime = DateTime.Now;
             await BlazeGateContext.SaveChangesAsync();
 
-            return ApiResult<string>.SuccessResult("密码已成功更改");
+            return ApiResult<string>.SuccessResult(l["PasswordChanged"]);
         }
     }
 }

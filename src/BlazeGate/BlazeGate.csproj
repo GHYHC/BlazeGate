@@ -32,4 +32,13 @@
 		<ProjectReference Include="..\BlazeGate.Services.Implement\BlazeGate.Services.Implement.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <EmbeddedResource Update="Resources\I18n.resx">
+	    <SubType>Designer</SubType>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Resources\I18n.zh-CN.resx">
+	    <SubType>Designer</SubType>
+	  </EmbeddedResource>
+	</ItemGroup>
+
 </Project>

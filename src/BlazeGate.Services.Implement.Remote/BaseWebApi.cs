@@ -132,6 +132,10 @@ namespace BlazeGate.Services.Implement.Remote
                 httpClient.Timeout = TimeSpan.FromSeconds(timeout.Value);
             }
 
+            //设置默认当前系统的语言
+            httpClient.DefaultRequestHeaders.AcceptLanguage.Clear();
+            httpClient.DefaultRequestHeaders.AcceptLanguage.Add(new StringWithQualityHeaderValue(System.Globalization.CultureInfo.CurrentCulture.Name));
+
             //设置请求的语言头
             if (appCultureStorageService != null)
             {

@@ -7,6 +7,7 @@ using BlazeGate.AuthWhiteList;
 using BlazeGate.BackgroundService;
 using BlazeGate.Common.Autofac;
 using BlazeGate.JwtBearer;
+using BlazeGate.Model.Culture;
 using BlazeGate.Model.EFCore;
 using BlazeGate.Model.WebApi;
 using BlazeGate.Policy;
@@ -119,6 +120,9 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
             options.KnownNetworks.Add(parsedNetwork);
 });
 
+//添加本地化支持
+builder.Services.AddLocalization();
+
 var app = builder.Build();
 
 //自动迁移数据库
@@ -127,6 +131,13 @@ using (var scope = app.Services.CreateScope())
     var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
     dbInitializer.Initialize().Wait();
 }
+
+// 使用以根据客户端提供的信息自动设置请求的文化信息
+app.UseRequestLocalization(new RequestLocalizationOptions()
+    .SetDefaultCulture(LanguageOptions.Languages[0])
+    .AddSupportedCultures(LanguageOptions.Languages)
+    .AddSupportedUICultures(LanguageOptions.Languages)
+);
 
 //使用转发头信息中间件（有反向代理获取真实IP）
 app.UseForwardedHeaders();
