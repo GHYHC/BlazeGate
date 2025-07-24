@@ -33,6 +33,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <EmbeddedResource Update="Resources\I18n.vi-VN.resx">
+	    <SubType>Designer</SubType>
+	  </EmbeddedResource>
 	  <EmbeddedResource Update="Resources\I18n.resx">
 	    <SubType>Designer</SubType>
 	  </EmbeddedResource>
