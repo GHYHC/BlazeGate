@@ -22,8 +22,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Content Remove="locales\vi-VN.json" />
 		<Content Remove="Pages\Role\RoleEdit_1.razor" />
 		<Content Remove="Pages\Role\RoleIndex_1.razor" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Include="locales\vi-VN.json">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </EmbeddedResource>
 	</ItemGroup>
 
 	<ItemGroup>

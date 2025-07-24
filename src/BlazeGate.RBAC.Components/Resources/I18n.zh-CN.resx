@@ -216,12 +216,6 @@
   <data name="user.edit.disable" xml:space="preserve">
     <value>禁用</value>
   </data>
-  <data name="account.login.account.required" xml:space="preserve">
-    <value>账号不能为空</value>
-  </data>
-  <data name="account.login.password.required" xml:space="preserve">
-    <value>密码不能为空</value>
-  </data>
   <data name="account.login.account" xml:space="preserve">
     <value>账号</value>
   </data>

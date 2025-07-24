@@ -3,12 +3,12 @@ using BlazeGate.RBAC.Components.Extensions.AppCultureStorage;
 using BlazeGate.RBAC.Components.Extensions.Authentication;
 using BlazeGate.RBAC.Components.Extensions.AuthTokenStorage;
 using BlazeGate.RBAC.Components.Extensions.Menu;
+using BlazeGate.RBAC.locales;
 using BlazeGate.Services.Implement.Remote;
 using BlazeGate.Services.Interface;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.DependencyInjection;
 using System.Globalization;
 
@@ -25,6 +25,9 @@ namespace BlazeGate.RBAC.Components
 
         public static IServiceCollection AddBlazeGateRBAC(this IServiceCollection services, AuthTokenStorageEnum storageEnum = AuthTokenStorageEnum.Cookie)
         {
+            //覆盖AntDesign的Locale
+            LocaleHelp.OverrideAntDesignLocaleByAssembly(typeof(BlazeGateRBACExtension).Assembly);
+
             services.AddBlazeGateRemote();
 
             //添加本地化支持

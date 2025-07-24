@@ -118,303 +118,303 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="user.search.nameOrAccount" xml:space="preserve">
-    <value>Name/Account</value>
+    <value>Tên/Tài khoản</value>
   </data>
   <data name="user.search.query" xml:space="preserve">
-    <value>Query</value>
+    <value>Tra cứu</value>
   </data>
   <data name="user.search.add" xml:space="preserve">
-    <value>Add</value>
+    <value>Thêm</value>
   </data>
   <data name="user.table.action" xml:space="preserve">
-    <value>Action</value>
+    <value>Thao tác</value>
   </data>
   <data name="user.table.edit" xml:space="preserve">
-    <value>Edit</value>
+    <value>Chỉnh sửa</value>
   </data>
   <data name="user.table.delete.confirm" xml:space="preserve">
-    <value>Are you sure to delete this data?</value>
+    <value>Bạn có chắc muốn xóa dữ liệu này không?</value>
   </data>
   <data name="user.table.delete" xml:space="preserve">
-    <value>Delete</value>
+    <value>Xóa</value>
   </data>
   <data name="user.table.userName" xml:space="preserve">
-    <value>User Name</value>
+    <value>Tên người dùng</value>
   </data>
   <data name="user.table.account" xml:space="preserve">
-    <value>Account</value>
+    <value>Tài khoản</value>
   </data>
   <data name="user.table.phone" xml:space="preserve">
-    <value>Phone</value>
+    <value>Điện thoại</value>
   </data>
   <data name="user.table.userData" xml:space="preserve">
-    <value>User Data</value>
+    <value>Dữ liệu người dùng</value>
   </data>
   <data name="user.table.remark" xml:space="preserve">
-    <value>Remark</value>
+    <value>Ghi chú</value>
   </data>
   <data name="user.table.createTime" xml:space="preserve">
-    <value>Create Time</value>
+    <value>Thời gian tạo</value>
   </data>
   <data name="user.table.updateTime" xml:space="preserve">
-    <value>Update Time</value>
+    <value>Thời gian cập nhật</value>
   </data>
   <data name="user.table.status" xml:space="preserve">
-    <value>Status</value>
+    <value>Trạng thái</value>
   </data>
   <data name="user.table.enable" xml:space="preserve">
-    <value>Enable</value>
+    <value>Kích hoạt</value>
   </data>
   <data name="user.table.disable" xml:space="preserve">
-    <value>Disable</value>
+    <value>Vô hiệu hóa</value>
   </data>
   <data name="user.get.error" xml:space="preserve">
-    <value>Get data error: {0}</value>
+    <value>Lỗi lấy dữ liệu: {0}</value>
   </data>
   <data name="user.delete.error" xml:space="preserve">
-    <value>Delete error: {0}</value>
+    <value>Lỗi xóa: {0}</value>
   </data>
   <data name="user.status.error" xml:space="preserve">
-    <value>Status change error: {0}</value>
+    <value>Lỗi thay đổi trạng thái: {0}</value>
   </data>
   <data name="user.edit.title.add" xml:space="preserve">
-    <value>Add</value>
+    <value>Thêm mới</value>
   </data>
   <data name="user.edit.title.edit" xml:space="preserve">
-    <value>Edit</value>
+    <value>Chỉnh sửa</value>
   </data>
   <data name="user.edit.get.error" xml:space="preserve">
-    <value>Get data error: {0}</value>
+    <value>Lỗi lấy dữ liệu: {0}</value>
   </data>
   <data name="user.edit.error" xml:space="preserve">
-    <value>Error: {0}</value>
+    <value>Lỗi: {0}</value>
   </data>
   <data name="user.edit.label.userName" xml:space="preserve">
-    <value>User Name</value>
+    <value>Tên người dùng</value>
   </data>
   <data name="user.edit.label.account" xml:space="preserve">
-    <value>Account</value>
+    <value>Tài khoản</value>
   </data>
   <data name="user.edit.label.password" xml:space="preserve">
-    <value>Password</value>
+    <value>Mật khẩu</value>
   </data>
   <data name="user.edit.label.phone" xml:space="preserve">
-    <value>Phone</value>
+    <value>Điện thoại</value>
   </data>
   <data name="user.edit.label.userData" xml:space="preserve">
-    <value>User Data</value>
+    <value>Dữ liệu người dùng</value>
   </data>
   <data name="user.edit.label.remark" xml:space="preserve">
-    <value>Remark</value>
+    <value>Ghi chú</value>
   </data>
   <data name="user.edit.label.status" xml:space="preserve">
-    <value>Status</value>
+    <value>Trạng thái</value>
   </data>
   <data name="user.edit.enable" xml:space="preserve">
-    <value>Enable</value>
+    <value>Kích hoạt</value>
   </data>
   <data name="user.edit.disable" xml:space="preserve">
-    <value>Disable</value>
+    <value>Vô hiệu hóa</value>
   </data>
   <data name="account.login.account" xml:space="preserve">
-    <value>Account</value>
+    <value>Tài khoản</value>
   </data>
   <data name="account.login.password" xml:space="preserve">
-    <value>Password</value>
+    <value>Mật khẩu</value>
   </data>
   <data name="account.login.button" xml:space="preserve">
-    <value>Login</value>
+    <value>Đăng nhập</value>
   </data>
   <data name="page.menu" xml:space="preserve">
     <value>Menu</value>
   </data>
   <data name="page.button" xml:space="preserve">
-    <value>Button</value>
+    <value>Nút</value>
   </data>
   <data name="page.title" xml:space="preserve">
-    <value>Title</value>
+    <value>Tiêu đề</value>
   </data>
   <data name="page.parent" xml:space="preserve">
-    <value>Parent Page</value>
+    <value>Trang cha</value>
   </data>
   <data name="page.select" xml:space="preserve">
-    <value>Please select</value>
+    <value>Vui lòng chọn</value>
   </data>
   <data name="page.index" xml:space="preserve">
-    <value>Index</value>
+    <value>Số thứ tự</value>
   </data>
   <data name="page.type" xml:space="preserve">
-    <value>Type</value>
+    <value>Loại</value>
   </data>
   <data name="page.icon" xml:space="preserve">
-    <value>Icon</value>
+    <value>Biểu tượng</value>
   </data>
   <data name="page.path" xml:space="preserve">
-    <value>Path</value>
+    <value>Đường dẫn</value>
   </data>
   <data name="page.subPath" xml:space="preserve">
-    <value>Sub Path</value>
+    <value>Đường dẫn phụ</value>
   </data>
   <data name="page.add" xml:space="preserve">
-    <value>Add</value>
+    <value>Thêm</value>
   </data>
   <data name="page.edit" xml:space="preserve">
-    <value>Edit</value>
+    <value>Sửa</value>
   </data>
   <data name="page.delete" xml:space="preserve">
-    <value>Delete</value>
+    <value>Xóa</value>
   </data>
   <data name="page.delete.confirm" xml:space="preserve">
-    <value>Are you sure to delete this data?</value>
+    <value>Bạn có chắc muốn xóa dữ liệu này không?</value>
   </data>
   <data name="page.get.error" xml:space="preserve">
-    <value>Get data error: {0}</value>
+    <value>Lỗi lấy dữ liệu: {0}</value>
   </data>
   <data name="page.error" xml:space="preserve">
-    <value>Error: {0}</value>
+    <value>Lỗi: {0}</value>
   </data>
   <data name="page.delete.error" xml:space="preserve">
-    <value>Delete error: {0}</value>
+    <value>Lỗi xóa: {0}</value>
   </data>
   <data name="page.drag.error" xml:space="preserve">
-    <value>Cannot drag to itself</value>
+    <value>Không thể kéo vào chính mình</value>
   </data>
   <data name="account.changePassword.title" xml:space="preserve">
-    <value>Change Password</value>
+    <value>Đổi mật khẩu</value>
   </data>
   <data name="account.changePassword.old" xml:space="preserve">
-    <value>Old Password</value>
+    <value>Mật khẩu cũ</value>
   </data>
   <data name="account.changePassword.new" xml:space="preserve">
-    <value>New Password</value>
+    <value>Mật khẩu mới</value>
   </data>
   <data name="account.changePassword.confirm" xml:space="preserve">
-    <value>Confirm New Password</value>
+    <value>Xác nhận mật khẩu mới</value>
   </data>
   <data name="account.changePassword.submit" xml:space="preserve">
-    <value>Confirm Change</value>
+    <value>Xác nhận thay đổi</value>
   </data>
   <data name="account.changePassword.success" xml:space="preserve">
-    <value>Password changed successfully, please log in again.</value>
+    <value>Đổi mật khẩu thành công, vui lòng đăng nhập lại.</value>
   </data>
   <data name="account.changePassword.error" xml:space="preserve">
-    <value>Error: {0}</value>
+    <value>Lỗi: {0}</value>
   </data>
   <data name="role.name" xml:space="preserve">
-    <value>Role Name</value>
+    <value>Tên vai trò</value>
   </data>
   <data name="role.query" xml:space="preserve">
-    <value>Query</value>
+    <value>Tra cứu</value>
   </data>
   <data name="role.add" xml:space="preserve">
-    <value>Add</value>
+    <value>Thêm</value>
   </data>
   <data name="role.action" xml:space="preserve">
-    <value>Action</value>
+    <value>Thao tác</value>
   </data>
   <data name="role.edit" xml:space="preserve">
-    <value>Edit</value>
+    <value>Chỉnh sửa</value>
   </data>
   <data name="role.delete" xml:space="preserve">
-    <value>Delete</value>
+    <value>Xóa</value>
   </data>
   <data name="role.delete.confirm" xml:space="preserve">
-    <value>Are you sure to delete this data?</value>
+    <value>Bạn có chắc muốn xóa dữ liệu này không?</value>
   </data>
   <data name="role.menu" xml:space="preserve">
     <value>Menu</value>
   </data>
   <data name="role.button" xml:space="preserve">
-    <value>Button</value>
+    <value>Nút</value>
   </data>
   <data name="role.pages" xml:space="preserve">
-    <value>Role Pages</value>
+    <value>Trang vai trò</value>
   </data>
   <data name="role.remark" xml:space="preserve">
-    <value>Remark</value>
+    <value>Ghi chú</value>
   </data>
   <data name="role.get.error" xml:space="preserve">
-    <value>Get data error: {0}</value>
+    <value>Lỗi lấy dữ liệu: {0}</value>
   </data>
   <data name="role.delete.error" xml:space="preserve">
-    <value>Delete error: {0}</value>
+    <value>Lỗi xóa: {0}</value>
   </data>
   <data name="role.edit.title.add" xml:space="preserve">
-    <value>Add Role</value>
+    <value>Thêm vai trò mới</value>
   </data>
   <data name="role.edit.title.edit" xml:space="preserve">
-    <value>Edit Role</value>
+    <value>Chỉnh sửa vai trò</value>
   </data>
   <data name="role.edit.get.error" xml:space="preserve">
-    <value>Get role data failed: {0}</value>
+    <value>Lỗi lấy dữ liệu vai trò: {0}</value>
   </data>
   <data name="role.edit.save.error" xml:space="preserve">
-    <value>Role save failed: {0}</value>
+    <value>Lưu vai trò thất bại: {0}</value>
   </data>
   <data name="role.edit.page.get.error" xml:space="preserve">
-    <value>Get page data failed: {0}</value>
+    <value>Lỗi lấy dữ liệu trang: {0}</value>
   </data>
   <data name="userRole.index.userName" xml:space="preserve">
-    <value>User Name</value>
+    <value>Tên người dùng</value>
   </data>
   <data name="userRole.index.account" xml:space="preserve">
-    <value>Account</value>
+    <value>Tài khoản</value>
   </data>
   <data name="userRole.index.query" xml:space="preserve">
-    <value>Query</value>
+    <value>Tra cứu</value>
   </data>
   <data name="userRole.index.add" xml:space="preserve">
-    <value>Add</value>
+    <value>Thêm</value>
   </data>
   <data name="userRole.index.action" xml:space="preserve">
-    <value>Action</value>
+    <value>Thao tác</value>
   </data>
   <data name="userRole.index.edit" xml:space="preserve">
-    <value>Edit</value>
+    <value>Chỉnh sửa</value>
   </data>
   <data name="userRole.index.delete" xml:space="preserve">
-    <value>Delete</value>
+    <value>Xóa</value>
   </data>
   <data name="userRole.index.delete.confirm" xml:space="preserve">
-    <value>Are you sure to delete this data?</value>
+    <value>Bạn có chắc muốn xóa dữ liệu này không?</value>
   </data>
   <data name="userRole.index.role" xml:space="preserve">
-    <value>Role</value>
+    <value>Vai trò</value>
   </data>
   <data name="userRole.index.get.error" xml:space="preserve">
-    <value>Get user role data failed: {0}</value>
+    <value>Lỗi lấy dữ liệu vai trò người dùng: {0}</value>
   </data>
   <data name="userRole.index.delete.error" xml:space="preserve">
-    <value>Delete user role failed: {0}</value>
+    <value>Xóa vai trò người dùng thất bại: {0}</value>
   </data>
   <data name="userRole.edit.userName" xml:space="preserve">
-    <value>User Name</value>
+    <value>Tên người dùng</value>
   </data>
   <data name="userRole.edit.role" xml:space="preserve">
-    <value>User Role</value>
+    <value>Vai trò người dùng</value>
   </data>
   <data name="userRole.edit.title.add" xml:space="preserve">
-    <value>Add User Role</value>
+    <value>Thêm vai trò người dùng mới</value>
   </data>
   <data name="userRole.edit.title.edit" xml:space="preserve">
-    <value>Edit User Role</value>
+    <value>Chỉnh sửa vai trò người dùng</value>
   </data>
   <data name="userRole.edit.get.error" xml:space="preserve">
-    <value>Get user role data failed: {0}</value>
+    <value>Lỗi lấy dữ liệu vai trò người dùng: {0}</value>
   </data>
   <data name="userRole.edit.save.error" xml:space="preserve">
-    <value>User role save failed: {0}</value>
+    <value>Lưu vai trò người dùng thất bại: {0}</value>
   </data>
   <data name="userRole.edit.action.error" xml:space="preserve">
-    <value>Operation error: {0}</value>
+    <value>Lỗi thao tác: {0}</value>
   </data>
   <data name="menu.account.logout" xml:space="preserve">
-    <value>Logout</value>
+    <value>Đăng xuất</value>
   </data>
   <data name="menu.account.changePassword" xml:space="preserve">
-    <value>Change password</value>
+    <value>Đổi mật khẩu</value>
   </data>
   <data name="menu.account.notLoggedIn" xml:space="preserve">
-    <value>Not logged in</value>
+    <value>Chưa đăng nhập</value>
   </data>
 </root>

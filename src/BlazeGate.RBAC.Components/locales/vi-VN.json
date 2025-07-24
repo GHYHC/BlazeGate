@@ -1,0 +1,253 @@
+{
+  "locale": "vi-VN",
+  "Pagination": {
+    "items_per_page": "mục/trang",
+    "jump_to": "Đến",
+    "jump_to_confirm": "Xác nhận",
+    "page": "Trang",
+    "prev_page": "Trang trước",
+    "next_page": "Trang sau",
+    "prev_5": "Về 5 trang trước",
+    "next_5": "Đến 5 trang sau",
+    "prev_3": "Về 3 trang trước",
+    "next_3": "Đến 3 trang sau"
+  },
+  "DatePicker": {
+    "firstDayOfWeek": "Monday",
+    "lang": {
+      "placeholder": "Chọn ngày",
+      "yearPlaceholder": "Chọn năm",
+      "quarterPlaceholder": "Chọn quý",
+      "monthPlaceholder": "Chọn tháng",
+      "weekPlaceholder": "Chọn tuần",
+      "rangePlaceholder": ["Ngày bắt đầu", "Ngày kết thúc"],
+      "rangeYearPlaceholder": ["Năm bắt đầu", "Năm kết thúc"],
+      "rangeMonthPlaceholder": ["Tháng bắt đầu", "Tháng kết thúc"],
+      "rangeWeekPlaceholder": ["Tuần bắt đầu", "Tuần kết thúc"],
+      "locale": "vi_VN",
+      "today": "Hôm nay",
+      "now": "Bây giờ",
+      "backToToday": "Trở về hôm nay",
+      "ok": "OK",
+      "timeSelect": "Chọn thời gian",
+      "dateSelect": "Chọn ngày",
+      "weekSelect": "Chọn tuần",
+      "clear": "Xóa",
+      "month": "Tháng",
+      "year": "Năm",
+      "previousMonth": "Tháng trước (PageUp)",
+      "nextMonth": "Tháng sau (PageDown)",
+      "monthSelect": "Chọn tháng",
+      "yearSelect": "Chọn năm",
+      "decadeSelect": "Chọn thập kỷ",
+      "yearFormat": "yyyy",
+      "dayFormat": "d",
+      "dateFormat": "d/M/yyyy",
+      "dateTimeFormat": "d/M/yyyy HH:mm:ss",
+      "previousYear": "Năm trước (Control + trái)",
+      "nextYear": "Năm sau (Control + phải)",
+      "previousDecade": "Thập kỷ trước",
+      "nextDecade": "Thập kỷ sau",
+      "previousCentury": "Thế kỷ trước",
+      "nextCentury": "Thế kỷ sau",
+      "monthFormat": "Tháng",
+      "shortWeekDays": ["CN", "T2", "T3", "T4", "T5", "T6", "T7"],
+      "monthBeforeYear": false,
+      "startDate": "Ngày bắt đầu",
+      "startWeek": "Tuần bắt đầu",
+      "startMonth": "Tháng bắt đầu",
+      "startYear": "Năm bắt đầu",
+      "startQuarter": "Quý bắt đầu",
+      "endDate": "Ngày kết thúc",
+      "endWeek": "Tuần kết thúc",
+      "endMonth": "Tháng kết thúc",
+      "endYear": "Năm kết thúc",
+      "endQuarter": "Quý kết thúc",
+      "quarterSelect": "Chọn quý",
+      "week": "Tuần"
+    },
+    "timePickerLocale": {
+      "placeholder": "Chọn thời gian",
+      "rangePlaceholder": ["Thời gian bắt đầu", "Thời gian kết thúc"]
+    }
+  },
+  "TimePicker": {
+    "placeholder": "Chọn thời gian",
+    "rangePlaceholder": ["Thời gian bắt đầu", "Thời gian kết thúc"]
+  },
+  "Calendar": {
+    "lang": {
+      "placeholder": "Chọn ngày",
+      "yearPlaceholder": "Chọn năm",
+      "quarterPlaceholder": "Chọn quý",
+      "monthPlaceholder": "Chọn tháng",
+      "weekPlaceholder": "Chọn tuần",
+      "rangePlaceholder": ["Ngày bắt đầu", "Ngày kết thúc"],
+      "rangeYearPlaceholder": ["Năm bắt đầu", "Năm kết thúc"],
+      "rangeMonthPlaceholder": ["Tháng bắt đầu", "Tháng kết thúc"],
+      "rangeWeekPlaceholder": ["Tuần bắt đầu", "Tuần kết thúc"],
+      "locale": "vi_VN",
+      "today": "Hôm nay",
+      "now": "Bây giờ",
+      "backToToday": "Trở về hôm nay",
+      "ok": "OK",
+      "timeSelect": "Chọn thời gian",
+      "dateSelect": "Chọn ngày",
+      "weekSelect": "Chọn tuần",
+      "clear": "Xóa",
+      "month": "Tháng",
+      "year": "Năm",
+      "previousMonth": "Tháng trước (PageUp)",
+      "nextMonth": "Tháng sau (PageDown)",
+      "monthSelect": "Chọn tháng",
+      "yearSelect": "Chọn năm",
+      "decadeSelect": "Chọn thập kỷ",
+      "yearFormat": "yyyy",
+      "dayFormat": "d",
+      "dateFormat": "d/M/yyyy",
+      "dateTimeFormat": "d/M/yyyy HH:mm:ss",
+      "previousYear": "Năm trước (Control + trái)",
+      "nextYear": "Năm sau (Control + phải)",
+      "previousDecade": "Thập kỷ trước",
+      "nextDecade": "Thập kỷ sau",
+      "previousCentury": "Thế kỷ trước",
+      "nextCentury": "Thế kỷ sau",
+      "monthBeforeYear": false
+    },
+    "timePickerLocale": {
+      "placeholder": "Chọn thời gian",
+      "rangePlaceholder": ["Thời gian bắt đầu", "Thời gian kết thúc"]
+    }
+  },
+  "global": { "placeholder": "Vui lòng chọn" },
+  "Table": {
+    "filterTitle": "Bộ lọc",
+    "filterConfirm": "Xác nhận",
+    "filterReset": "Đặt lại",
+    "selectAll": "Chọn tất cả trên trang",
+    "selectInvert": "Chọn ngược lại trên trang",
+    "selectionAll": "Chọn tất cả",
+    "sortTitle": "Sắp xếp",
+    "expand": "Mở rộng hàng",
+    "collapse": "Thu nhỏ hàng",
+    "triggerDesc": "Nhấn để giảm dần",
+    "triggerAsc": "Nhấn để tăng dần",
+    "cancelSort": "Hủy sắp xếp",
+    "filterOptions": {
+      "true": "Đúng",
+      "false": "Sai",
+      "and": "và",
+      "or": "hoặc",
+      "equals": "bằng",
+      "notEquals": "không bằng",
+      "contains": "chứa",
+      "notContains": "không chứa",
+      "startsWith": "bắt đầu với",
+      "endsWith": "kết thúc với",
+      "greaterThan": "lớn hơn",
+      "lessThan": "nhỏ hơn",
+      "greaterThanOrEquals": "lớn hơn hoặc bằng",
+      "lessThanOrEquals": "nhỏ hơn hoặc bằng",
+      "isNull": "là Null",
+      "isNotNull": "không phải Null",
+      "theSameDateWith": "bằng ngày này",
+      "between": "trong khoảng"
+    }
+  },
+  "Modal": {
+    "okText": "OK",
+    "cancelText": "Hủy"
+  },
+  "Confirm": {
+    "okText": "OK",
+    "cancelText": "Hủy",
+    "yesText": "Có",
+    "noText": "Không",
+    "retryText": "Thử lại",
+    "abortText": "Hủy",
+    "ignoreText": "Bỏ qua"
+  },
+  "Popconfirm": {
+    "okText": "OK",
+    "cancelText": "Hủy"
+  },
+  "Transfer": {
+    "searchPlaceholder": "Nhập nội dung tìm kiếm",
+    "itemUnit": "mục",
+    "itemsUnit": "mục"
+  },
+  "Upload": {
+    "uploading": "Đang tải lên...",
+    "removeFile": "Xóa tập tin",
+    "uploadError": "Lỗi tải lên",
+    "previewFile": "Xem trước tập tin",
+    "downloadFile": "Tải tập tin"
+  },
+  "Empty": { "description": "Không có dữ liệu" },
+  "Icon": { "icon": "Biểu tượng" },
+  "Text": {
+    "edit": "Chỉnh sửa",
+    "copy": "Sao chép",
+    "copied": "Đã sao chép",
+    "expand": "Mở rộng"
+  },
+  "PageHeader": { "back": "Quay lại" },
+  "Form": {
+    "optional": "(tùy chọn)",
+    "defaultValidateMessages": {
+      "default": "Lỗi xác thực trường ${label}",
+      "required": "Vui lòng nhập ${label}",
+      "enum": "${label} phải là một trong [${enum}]",
+      "whitespace": "${label} không được là ký tự trắng",
+      "date": {
+        "format": "Định dạng ngày của ${label} không hợp lệ",
+        "parse": "${label} không thể chuyển thành ngày",
+        "invalid": "${label} là ngày không hợp lệ"
+      },
+      "types": {
+        "string": "${label} không phải là ${type} hợp lệ",
+        "method": "${label} không phải là ${type} hợp lệ",
+        "array": "${label} không phải là ${type} hợp lệ",
+        "object": "${label} không phải là ${type} hợp lệ",
+        "number": "${label} không phải là ${type} hợp lệ",
+        "date": "${label} không phải là ${type} hợp lệ",
+        "boolean": "${label} không phải là ${type} hợp lệ",
+        "integer": "${label} không phải là ${type} hợp lệ",
+        "float": "${label} không phải là ${type} hợp lệ",
+        "regexp": "${label} không phải là ${type} hợp lệ",
+        "email": "${label} không phải là ${type} hợp lệ",
+        "url": "${label} không phải là ${type} hợp lệ",
+        "hex": "${label} không phải là ${type} hợp lệ"
+      },
+      "string": {
+        "len": "${label} phải có ${len} ký tự",
+        "min": "${label} tối thiểu ${min} ký tự",
+        "max": "${label} tối đa ${max} ký tự",
+        "range": "${label} phải từ ${min}-${max} ký tự"
+      },
+      "number": {
+        "len": "${label} phải bằng ${len}",
+        "min": "${label} tối thiểu là ${min}",
+        "max": "${label} tối đa là ${max}",
+        "range": "${label} phải từ ${min}-${max}"
+      },
+      "array": {
+        "len": "Phải có ${len} ${label}",
+        "min": "Tối thiểu ${min} ${label}",
+        "max": "Tối đa ${max} ${label}",
+        "range": "Số lượng ${label} phải từ ${min}-${max}"
+      },
+      "pattern": { "mismatch": "${label} không khớp với mẫu ${pattern}" }
+    }
+  },
+  "Image": {
+    "preview": "Xem trước"
+  },
+  "ReuseTabs": {
+    "Close": "Đóng",
+    "CloseAllTabs": "Đóng tất cả tab",
+    "CloseAllButThis": "Đóng tất cả trừ tab này",
+    "PinTab": "Ghim tab",
+    "Reload": "Tải lại"
+  }
+}

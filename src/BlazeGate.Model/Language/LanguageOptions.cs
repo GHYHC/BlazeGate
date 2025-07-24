@@ -14,7 +14,8 @@ namespace BlazeGate.Model.Culture
         public static readonly string[] Languages = new string[]
         {
             "en-US",
-            "zh-CN"
+            "zh-CN",
+            "vi-VN",
         };
 
         /// <summary>
@@ -23,7 +24,8 @@ namespace BlazeGate.Model.Culture
         public static readonly IDictionary<string, string> LanguageLabels = new Dictionary<string, string>
         {
             ["en-US"] = "English",
-            ["zh-CN"] = "简体中文"
+            ["zh-CN"] = "简体中文",
+            ["vi-VN"] = "Tiếng Việt"
         };
 
         /// <summary>
@@ -32,7 +34,8 @@ namespace BlazeGate.Model.Culture
         public static readonly IDictionary<string, string> LanguageIcons = new Dictionary<string, string>
         {
             ["en-US"] = "🇺🇸",
-            ["zh-CN"] = "🇨🇳"
+            ["zh-CN"] = "🇨🇳",
+            ["vi-VN"] = "🇻🇳"
         };
     }
 }

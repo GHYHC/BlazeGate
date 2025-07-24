@@ -34,7 +34,7 @@ namespace BlazeGate.Model.WebApi
             {
                 Code = 200,
                 Success = true,
-                Msg = msg ?? "成功",
+                Msg = msg ?? "Success",
                 Data = data
             };
         }
@@ -45,7 +45,7 @@ namespace BlazeGate.Model.WebApi
             {
                 Code = 200,
                 Success = false,
-                Msg = msg ?? "失败",
+                Msg = msg ?? "Failure",
                 Data = default
             };
         }
