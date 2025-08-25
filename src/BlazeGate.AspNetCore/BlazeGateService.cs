@@ -1,7 +1,6 @@
 ﻿using BlazeGate.Model.Helper;
 using BlazeGate.Model.WebApi;
 using BlazeGate.Model.WebApi.Request;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -12,12 +11,14 @@ namespace BlazeGate.AspNetCore
     internal class BlazeGateService : IHostedService
     {
         private readonly ILogger<BlazeGateService> logger;
+        private readonly IHostApplicationLifetime lifetime;
         private readonly HttpClient httpClient;
         private readonly BlazeGateOptions blazeGateOptions;
 
-        public BlazeGateService(IOptions<BlazeGateOptions> options, ILogger<BlazeGateService> logger, IHttpClientFactory httpClientFactory)
+        public BlazeGateService(IOptions<BlazeGateOptions> options, ILogger<BlazeGateService> logger, IHttpClientFactory httpClientFactory, IHostApplicationLifetime lifetime)
         {
             this.logger = logger;
+            this.lifetime = lifetime;
             this.httpClient = httpClientFactory.CreateClient();
             this.blazeGateOptions = options.Value;
         }
@@ -52,9 +53,19 @@ namespace BlazeGate.AspNetCore
                 //抛出异常
                 throw new Exception($"服务注册异常：{ex.Message}");
             }
+
+            //应用停止时注销服务
+            lifetime.ApplicationStopping.Register(() =>
+            {
+                DestinationRemove().Wait();
+            });
         }
 
         public async Task StopAsync(CancellationToken cancellationToken)
+        {
+        }
+
+        public async Task DestinationRemove()
         {
             try
             {

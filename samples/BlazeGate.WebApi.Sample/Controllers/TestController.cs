@@ -1,6 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using BlazeGate.Services.Interface;
-using Microsoft.AspNetCore.Http.HttpResults;
+﻿using BlazeGate.Services.Interface;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BlazeGate.WebApi.Sample.Controllers
 {
@@ -9,10 +8,12 @@ namespace BlazeGate.WebApi.Sample.Controllers
     public class TestController : ControllerBase
     {
         private readonly ISnowFlakeService snowFlakeService;
+        private readonly ILogger<TestController> logger;
 
-        public TestController(ISnowFlakeService snowFlakeService)
+        public TestController(ISnowFlakeService snowFlakeService, ILogger<TestController> logger)
         {
             this.snowFlakeService = snowFlakeService;
+            this.logger = logger;
         }
 
         [HttpGet]
@@ -26,7 +27,7 @@ namespace BlazeGate.WebApi.Sample.Controllers
             {
                 header += $"【{key}】：{dt[key]} \r\n";
             }
-
+            logger.LogInformation(header);
             return header;
         }
 
