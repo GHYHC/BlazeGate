@@ -20,6 +20,7 @@ namespace BlazeGate.RBAC.locales
         {
             var opt = new JsonSerializerOptions()
             {
+                TypeInfoResolver = LocaleSourceGenerationContext.Default,
                 PropertyNameCaseInsensitive = true,
             };
             opt.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
@@ -105,6 +106,10 @@ namespace BlazeGate.RBAC.locales
                 var content = streamReader.ReadToEnd();
 
                 var result = JsonSerializer.Deserialize<Locale>(content, _localeJsonOpt);
+                if (result == null)
+                {
+                    continue;
+                }
 
                 //通过反射调用Locale的SetCultureInfo方法 result.SetCultureInfo(key);
                 var setCultureInfoMethod = typeof(Locale).GetMethod("SetCultureInfo", BindingFlags.Instance | BindingFlags.NonPublic);
@@ -130,5 +135,10 @@ namespace BlazeGate.RBAC.locales
                 return name.Contains('-') ? name[0..name.LastIndexOf('-')] : string.Empty;
             }
         }
+    }
+
+    [JsonSerializable(typeof(AntDesign.Locales.Locale))]
+    internal partial class LocaleSourceGenerationContext : JsonSerializerContext
+    {
     }
 }

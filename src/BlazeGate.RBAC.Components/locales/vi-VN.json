@@ -20,10 +20,10 @@
       "quarterPlaceholder": "Chọn quý",
       "monthPlaceholder": "Chọn tháng",
       "weekPlaceholder": "Chọn tuần",
-      "rangePlaceholder": ["Ngày bắt đầu", "Ngày kết thúc"],
-      "rangeYearPlaceholder": ["Năm bắt đầu", "Năm kết thúc"],
-      "rangeMonthPlaceholder": ["Tháng bắt đầu", "Tháng kết thúc"],
-      "rangeWeekPlaceholder": ["Tuần bắt đầu", "Tuần kết thúc"],
+      "rangePlaceholder": [ "Ngày bắt đầu", "Ngày kết thúc" ],
+      "rangeYearPlaceholder": [ "Năm bắt đầu", "Năm kết thúc" ],
+      "rangeMonthPlaceholder": [ "Tháng bắt đầu", "Tháng kết thúc" ],
+      "rangeWeekPlaceholder": [ "Tuần bắt đầu", "Tuần kết thúc" ],
       "locale": "vi_VN",
       "today": "Hôm nay",
       "now": "Bây giờ",
@@ -50,8 +50,8 @@
       "nextDecade": "Thập kỷ sau",
       "previousCentury": "Thế kỷ trước",
       "nextCentury": "Thế kỷ sau",
-      "monthFormat": "Tháng",
-      "shortWeekDays": ["CN", "T2", "T3", "T4", "T5", "T6", "T7"],
+      "monthFormat": "MMM",
+      "shortWeekDays": [ "CN", "T2", "T3", "T4", "T5", "T6", "T7" ],
       "monthBeforeYear": false,
       "startDate": "Ngày bắt đầu",
       "startWeek": "Tuần bắt đầu",
@@ -68,12 +68,12 @@
     },
     "timePickerLocale": {
       "placeholder": "Chọn thời gian",
-      "rangePlaceholder": ["Thời gian bắt đầu", "Thời gian kết thúc"]
+      "rangePlaceholder": [ "Thời gian bắt đầu", "Thời gian kết thúc" ]
     }
   },
   "TimePicker": {
     "placeholder": "Chọn thời gian",
-    "rangePlaceholder": ["Thời gian bắt đầu", "Thời gian kết thúc"]
+    "rangePlaceholder": [ "Thời gian bắt đầu", "Thời gian kết thúc" ]
   },
   "Calendar": {
     "lang": {
@@ -82,10 +82,10 @@
       "quarterPlaceholder": "Chọn quý",
       "monthPlaceholder": "Chọn tháng",
       "weekPlaceholder": "Chọn tuần",
-      "rangePlaceholder": ["Ngày bắt đầu", "Ngày kết thúc"],
-      "rangeYearPlaceholder": ["Năm bắt đầu", "Năm kết thúc"],
-      "rangeMonthPlaceholder": ["Tháng bắt đầu", "Tháng kết thúc"],
-      "rangeWeekPlaceholder": ["Tuần bắt đầu", "Tuần kết thúc"],
+      "rangePlaceholder": [ "Ngày bắt đầu", "Ngày kết thúc" ],
+      "rangeYearPlaceholder": [ "Năm bắt đầu", "Năm kết thúc" ],
+      "rangeMonthPlaceholder": [ "Tháng bắt đầu", "Tháng kết thúc" ],
+      "rangeWeekPlaceholder": [ "Tuần bắt đầu", "Tuần kết thúc" ],
       "locale": "vi_VN",
       "today": "Hôm nay",
       "now": "Bây giờ",
@@ -116,7 +116,7 @@
     },
     "timePickerLocale": {
       "placeholder": "Chọn thời gian",
-      "rangePlaceholder": ["Thời gian bắt đầu", "Thời gian kết thúc"]
+      "rangePlaceholder": [ "Thời gian bắt đầu", "Thời gian kết thúc" ]
     }
   },
   "global": { "placeholder": "Vui lòng chọn" },
