@@ -12,6 +12,7 @@ using BlazeGate.Model.EFCore;
 using BlazeGate.Model.WebApi;
 using BlazeGate.Policy;
 using BlazeGate.Services.Interface;
+using BlazeGate.SingleFlightMemoryCache;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Yarp.ReverseProxy.Health;
@@ -75,6 +76,9 @@ builder.Services.AddResponseCompression(options =>
 
 //添加内存缓存服务
 builder.Services.AddMemoryCache();
+
+//添加单飞内存缓存服务
+builder.Services.AddSingleFlightMemoryCache();
 
 //添加Automapper
 builder.Services.AddAutoMapper(typeof(Program).Assembly, typeof(ApiResult<>).Assembly);

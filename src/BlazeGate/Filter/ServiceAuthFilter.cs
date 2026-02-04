@@ -2,6 +2,7 @@
 using BlazeGate.Model.EFCore;
 using BlazeGate.Model.WebApi;
 using BlazeGate.Model.WebApi.Request;
+using BlazeGate.SingleFlightMemoryCache;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
@@ -16,11 +17,13 @@ namespace BlazeGate.Filter
     {
         private readonly IMemoryCache memoryCache;
         private readonly BlazeGateContext dbContext;
+        private readonly ISingleFlightMemoryCache singleFlightMemoryCache;
 
-        public ServiceAuthFilter(IMemoryCache memoryCache, BlazeGateContext dbContext)
+        public ServiceAuthFilter(IMemoryCache memoryCache, BlazeGateContext dbContext, ISingleFlightMemoryCache singleFlightMemoryCache)
         {
             this.memoryCache = memoryCache;
             this.dbContext = dbContext;
+            this.singleFlightMemoryCache = singleFlightMemoryCache;
         }
 
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
@@ -51,9 +54,10 @@ namespace BlazeGate.Filter
             }
 
             // 使用缓存减少数据库查询
-            bool isValidService = await memoryCache.GetOrCreateAsync($"ServiceAuth_{authBaseInfo.ServiceName}_{authBaseInfo.Token}", async entry =>
+            bool isValidService = await singleFlightMemoryCache.GetOrCreateAsync($"ServiceAuth_{authBaseInfo.ServiceName}_{authBaseInfo.Token}", async entry =>
             {
-                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(1); // 缓存1分钟
+                // 缓存抖动：60~90秒随机
+                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(Random.Shared.Next(60, 91));
 
                 var service = await dbContext.Services
                     .AsNoTracking()
@@ -65,7 +69,7 @@ namespace BlazeGate.Filter
 
                 // 查找对应的Token配置
                 return service.Token == authBaseInfo.Token;
-            });
+            }, context.HttpContext.RequestAborted);
 
             if (!isValidService)
             {

@@ -1,4 +1,5 @@
 ﻿using BlazeGate.Model.EFCore;
+using BlazeGate.SingleFlightMemoryCache;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace BlazeGate.Authorization
@@ -7,11 +8,13 @@ namespace BlazeGate.Authorization
     {
         private readonly BlazeGateContext BlazeGateContext;
         private readonly IMemoryCache memoryCache;
+        private readonly ISingleFlightMemoryCache singleFlightMemoryCache;
 
-        public RBACService(BlazeGateContext BlazeGateContext, IMemoryCache memoryCache)
+        public RBACService(BlazeGateContext BlazeGateContext, IMemoryCache memoryCache, ISingleFlightMemoryCache singleFlightMemoryCache)
         {
             this.BlazeGateContext = BlazeGateContext;
             this.memoryCache = memoryCache;
+            this.singleFlightMemoryCache = singleFlightMemoryCache;
         }
 
         public async Task<bool> IsAuthorized(string account, string serviceName, string path)
@@ -27,9 +30,10 @@ namespace BlazeGate.Authorization
 
             string key = $"pathCache-{account}-{serviceName}";
 
-            List<string> paths = await memoryCache.GetOrCreateAsync(key, async entry =>
+            List<string> paths = await singleFlightMemoryCache.GetOrCreateAsync(key, async entry =>
             {
-                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(60);
+                // 缓存抖动：60~90秒随机
+                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(Random.Shared.Next(60, 91));
                 return await GetPath(account, serviceName);
             }) ?? new List<string>();
 

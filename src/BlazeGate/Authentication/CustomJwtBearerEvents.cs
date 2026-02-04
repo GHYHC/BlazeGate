@@ -1,11 +1,11 @@
 ﻿using BlazeGate.Authorization;
 using BlazeGate.JwtBearer;
 using BlazeGate.Model.EFCore;
+using BlazeGate.SingleFlightMemoryCache;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
 using System.Security.Cryptography;
 
 namespace BlazeGate.Authentication
@@ -15,12 +15,14 @@ namespace BlazeGate.Authentication
         private readonly BlazeGateContext blazeGateContext;
         private readonly IMemoryCache memoryCache;
         private readonly ILogger<CustomJwtBearerEvents> logger;
+        private readonly ISingleFlightMemoryCache singleFlightMemoryCache;
 
-        public CustomJwtBearerEvents(BlazeGateContext blazeGateContext, IMemoryCache memoryCache, ILogger<CustomJwtBearerEvents> logger)
+        public CustomJwtBearerEvents(BlazeGateContext blazeGateContext, IMemoryCache memoryCache, ILogger<CustomJwtBearerEvents> logger, ISingleFlightMemoryCache singleFlightMemoryCache)
         {
             this.blazeGateContext = blazeGateContext;
             this.memoryCache = memoryCache;
             this.logger = logger;
+            this.singleFlightMemoryCache = singleFlightMemoryCache;
         }
 
         public override async Task MessageReceived(MessageReceivedContext context)
@@ -47,9 +49,10 @@ namespace BlazeGate.Authentication
             }
 
             //从缓存中获取RSA公钥
-            var rsaSecurityPublicKey = await memoryCache.GetOrCreateAsync<RSAParameters?>($"PublicKey_{serviceName}", async entry =>
+            var rsaSecurityPublicKey = await singleFlightMemoryCache.GetOrCreateAsync<RSAParameters?>($"PublicKey_{serviceName}", async entry =>
             {
-                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(1); // 缓存1分钟
+                // 缓存抖动：60~90秒随机
+                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(Random.Shared.Next(60, 91));
 
                 string publicKey = await blazeGateContext.AuthRsaKeys.AsNoTracking().Where(s => s.ServiceName.ToLower() == serviceName.ToLower()).Select(b => b.PublicKey).FirstOrDefaultAsync();
 
@@ -67,7 +70,7 @@ namespace BlazeGate.Authentication
                 }
 
                 return null;
-            });
+            }, context.HttpContext.RequestAborted);
 
             if (rsaSecurityPublicKey != null)
             {
