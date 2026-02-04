@@ -1,13 +1,14 @@
 ﻿using BlazeGate.Authorization;
 using BlazeGate.Model.EFCore;
 using BlazeGate.SingleFlightMemoryCache;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 
 namespace BlazeGate.AuthWhiteList
 {
     public class AuthWhiteListMiddleware
     {
+        public const string WhiteListBypassAuthItemKey = "__AuthWhiteList.BypassAuthorization";
+
         private readonly RequestDelegate next;
 
         public AuthWhiteListMiddleware(RequestDelegate next)
@@ -34,20 +35,10 @@ namespace BlazeGate.AuthWhiteList
             // 判断地址是否在白名单中(白名单后带有*则只匹配前面的)
             bool isWhiteList = addressList.Any(address => (address.EndsWith('*') && path.StartsWith(address.TrimEnd('*'))) || address == path);
 
-            // 移除授权验证
+            // 如果在白名单中，则设置跳过授权标记
             if (isWhiteList)
             {
-                var endpoint = context.GetEndpoint();
-                if (endpoint != null)
-                {
-                    var metadata = endpoint.Metadata.Where(m => m.GetType() != typeof(AuthorizeAttribute)).ToList();
-                    var newEndpoint = new Endpoint(
-                        endpoint.RequestDelegate,
-                        new EndpointMetadataCollection(metadata),
-                        endpoint.DisplayName
-                    );
-                    context.SetEndpoint(newEndpoint);
-                }
+                context.Items[WhiteListBypassAuthItemKey] = true;
             }
 
             await next(context);

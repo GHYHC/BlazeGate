@@ -33,13 +33,12 @@ namespace BlazeGate.SingleFlightMemoryCache
                     return existing;
                 }
 
-                using var entry = cache.CreateEntry(key);
-                var created = await factory(entry);
+                using ICacheEntry entry = cache.CreateEntry(key);
 
-                // CreateEntry 只有 Value 被赋值才会提交
-                entry.Value = created;
+                var result = await factory(entry).ConfigureAwait(false);
+                entry.Value = result;
 
-                return created;
+                return result;
             }
         }
     }
