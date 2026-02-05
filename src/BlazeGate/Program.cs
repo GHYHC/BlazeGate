@@ -15,9 +15,17 @@ using BlazeGate.Services.Interface;
 using BlazeGate.SingleFlightMemoryCache;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using Yarp.ReverseProxy.Health;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// 让 Serilog 接管 ASP.NET Core 日志系统（从 appsettings.json 读取）
+builder.Host.UseSerilog((context, services, config) =>
+{
+    config.ReadFrom.Configuration(context.Configuration)
+          .ReadFrom.Services(services);
+});
 
 // Add services to the container.
 
