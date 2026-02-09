@@ -1,11 +1,7 @@
 ﻿using BlazeGate.Common;
 using BlazeGate.Model.Helper;
-using BlazeGate.Model.WebApi.Request;
 using BlazeGate.Model.WebApi.Response;
-using BlazeGate.Services.Implement;
 using BlazeGate.Services.Interface;
-using Consul;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace BlazeGate.BackgroundService
 {
@@ -60,7 +56,7 @@ namespace BlazeGate.BackgroundService
                     }
                     catch (Exception ex)
                     {
-                        logger.LogError($"获取节点 {item} 的雪花算法信息失败：{ex.Message}");
+                        logger.LogError(ex, $"获取节点 {item} 的雪花算法信息失败：{ex.Message}");
                     }
                 }
 

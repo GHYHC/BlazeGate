@@ -6,16 +6,9 @@ using BlazeGate.Model.WebApi;
 using BlazeGate.Model.WebApi.Request;
 using BlazeGate.Services.Interface;
 using LinqKit;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Yarp.ReverseProxy;
 using Yarp.ReverseProxy.Configuration;
 using Yarp.ReverseProxy.Forwarder;
@@ -70,6 +63,7 @@ namespace BlazeGate.Services.Implement
                 }
                 catch (Exception ex)
                 {
+                    logger.LogError(ex, $"更新节点 {item} 的路由配置失败：{ex.Message}");
                     errorMsg = $"{item}：{ex.Message}\n";
                 }
             }
