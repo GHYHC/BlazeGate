@@ -68,8 +68,8 @@ BlazeGate 是一个围绕 **Microsoft YARP** 构建的 API 网关方案。这个
 
 至少检查以下配置文件：
 
-- `/home/runner/work/BlazeGate/BlazeGate/src/BlazeGate/appsettings.json`
-- `/home/runner/work/BlazeGate/BlazeGate/src/BlazeGate.Dashboard/appsettings.json`
+- `src/BlazeGate/appsettings.json`
+- `src/BlazeGate.Dashboard/appsettings.json`
 
 重点配置项：
 
@@ -105,7 +105,7 @@ dotnet run --project ./src/BlazeGate.Dashboard
 
 ### 4. 登录管理后台
 
-Dashboard 默认读取 `/home/runner/work/BlazeGate/BlazeGate/src/BlazeGate.Dashboard/appsettings.json` 中的登录信息：
+Dashboard 默认读取 `src/BlazeGate.Dashboard/appsettings.json` 中的登录信息：
 
 - 用户名：`admin`
 - 密码：`admin`
