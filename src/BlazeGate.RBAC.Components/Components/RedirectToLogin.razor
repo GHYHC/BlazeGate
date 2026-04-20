@@ -3,6 +3,19 @@
         Title="正在跳转登录..." />
 
 @code {
+
+    /// <summary>
+    /// 登录成功后要跳转的 URL，默认为当前 URL
+    /// </summary>
+    [Parameter]
+    public string ReturnUrl { get; set; }
+
+    /// <summary>
+    /// 登录成功后是否强制刷新页面，默认为 false
+    /// </summary>
+    [Parameter]
+    public bool ForceLoad { get; set; } = false;
+
     protected override async Task OnInitializedAsync()
     {
         // string returnUrl = Uri.EscapeDataString("/" + NavigationManager.ToBaseRelativePath(NavigationManager.Uri));
@@ -11,7 +24,10 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        string returnUrl = Uri.EscapeDataString("/" + NavigationManager.ToBaseRelativePath(NavigationManager.Uri));
-        NavigationManager.NavigateTo($"/login?returnUrl={returnUrl}");
+        if (string.IsNullOrWhiteSpace(ReturnUrl))
+        {
+            ReturnUrl = Uri.EscapeDataString("/" + NavigationManager.ToBaseRelativePath(NavigationManager.Uri));
+        }
+        NavigationManager.NavigateTo($"/login?returnUrl={ReturnUrl}&forceLoad={ForceLoad}");
     }
 }

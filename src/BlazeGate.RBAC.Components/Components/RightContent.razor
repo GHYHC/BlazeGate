@@ -65,6 +65,12 @@
     [Parameter]
     public IDictionary<string, string> LanguageIcons { get; set; } = LanguageOptions.LanguageIcons;
 
+    /// <summary>
+    /// 登录成功后是否强制刷新页面，默认为 false
+    /// </summary>
+    [Parameter]
+    public bool ForceLoad { get; set; } = false;
+
     public string ServiceName { get; set; }
 
     protected override async Task OnInitializedAsync()
@@ -96,7 +102,7 @@
         {
         }
         await AuthTokenStorage.SetAuthToken(null);
-        NavigationManager.NavigateTo("/login");
+        NavigationManager.NavigateTo($"/login?forceLoad={ForceLoad}");
     }
 
     public async Task ChangePassword()

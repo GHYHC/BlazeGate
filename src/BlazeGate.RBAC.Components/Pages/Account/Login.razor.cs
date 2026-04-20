@@ -39,6 +39,10 @@ namespace BlazeGate.RBAC.Components.Pages.Account
         [SupplyParameterFromQuery(Name = "returnUrl")]
         public string ReturnUrl { get; set; } = "/";
 
+        [Parameter]
+        [SupplyParameterFromQuery(Name = "forceLoad")]
+        public bool ForceLoad { get; set; } = false;
+
         [Inject]
         private IConfiguration Configuration { get; set; }
 
@@ -72,7 +76,7 @@ namespace BlazeGate.RBAC.Components.Pages.Account
                         provider.NotifyAuthenticationStateChanged(Task.FromResult(authenticationState));
                     }
 
-                    NavigationManager.NavigateTo(ReturnUrl ?? "/");
+                    NavigationManager.NavigateTo(ReturnUrl ?? "/", ForceLoad);
                 }
                 else
                 {
